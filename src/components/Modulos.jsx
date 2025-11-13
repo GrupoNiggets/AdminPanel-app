@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import Chat from '../pages/chat/Chat'
+import Bugs from '../pages/bugs/Bugs'
+import Posts from '../pages/posts/Posts'
+import Status from '../pages/status/Status'
+import Users from '../pages/users/Users'
 
 // Versión muy simple de Modulos: lista fija de módulos (chat, bugs, posts, status, usuarios).
 // Guardamos sólo los módulos instalados (ids) en localStorage.
@@ -77,42 +82,61 @@ export default function Modulos({ path = '/modules', navigate }) {
 		)
 	}
 
-	// detalle
-	const mod = MODULES.find(m => m.id === detailId)
-	if (!mod) {
+		// detalle
+		const mod = MODULES.find(m => m.id === detailId)
+		if (!mod) {
+			return (
+				<div>
+					<h2>No encontrado</h2>
+					<p>ID: {detailId}</p>
+					<p><button onClick={back}>Volver</button></p>
+				</div>
+			)
+		}
+
+		// map id to component
+		const ModuleComponent = ({ id }) => {
+			switch (id) {
+				case 'chat': return <Chat />
+				case 'bugs': return <Bugs />
+				case 'posts': return <Posts />
+				case 'status': return <Status />
+				case 'usuarios': return <Users />
+				default: return <div>Componente no disponible</div>
+			}
+		}
+
 		return (
 			<div>
-				<h2>No encontrado</h2>
-				<p>ID: {detailId}</p>
-				<p><button onClick={back}>Volver</button></p>
+				<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+					<div>
+						<h2>{mod.name}</h2>
+						<div style={{color:'#555'}}>ID: <code>{mod.id}</code></div>
+					</div>
+					<div>
+						<button onClick={() => toggle(mod.id)} style={{marginRight:8}}>{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}</button>
+						<button onClick={back}>Volver</button>
+					</div>
+				</div>
+
+				<section style={{marginTop:12}}>
+					<h3>Descripción</h3>
+					<p>{mod.description}</p>
+				</section>
+
+				<section style={{marginTop:12}}>
+					<h3>Estado</h3>
+					<p>{installed.includes(mod.id) ? 'Instalado' : 'No instalado'}</p>
+				</section>
+
+				<section style={{marginTop:12}}>
+					<h3>Vista</h3>
+					<div style={{border:'1px solid #eee',padding:12,borderRadius:6,marginTop:8}}>
+						<ModuleComponent id={mod.id} />
+					</div>
+				</section>
 			</div>
 		)
-	}
-
-	return (
-		<div>
-			<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-				<div>
-					<h2>{mod.name}</h2>
-					<div style={{color:'#555'}}>ID: <code>{mod.id}</code></div>
-				</div>
-				<div>
-					<button onClick={() => toggle(mod.id)} style={{marginRight:8}}>{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}</button>
-					<button onClick={back}>Volver</button>
-				</div>
-			</div>
-
-			<section style={{marginTop:12}}>
-				<h3>Descripción</h3>
-				<p>{mod.description}</p>
-			</section>
-
-			<section style={{marginTop:12}}>
-				<h3>Estado</h3>
-				<p>{installed.includes(mod.id) ? 'Instalado' : 'No instalado'}</p>
-			</section>
-		</div>
-	)
 }
 
 
