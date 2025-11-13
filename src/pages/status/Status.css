@@ -1,2 +1,20 @@
-.page-root { padding:8px }
-.placeholder { background:#ecfccb; border:1px solid #d9f99d; padding:8px; border-radius:6px }
+.status-container { background:#fff; border-radius:8px; overflow:hidden }
+.status-header { background:#d9f99d; padding:16px; border-bottom:2px solid #84cc16; display:flex; justify-content:space-between; align-items:center }
+.status-header h3 { margin:0; font-size:18px; color:#3f6212 }
+.status-time { font-size:13px; color:#4d7c0f; background:#fff; padding:4px 10px; border-radius:6px }
+.metrics-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; padding:16px }
+.metric-card { background:#f7fee7; border:1px solid #d9f99d; padding:16px; border-radius:8px; display:flex; gap:12px; align-items:center }
+.metric-icon { font-size:32px }
+.metric-info { flex:1 }
+.metric-label { font-size:12px; color:#65a30d; font-weight:600; text-transform:uppercase; margin-bottom:4px }
+.metric-value { font-size:18px; color:#1f2937; font-weight:700; margin-bottom:4px }
+.metric-status { font-size:12px; font-weight:600 }
+.metric-status[data-status="normal"] { color:#84cc16 }
+.metric-status[data-status="bueno"] { color:#22c55e }
+.services-section { padding:0 16px 16px 16px }
+.services-section h4 { margin:0 0 12px 0; color:#3f6212; font-size:16px }
+.services-list { display:flex; flex-direction:column; gap:8px }
+.service-item { background:#f7fee7; border:1px solid #d9f99d; padding:12px; border-radius:6px; display:flex; justify-content:space-between; align-items:center }
+.service-name { font-weight:600; color:#1f2937; margin-bottom:4px }
+.service-uptime { font-size:12px; color:#65a30d }
+.service-status { color:#84cc16; font-weight:600; font-size:14px }

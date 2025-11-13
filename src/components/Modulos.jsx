@@ -13,7 +13,7 @@ const MODULES = [
 	{ id: 'bugs', name: 'Bugs', description: 'Reportes y seguimiento de errores' },
 	{ id: 'posts', name: 'Posts', description: 'Gestión de publicaciones y contenido' },
 	{ id: 'status', name: 'Status', description: 'Estados del sistema y monitoreo' },
-	{ id: 'usuarios', name: 'Usuarios', description: 'Administración de usuarios y permisos' }
+	{ id: 'users', name: 'Usuarios', description: 'Administración de usuarios y permisos' }
 ]
 
 const KEY = 'ap_installed_modules'
@@ -38,7 +38,6 @@ export default function Modulos({ path = '/modules', navigate }) {
 	useEffect(() => saveInstalled(installed), [installed])
 
 	const base = '/modules'
-
 	const isDetail = path !== base && path.startsWith(base + '/')
 	const detailId = isDetail ? decodeURIComponent(path.slice((base + '/').length)) : null
 
@@ -54,6 +53,20 @@ export default function Modulos({ path = '/modules', navigate }) {
 		navigate('/modules')
 	}
 
+	// Renderizar componente de página según id
+	function renderPageComponent(id) {
+		console.log('Renderizando módulo:', id)
+		switch (id) {
+			case 'chat': return <Chat />
+			case 'bugs': return <Bugs />
+			case 'posts': return <Posts />
+			case 'status': return <Status />
+			case 'users': return <Users />
+			default: return <div style={{color:'#999'}}>Componente no disponible para: {id}</div>
+		}
+	}
+
+	// Vista lista
 	if (!isDetail) {
 		return (
 			<div>
@@ -82,61 +95,50 @@ export default function Modulos({ path = '/modules', navigate }) {
 		)
 	}
 
-		// detalle
-		const mod = MODULES.find(m => m.id === detailId)
-		if (!mod) {
-			return (
-				<div>
-					<h2>No encontrado</h2>
-					<p>ID: {detailId}</p>
-					<p><button onClick={back}>Volver</button></p>
-				</div>
-			)
-		}
-
-		// map id to component
-		const ModuleComponent = ({ id }) => {
-			switch (id) {
-				case 'chat': return <Chat />
-				case 'bugs': return <Bugs />
-				case 'posts': return <Posts />
-				case 'status': return <Status />
-				case 'usuarios': return <Users />
-				default: return <div>Componente no disponible</div>
-			}
-		}
-
+	// Vista detalle
+	const mod = MODULES.find(m => m.id === detailId)
+	if (!mod) {
 		return (
 			<div>
-				<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-					<div>
-						<h2>{mod.name}</h2>
-						<div style={{color:'#555'}}>ID: <code>{mod.id}</code></div>
-					</div>
-					<div>
-						<button onClick={() => toggle(mod.id)} style={{marginRight:8}}>{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}</button>
-						<button onClick={back}>Volver</button>
-					</div>
-				</div>
-
-				<section style={{marginTop:12}}>
-					<h3>Descripción</h3>
-					<p>{mod.description}</p>
-				</section>
-
-				<section style={{marginTop:12}}>
-					<h3>Estado</h3>
-					<p>{installed.includes(mod.id) ? 'Instalado' : 'No instalado'}</p>
-				</section>
-
-				<section style={{marginTop:12}}>
-					<h3>Vista</h3>
-					<div style={{border:'1px solid #eee',padding:12,borderRadius:6,marginTop:8}}>
-						<ModuleComponent id={mod.id} />
-					</div>
-				</section>
+				<h2>No encontrado</h2>
+				<p>ID: {detailId}</p>
+				<p><button onClick={back}>Volver</button></p>
 			</div>
 		)
+	}
+
+	return (
+		<div>
+			<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+				<div>
+					<h2>{mod.name}</h2>
+					<div style={{color:'#555'}}>ID: <code>{mod.id}</code></div>
+				</div>
+				<div>
+					<button onClick={() => toggle(mod.id)} style={{marginRight:8}}>
+						{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
+					</button>
+					<button onClick={back}>Volver</button>
+				</div>
+			</div>
+
+			<section style={{marginTop:12}}>
+				<h3>Descripción</h3>
+				<p>{mod.description}</p>
+			</section>
+
+			<section style={{marginTop:12}}>
+				<h3>Estado</h3>
+				<p>{installed.includes(mod.id) ? '✓ Instalado' : '○ No instalado'}</p>
+			</section>
+
+		<section style={{marginTop:16}}>
+			<div style={{background:'#fff',borderRadius:8,overflow:'hidden',boxShadow:'0 1px 3px rgba(0,0,0,0.1)'}}>
+				{renderPageComponent(mod.id)}
+			</div>
+		</section>
+		</div>
+	)
 }
 
 

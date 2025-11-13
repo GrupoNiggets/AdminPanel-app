@@ -1,2 +1,18 @@
-.page-root { padding:8px }
-.placeholder { background:#f0f9ff; border:1px solid #bae6fd; padding:8px; border-radius:6px }
+.users-container { background:#fff; border-radius:8px; overflow:hidden }
+.users-header { background:#dbeafe; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0ea5e9 }
+.users-header h3 { margin:0; font-size:18px; color:#0c4a6e }
+.btn-add-user { background:#0ea5e9; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:500 }
+.btn-add-user:hover { background:#0284c7 }
+.users-table { padding:16px }
+.table-header { display:grid; grid-template-columns:2fr 2fr 1.5fr 1fr 1fr; gap:12px; padding:12px; background:#f0f9ff; border-radius:6px; font-weight:600; color:#0c4a6e; font-size:13px; margin-bottom:8px }
+.table-row { display:grid; grid-template-columns:2fr 2fr 1.5fr 1fr 1fr; gap:12px; padding:12px; background:#f8fafc; border:1px solid #e0f2fe; border-radius:6px; margin-bottom:8px; align-items:center }
+.user-name { display:flex; align-items:center; gap:10px }
+.user-avatar { width:36px; height:36px; border-radius:50%; background:#0ea5e9; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px }
+.user-email { color:#64748b; font-size:14px }
+.role-badge { display:inline-block; color:#fff; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600 }
+.status-badge { padding:4px 10px; border-radius:6px; font-size:12px; font-weight:600 }
+.status-badge.activo { background:#d1fae5; color:#065f46 }
+.status-badge.inactivo { background:#fee2e2; color:#991b1b }
+.user-actions { display:flex; gap:6px }
+.btn-action { background:#e0f2fe; border:none; padding:6px 10px; border-radius:4px; cursor:pointer; font-size:14px }
+.btn-action:hover { background:#bae6fd }
