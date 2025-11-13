@@ -22,18 +22,18 @@ export default function Status() {
   ]
 
   return (
-    <Box>
-      <Paper sx={{ bgcolor: '#d9f99d', p: 2, mb: 2, borderBottom: 2, borderColor: '#84cc16', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#3f6212' }}>
-          <BarChartIcon /> Estado del Sistema
+    <Box sx={{ width: '100%', m: 0, p: 0 }}>
+      <Paper elevation={0} sx={{ bgcolor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: '#000000', fontWeight: 700 }}>
+          <BarChartIcon sx={{ color: '#000000' }} /> Monitoreo del Sistema
         </Typography>
         <Chip label={`Actualizado: ${new Date().toLocaleTimeString('es-ES')}`} size="small" sx={{ bgcolor: 'white', color: '#4d7c0f' }} />
       </Paper>
 
-      <Box sx={{ p: 2 }}>
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          {metrics.map((metric, i) => (
-            <Grid item xs={12} sm={6} md={3} key={i}>
+      <Box>
+      <Grid container spacing={3}>
+          {metrics.map((metric, idx) => (
+            <Grid item xs={6} sm={6} md={3} key={idx}>
               <Card sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Box>{metric.icon}</Box>

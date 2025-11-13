@@ -15,56 +15,56 @@ export default function Users() {
 
   const getRoleBadge = (role) => {
     const colors = {
-      'Administrador': '#dc2626',
-      'Editor': '#7c3aed',
-      'Moderador': '#2563eb',
-      'Usuario': '#059669'
+      'Administrador': '#d32f2f',
+      'Editor': '#7b1fa2',
+      'Moderador': '#1976d2',
+      'Usuario': '#2e7d32'
     }
-    return colors[role] || '#6b7280'
+    return colors[role] || '#757575'
   }
 
   return (
-    <Box>
-      <Paper sx={{ bgcolor: '#dbeafe', p: 2, mb: 2, borderBottom: 2, borderColor: '#0ea5e9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#0c4a6e' }}>
-          <PeopleIcon /> Gestión de Usuarios
+    <Box sx={{ width: '100%', m: 0, p: 0 }}>
+      <Paper elevation={0} sx={{ bgcolor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: '#000000', fontWeight: 700 }}>
+          <PeopleIcon sx={{ color: '#000000' }} /> Administración de Usuarios
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
       </Paper>
 
-      <Box sx={{ p: 2 }}>
-        <TableContainer component={Paper}>
+      <Box>
+      <TableContainer component={Paper} elevation={2} sx={{ overflowX: 'auto', borderRadius: 2 }}>
           <Table>
             <TableHead>
               <TableRow sx={{ bgcolor: '#f0f9ff' }}>
-                <TableCell><strong>Nombre</strong></TableCell>
-                <TableCell><strong>Email</strong></TableCell>
-                <TableCell><strong>Rol</strong></TableCell>
-                <TableCell><strong>Estado</strong></TableCell>
-                <TableCell align="center"><strong>Acciones</strong></TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}><strong>Nombre</strong></TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap', display: { xs: 'none', sm: 'table-cell' } }}><strong>Email</strong></TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}><strong>Rol</strong></TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}><strong>Estado</strong></TableCell>
+                <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}><strong>Acciones</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {users.map(user => (
                 <TableRow key={user.id} sx={{ '&:hover': { bgcolor: 'grey.50' } }}>
-                  <TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Avatar sx={{ bgcolor: '#0ea5e9', width: 36, height: 36 }}>{user.name.charAt(0)}</Avatar>
-                      <Typography>{user.name}</Typography>
+                      <Avatar sx={{ bgcolor: '#000000', width: { xs: 32, md: 36 }, height: { xs: 32, md: 36 } }}>{user.name.charAt(0)}</Avatar>
+                      <Typography sx={{ fontSize: { xs: '0.875rem', md: '1rem' } }}>{user.name}</Typography>
                     </Box>
                   </TableCell>
-                  <TableCell><Typography color="text.secondary">{user.email}</Typography></TableCell>
-                  <TableCell>
+                  <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}><Typography color="text.secondary">{user.email}</Typography></TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     <Chip label={user.role} size="small" sx={{ bgcolor: getRoleBadge(user.role), color: 'white', fontWeight: 600 }} />
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     <Chip 
                       label={user.status === 'activo' ? '✓ Activo' : '○ Inactivo'} 
                       size="small" 
                       color={user.status === 'activo' ? 'success' : 'default'}
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" sx={{ whiteSpace: 'nowrap' }}>
                     <IconButton size="small" color="primary"><EditIcon /></IconButton>
                     <IconButton size="small" color="error"><DeleteIcon /></IconButton>
                   </TableCell>

@@ -13,10 +13,10 @@ import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates'
 
 export default function Home() {
   const stats = [
-    { label: 'Módulos', value: '5', icon: <DashboardIcon sx={{fontSize: 40}} />, color: '#3b82f6' },
-    { label: 'Usuarios', value: '24', icon: <PeopleIcon sx={{fontSize: 40}} />, color: '#8b5cf6' },
-    { label: 'Posts', value: '156', icon: <ArticleIcon sx={{fontSize: 40}} />, color: '#06b6d4' },
-    { label: 'Bugs', value: '8', icon: <BugReportIcon sx={{fontSize: 40}} />, color: '#f59e0b' }
+    { label: 'Módulos', value: '5', icon: <DashboardIcon sx={{fontSize: { xs: 32, md: 40 }}} />, color: '#3b82f6' },
+    { label: 'Usuarios', value: '24', icon: <PeopleIcon sx={{fontSize: { xs: 32, md: 40 }}} />, color: '#8b5cf6' },
+    { label: 'Posts', value: '156', icon: <ArticleIcon sx={{fontSize: { xs: 32, md: 40 }}} />, color: '#06b6d4' },
+    { label: 'Bugs', value: '8', icon: <BugReportIcon sx={{fontSize: { xs: 32, md: 40 }}} />, color: '#f59e0b' }
   ]
 
   const recentActivity = [
@@ -34,40 +34,40 @@ export default function Home() {
   ]
 
   return (
-    <Box sx={{ maxWidth: 1200, margin: '0 auto', p: 3 }}>
-      <Box sx={{ textAlign: 'center', mb: 4 }}>
-        <Typography variant="h3" gutterBottom>👋 Bienvenido al Panel de Administración</Typography>
-        <Typography variant="body1" color="text.secondary">Gestiona tus módulos, usuarios y contenido desde un solo lugar</Typography>
-      </Box>
+    <Box sx={{ p: 4, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#000000' }}>
+        Dashboard
+      </Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+        Visión general del sistema
+      </Typography>
 
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, color: '#000000' }}>
+        Estadísticas del Sistema
+      </Typography>
+      <Grid container spacing={3}>
         {stats.map((stat, i) => (
-          <Grid item xs={12} sm={6} md={3} key={i}>
-            <Card sx={{ 
-              background: `linear-gradient(135deg, ${stat.color} 0%, ${stat.color}dd 100%)`,
-              color: 'white',
-              transition: 'transform 0.2s',
-              '&:hover': { transform: 'translateY(-4px)' }
-            }}>
-              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box>{stat.icon}</Box>
-                <Box>
-                  <Typography variant="h4" fontWeight="bold">{stat.value}</Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.9, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                    {stat.label}
-                  </Typography>
-                </Box>
+          <Grid item xs={6} sm={6} md={3} key={i}>
+            <Card elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <Box sx={{ color: stat.color, mb: 1 }}>{stat.icon}</Box>
+                <Typography variant={{ xs: 'h4', md: 'h3' }} sx={{ fontWeight: 700, color: stat.color, mb: 0.5 }}>
+                  {stat.value}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: { xs: '0.75rem', md: '0.875rem' } }}>
+                  {stat.label}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
 
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              🚀 Accesos rápidos
+      <Grid container spacing={3} sx={{ mt: 4 }}>
+        <Grid item xs={12} lg={6}>
+          <Paper elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 3, height: '100%' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#000000' }}>
+              Accesos Rápidos
             </Typography>
             <List>
               {quickLinks.map((link, i) => (
@@ -77,44 +77,39 @@ export default function Home() {
                   href={link.url}
                   sx={{
                     borderRadius: 1,
-                    mb: 1,
-                    bgcolor: 'grey.50',
-                    border: '1px solid',
-                    borderColor: 'grey.200',
+                    mb: 0.5,
                     textDecoration: 'none',
                     color: 'text.primary',
                     transition: 'all 0.2s',
                     '&:hover': {
-                      bgcolor: link.color,
-                      color: 'white',
-                      transform: 'translateX(4px)'
+                      bgcolor: '#f5f5f5'
                     }
                   }}
                 >
-                  <ListItemIcon sx={{ minWidth: 40 }}>{link.icon}</ListItemIcon>
-                  <ListItemText primary={link.name} />
-                  <ArrowForwardIcon />
+                  <ListItemIcon sx={{ minWidth: 40, color: link.color }}>{link.icon}</ListItemIcon>
+                  <ListItemText primary={<Typography fontWeight={500}>{link.name}</Typography>} />
+                  <ArrowForwardIcon sx={{ color: 'text.disabled' }} />
                 </ListItem>
               ))}
             </List>
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>📋 Actividad reciente</Typography>
+        <Grid item xs={12} lg={6}>
+          <Paper elevation={2} sx={{ p: 3, height: '100%', bgcolor: '#ffffff', borderRadius: 2 }}>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 2, color: '#000000' }}>
+              Actividad Reciente
+            </Typography>
             <List>
               {recentActivity.map((activity, i) => (
-                <ListItem key={i} sx={{ bgcolor: 'grey.50', borderRadius: 1, mb: 1, border: '1px solid', borderColor: 'grey.200' }}>
-                  <ListItemIcon>{activity.icon}</ListItemIcon>
+                <ListItem key={i} sx={{ bgcolor: '#fafafa', borderRadius: 1, mb: 0.5 }}>
+                  <ListItemIcon sx={{ color: '#000000' }}>{activity.icon}</ListItemIcon>
                   <ListItemText
-                    primary={activity.action}
+                    primary={<Typography fontWeight={500}>{activity.action}</Typography>}
                     secondary={
-                      <>
-                        <Typography component="span" variant="body2">{activity.user}</Typography>
-                        {' · '}
-                        <Typography component="span" variant="body2" color="text.disabled">{activity.time}</Typography>
-                      </>
+                      <Typography variant="caption" color="text.secondary">
+                        {activity.user} · {activity.time}
+                      </Typography>
                     }
                   />
                 </ListItem>
@@ -123,10 +118,6 @@ export default function Home() {
           </Paper>
         </Grid>
       </Grid>
-
-      <Alert icon={<TipsAndUpdatesIcon />} severity="info" sx={{ bgcolor: '#fef3c7', color: '#92400e', border: '2px solid #fbbf24' }}>
-        <strong>Tip del día:</strong> Puedes instalar o desinstalar módulos desde la sección de Módulos
-      </Alert>
     </Box>
   )
 }

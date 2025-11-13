@@ -16,18 +16,18 @@ export default function Posts() {
   ])
 
   return (
-    <Box>
-      <Paper sx={{ bgcolor: '#dbeafe', p: 2, mb: 2, borderBottom: 2, borderColor: 'primary.main', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#1e40af' }}>
-          <ArticleIcon /> Publicaciones
+    <Box sx={{ width: '100%', m: 0, p: 0 }}>
+      <Paper elevation={0} sx={{ bgcolor: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: '#000000', fontWeight: 700 }}>
+          <ArticleIcon sx={{ color: '#000000' }} /> Gestión de Contenido
         </Typography>
         <Button variant="contained" startIcon={<AddIcon />}>Nueva publicación</Button>
       </Paper>
 
-      <Box sx={{ p: 2 }}>
-        <Grid container spacing={2}>
+      <Box>
+              <Grid container spacing={3} sx={{ mb: 4 }}>
           {posts.map(post => (
-            <Grid item xs={12} sm={6} md={4} key={post.id}>
+            <Grid item xs={12} sm={6} lg={4} key={post.id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#eff6ff', border: '1px solid #bfdbfe', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
                 <CardContent sx={{ flex: 1 }}>
                   <Chip label={post.category} size="small" color="primary" sx={{ mb: 1, fontWeight: 600 }} />

@@ -17,30 +17,34 @@ function Header() {
 	const path = currentPath()
 	
 	return (
-		<AppBar position="static" sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', mb: 3 }}>
-			<Toolbar>
-				<Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-					🎯 Admin Panel
+		<AppBar position="static" elevation={0} sx={{ bgcolor: '#000000', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+			<Toolbar sx={{ minHeight: { xs: 56, md: 64 } }}>
+				<Typography variant={{ xs: 'subtitle1', md: 'h6' }} sx={{ flexGrow: 1, fontWeight: 700, letterSpacing: 0.5 }}>
+					Admin Panel
 				</Typography>
-				<Box sx={{ display: 'flex', gap: 1 }}>
+				<Box sx={{ display: 'flex', gap: { xs: 0, md: 0.5 } }}>
 					<Button 
 						color="inherit"
 						href="#/"
 						startIcon={<HomeIcon />}
 						sx={{ 
+							px: 2,
 							fontWeight: path === '/' ? 600 : 400,
-							bgcolor: path === '/' ? 'rgba(255,255,255,0.2)' : 'transparent'
+							bgcolor: path === '/' ? 'rgba(255,255,255,0.15)' : 'transparent',
+							'&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
 						}}
 					>
-						Inicio
+						Dashboard
 					</Button>
 					<Button 
 						color="inherit"
 						href="#/modules"
 						startIcon={<DashboardIcon />}
 						sx={{ 
+							px: 2,
 							fontWeight: path.startsWith('/modules') ? 600 : 400,
-							bgcolor: path.startsWith('/modules') ? 'rgba(255,255,255,0.2)' : 'transparent'
+							bgcolor: path.startsWith('/modules') ? 'rgba(255,255,255,0.15)' : 'transparent',
+							'&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
 						}}
 					>
 						Módulos
@@ -65,9 +69,7 @@ export default function Rutas() {
 		return (
 			<Box>
 				<Header />
-				<Container maxWidth="xl">
-					<Home />
-				</Container>
+				<Home />
 			</Box>
 		)
 	}
@@ -75,26 +77,22 @@ export default function Rutas() {
 	// Rutas de módulos
 	if (path.startsWith('/modules')) {
 		return (
-			<Box>
+			<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
 				<Header />
-				<Container maxWidth="xl">
-					<Modulos path={path} navigate={navigate} />
-				</Container>
+				<Modulos path={path} navigate={navigate} />
 			</Box>
 		)
 	}
 
 	// 404
 	return (
-		<Box>
+		<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
 			<Header />
-			<Container maxWidth="xl">
-				<Box sx={{ textAlign: 'center', py: 5 }}>
-					<Typography variant="h4" gutterBottom>❌ 404 — No encontrado</Typography>
-					<Typography color="text.secondary" sx={{ mb: 2 }}>Ruta: <code>{path}</code></Typography>
-					<Button variant="contained" href="#/">← Volver al inicio</Button>
-				</Box>
-			</Container>
+			<Box sx={{ textAlign: 'center', py: 5 }}>
+				<Typography variant="h4" gutterBottom>❌ 404 — No encontrado</Typography>
+				<Typography color="text.secondary" sx={{ mb: 2 }}>Ruta: <code>{path}</code></Typography>
+				<Button variant="contained" href="#/">← Volver al inicio</Button>
+			</Box>
 		</Box>
 	)
 }

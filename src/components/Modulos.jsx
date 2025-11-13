@@ -40,35 +40,56 @@ function saveInstalled(list) {
 // Componente para listar módulos
 function ModulosList({ installed, onToggle, onOpen }) {
 	return (
-		<Box>
-			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-				<Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-					📦 Módulos disponibles
-				</Typography>
+		<Box sx={{ p: 4, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
+			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+				<Box>
+					<Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#000000' }}>
+						Módulos del Sistema
+					</Typography>
+					<Typography variant="body1" color="text.secondary">
+						Gestiona los módulos instalados en tu plataforma
+					</Typography>
+				</Box>
 				<Button 
-					variant="contained" 
+					variant="outlined" 
 					color="error" 
+					size="small"
 					onClick={() => { localStorage.removeItem(KEY); window.location.reload() }}
 				>
-					Reset installs
+					Restaurar instalación
 				</Button>
 			</Box>
 
-			<Grid container spacing={2}>
+			<Grid container spacing={3}>
 				{MODULES.map(m => (
-					<Grid item xs={12} sm={6} md={4} key={m.id}>
-						<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+					<Grid item xs={12} sm={6} lg={4} key={m.id}>
+						<Card 
+							elevation={2} 
+							sx={{ 
+								display: 'flex', 
+								flexDirection: 'column', 
+								bgcolor: '#ffffff', 
+								borderRadius: 2, 
+								height: '100%',
+								transition: 'transform 0.2s, box-shadow 0.2s', 
+								'&:hover': { 
+									transform: 'translateY(-4px)',
+									boxShadow: 4
+								} 
+							}}
+						>
 							<CardContent sx={{ flex: 1 }}>
-								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
-									<Typography variant="h6">{m.name}</Typography>
-									{installed.includes(m.id) && <Chip label="INSTALADO" size="small" color="success" />}
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 2 }}>
+									<Typography variant="h6" sx={{ fontWeight: 600, color: '#000000' }}>{m.name}</Typography>
+									{installed.includes(m.id) && <Chip label="Instalado" size="small" sx={{ bgcolor: '#2e7d32', color: '#fff', fontWeight: 500 }} />}
 								</Box>
-								<Typography variant="body2" color="text.secondary">{m.description}</Typography>
+								<Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>{m.description}</Typography>
 							</CardContent>
-							<CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+							<CardActions sx={{ justifyContent: 'space-between', p: 2 }}>
 								<Button 
 									variant="outlined"
-									color={installed.includes(m.id) ? 'error' : 'success'}
+									size="small"
+									color={installed.includes(m.id) ? 'error' : 'primary'}
 									onClick={() => onToggle(m.id)}
 									startIcon={installed.includes(m.id) ? <CancelIcon /> : <CheckCircleIcon />}
 								>
@@ -76,6 +97,8 @@ function ModulosList({ installed, onToggle, onOpen }) {
 								</Button>
 								<Button 
 									variant="contained"
+									size="small"
+									sx={{ bgcolor: '#000000', '&:hover': { bgcolor: '#333333' } }}
 									onClick={() => onOpen(m.id)}
 									endIcon={<ArrowForwardIcon />}
 								>
@@ -96,10 +119,10 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 	
 	if (!mod) {
 		return (
-			<Box sx={{ textAlign: 'center', py: 5 }}>
-				<Typography variant="h4" gutterBottom>❌ Módulo no encontrado</Typography>
-				<Typography color="text.secondary" sx={{ mb: 2 }}>ID: {modId}</Typography>
-				<Button variant="contained" onClick={onBack} startIcon={<ArrowBackIcon />}>
+			<Box sx={{ p: 4, textAlign: 'center', bgcolor: '#f5f5f5', minHeight: '100vh' }}>
+				<Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: '#d32f2f' }}>Módulo no encontrado</Typography>
+				<Typography color="text.secondary" sx={{ mb: 3 }}>ID: {modId}</Typography>
+				<Button variant="contained" sx={{ bgcolor: '#000000', '&:hover': { bgcolor: '#333333' } }} onClick={onBack} startIcon={<ArrowBackIcon />}>
 					Volver a módulos
 				</Button>
 			</Box>
@@ -119,25 +142,28 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 	}
 
 	return (
-		<Box>
-			<Paper sx={{ p: 2, mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: 'grey.50' }}>
+		<Box sx={{ width: '100%', m: 0, p: 0 }}>
+			<Paper elevation={0} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#ffffff' }}>
 				<Box>
-					<Typography variant="h5">{mod.name}</Typography>
+					<Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: '#000000' }}>{mod.name}</Typography>
 					<Typography variant="body2" color="text.secondary">{mod.description}</Typography>
 				</Box>
-				<Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+				<Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
 					<Chip 
-						label={installed.includes(mod.id) ? '✓ Instalado' : '○ No instalado'}
-						color={installed.includes(mod.id) ? 'success' : 'default'}
+						label={installed.includes(mod.id) ? 'Instalado' : 'No instalado'}
+						sx={{ bgcolor: installed.includes(mod.id) ? '#2e7d32' : '#757575', color: '#fff', fontWeight: 500 }}
 					/>
 					<Button 
-						variant="contained"
+						variant="outlined"
+						size="small"
+						color={installed.includes(mod.id) ? 'error' : 'primary'}
 						onClick={() => onToggle(mod.id)}
 					>
 						{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
 					</Button>
 					<Button 
 						variant="outlined"
+						size="small"
 						onClick={onBack}
 						startIcon={<ArrowBackIcon />}
 					>
@@ -146,7 +172,7 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 				</Box>
 			</Paper>
 
-			<Paper elevation={2}>
+			<Paper elevation={0} sx={{ bgcolor: '#ffffff' }}>
 				{renderPageComponent(mod.id)}
 			</Paper>
 		</Box>

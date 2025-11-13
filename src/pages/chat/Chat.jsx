@@ -24,15 +24,15 @@ export default function Chat() {
   }
 
   return (
-    <Paper sx={{ height: 500, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <ChatIcon /> Chat en vivo
+    <Paper elevation={0} sx={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', bgcolor: '#ffffff', m: 0, p: 0 }}>
+      <Box sx={{ bgcolor: '#000000', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant={{ xs: 'subtitle1', md: 'h6' }} sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 600 }}>
+          <ChatIcon sx={{ fontSize: { xs: 20, md: 24 } }} /> Chat Empresarial
         </Typography>
         <Chip label={`${messages.length} mensajes`} size="small" sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white' }} />
       </Box>
       
-      <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: 'grey.50' }}>
+            <Box sx={{ flex: 1, overflowY: 'auto', p: 3, bgcolor: '#ffffff', m: 2, borderRadius: 2 }}>
         {messages.map(msg => (
           <Paper key={msg.id} elevation={1} sx={{ p: 1.5, mb: 1.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
@@ -44,7 +44,7 @@ export default function Chat() {
         ))}
       </Box>
 
-      <Box sx={{ p: 2, bgcolor: 'white', borderTop: 1, borderColor: 'divider', display: 'flex', gap: 1 }}>
+            <Box sx={{ p: 3, bgcolor: '#ffffff', borderTop: '2px solid #e0e0e0', m: 2, mb: 0, borderRadius: '8px 8px 0 0' }}>
         <TextField
           fullWidth
           size="small"
