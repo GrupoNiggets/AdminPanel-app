@@ -22,6 +22,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  InputAdornment,
 } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import AddIcon from '@mui/icons-material/Add'
@@ -35,7 +36,6 @@ import {
   Pie,
   Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts'
 
@@ -105,6 +105,14 @@ export default function Users() {
     return Object.entries(map).map(([role, value]) => ({ name: role, value }))
   }, [users])
 
+  // Conteo simple para "Premium" / no-Premium (aquí reutilizo `status` como ejemplo)
+  const premiumCounts = useMemo(() => {
+    const map = {}
+    users.forEach(u => { map[u.status] = (map[u.status] || 0) + 1 })
+    return Object.entries(map).map(([name, value]) => ({ name, value }))
+  }, [users])
+  const PREMIUM_COLORS = { activo: '#e6be3bff', inactivo: '#1a7679ff' }
+
   return (
     <Box sx={{ width: '100%', p: 2 }}>
       <Paper elevation={0} sx={{ mb: 2, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -117,12 +125,26 @@ export default function Users() {
             size="small"
             placeholder="Buscar por nombre, email o rol"
             value={query}
-            iconButton={SearchIcon}
             onChange={(e) => setQuery(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon fontSize="small" />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mr: 6 }}
           />
-          <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
+          {/* botón eliminado de aquí para colocarlo encima de la lista */}
         </Box>
       </Paper>
+
+      {/* Botón Agregar por encima de la lista */}
+      <Grid container spacing={2} sx={{ mb: 1 }}>
+        <Grid item xs={12} md={8} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
+        </Grid>
+      </Grid>
 
       <Grid container spacing={2}>
         {/* Left: Metrics + Table */}
@@ -201,47 +223,84 @@ export default function Users() {
           </TableContainer>
         </Grid>
 
-        {/* Right: Pie Chart */}
+        {/* Right: two pie charts side-by-side */}
         <Grid item xs={12} ml={30} md={4}>
-          <Paper sx={{ p: 2, height: '100%' }}>
-            <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Distribución por rol</Typography>
-            <Box sx={{ width: '100%', height: 300 }}>
-              <ResponsiveContainer>
-                <PieChart>
-                  <Pie
-                    data={roleCounts}
-                    dataKey="value"
-                    nameKey="name"
-                    outerRadius="80%"
-                    innerRadius="45%"
-                    paddingAngle={4}
-                  >
-                    {roleCounts.map((entry, index) => {
-                      const color = ROLE_COLORS[entry.name] || ROLE_COLORS.default
-                      return <Cell key={`cell-${index}`} fill={color} />
-                    })}
-                  </Pie>
-                  <Tooltip />
-                  <Legend verticalAlign="bottom" height={36} />
-                </PieChart>
-              </ResponsiveContainer>
-            </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Paper sx={{ p: 2, height: '100%' }}>
+                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Roles</Typography>
+                <Box sx={{ width: '100%', height: 220 }}>
+                  <ResponsiveContainer>
+                    <PieChart>
+                      <Pie
+                        data={roleCounts}
+                        dataKey="value"
+                        nameKey="name"
+                        outerRadius="70%"
+                        innerRadius="35%"
+                        paddingAngle={4}
+                      >
+                        {roleCounts.map((entry, index) => {
+                          const color = ROLE_COLORS[entry.name] || ROLE_COLORS.default
+                          return <Cell key={`cell-${index}`} fill={color} />
+                        })}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </Box>
 
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">Leyenda</Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-                {roleCounts.map(r => (
-                  <Chip key={r.name} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: ROLE_COLORS[r.name] || ROLE_COLORS.default, color: '#fff' }} />
-                ))}
-              </Box>
-            </Box>
-          </Paper>
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="caption" color="text.secondary">Leyenda</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                    {roleCounts.map(r => (
+                      <Chip key={r.name} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: ROLE_COLORS[r.name] || ROLE_COLORS.default, color: '#fff' }} />
+                    ))}
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Paper sx={{ p: 2, height: '100%' }}>
+                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Usuarios Premium</Typography>
+                <Box sx={{ width: '100%', height: 220 }}>
+                  <ResponsiveContainer>
+                    <PieChart>
+                      <Pie
+                        data={premiumCounts}
+                        dataKey="value"
+                        nameKey="name"
+                        outerRadius="70%"
+                        innerRadius="35%"
+                        paddingAngle={4}
+                      >
+                        {premiumCounts.map((entry, index) => (
+                          <Cell key={`prem-${index}`} fill={PREMIUM_COLORS[entry.name] || '#9e9e9e'} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </Box>
+
+                {/* Leyenda igual a la de "Distribución por rol" */}
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="caption" color="text.secondary">Leyenda</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                    {premiumCounts.map(r => (
+                      <Chip key={r.name} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: PREMIUM_COLORS[r.name] || '#9e9e9e', color: '#fff' }} />
+                    ))}
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
 
       <Dialog open={ventanaEditar} onClose={() => setVentanaEditar(false)} maxWidth="sm" fullWidth>
         <DialogContent sx={{ position: 'relative', pt: 4, pb: 0, bgcolor: '#fff' }}>
-          {/* Botón "Atrás" en la esquina superior derecha */}
           <Button
             size="small"
             onClick={() => setVentanaEditar(false)}
