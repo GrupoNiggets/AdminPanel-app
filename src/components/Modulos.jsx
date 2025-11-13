@@ -145,8 +145,8 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 		<Box sx={{ width: '100%', m: 0, p: 0 }}>
 			<Paper elevation={0} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#ffffff' }}>
 				<Box>
-					<Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: '#000000' }}>{mod.name}</Typography>
-					<Typography variant="body2" color="text.secondary">{mod.description}</Typography>
+					<Typography variant="h5" sx={{ fontWeight: 800, mt: 2, mb: 0.5, ml: 2 , color: '#161313ff' }}>{mod.name}</Typography>
+					<Typography variant="body2" ml="18px" color="text.secondary">{mod.description}</Typography>
 				</Box>
 				<Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
 					<Chip 

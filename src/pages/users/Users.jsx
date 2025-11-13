@@ -1,5 +1,4 @@
-// ...existing code...
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import {
   Box,
   Paper,
@@ -18,6 +17,11 @@ import {
   TextField,
   Dialog,
   DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import AddIcon from '@mui/icons-material/Add'
@@ -54,11 +58,32 @@ export default function Users() {
     { id: 14, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
     { id: 15, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
     { id: 16, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-
   ])
 
   const [ventanaEditar, setVentanaEditar] = useState(false)
   const [editarUser, setEditarUser] = useState(null)
+
+  const [formData, setFormData] = useState({ name: '', email: '', role: 'user', status: 'activo' })
+  
+  useEffect(() => {
+    if (editarUser) {
+      setFormData({
+        name: editarUser.name || '',
+        email: editarUser.email || '',
+        role: editarUser.role || 'user',
+        status: editarUser.status || 'activo',
+      })
+    }
+  }, [editarUser])
+
+  const handleConfirm = () => {
+    console.log('Confirmar edición:', formData)
+    setVentanaEditar(false)
+  }
+
+  const handleCancel = () => {
+    setVentanaEditar(false)
+  }
 
   const ROLE_COLORS = {
     admin: '#d32f2f',
@@ -92,8 +117,8 @@ export default function Users() {
             size="small"
             placeholder="Buscar por nombre, email o rol"
             value={query}
+            iconButton={SearchIcon}
             onChange={(e) => setQuery(e.target.value)}
-            InputProps={{ startAdornment: <SearchIcon sx={{ mr: 1 }} /> }}
           />
           <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
         </Box>
@@ -130,7 +155,7 @@ export default function Users() {
                   <TableCell><strong>Usuario</strong></TableCell>
                   <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}><strong>Email</strong></TableCell>
                   <TableCell><strong>Rol</strong></TableCell>
-                  <TableCell><strong>Estado</strong></TableCell>
+                  <TableCell><strong>Premium</strong></TableCell>
                   <TableCell align="center"><strong>Acciones</strong></TableCell>
                 </TableRow>
               </TableHead>
@@ -177,8 +202,7 @@ export default function Users() {
         </Grid>
 
         {/* Right: Pie Chart */}
-        <Grid item xs={12} md={4}/>
-        <Grid item xs={12} ml={31} md={4}/>
+        <Grid item xs={12} ml={30} md={4}>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Distribución por rol</Typography>
             <Box sx={{ width: '100%', height: 300 }}>
@@ -213,12 +237,71 @@ export default function Users() {
             </Box>
           </Paper>
         </Grid>
+      </Grid>
 
-        <Dialog open={ventanaEditar} onClose={() => setVentanaEditar(false)} maxWidth="sm" fullWidth>
-          <DialogContent sx={{ minHeight: 220, bgcolor:'#fff' }}>
-          {"en blanco"}
-          </DialogContent>
-          </Dialog>
+      <Dialog open={ventanaEditar} onClose={() => setVentanaEditar(false)} maxWidth="sm" fullWidth>
+        <DialogContent sx={{ position: 'relative', pt: 4, pb: 0, bgcolor: '#fff' }}>
+          {/* Botón "Atrás" en la esquina superior derecha */}
+          <Button
+            size="small"
+            onClick={() => setVentanaEditar(false)}
+            sx={{ position: 'absolute', top: 8, right: 8 }}
+          >
+            Atrás
+          </Button>
+
+          <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="Usuario"
+              value={formData.name}
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
+
+            <TextField
+              label="Email"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
+
+            <FormControl fullWidth size="small">
+              <InputLabel id="role-select-label">Rol</InputLabel>
+              <Select
+                labelId="role-select-label"
+                label="Rol"
+                value={formData.role}
+                onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+              >
+                <MenuItem value="admin">Administrador</MenuItem>
+                <MenuItem value="user">Usuario</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth size="small">
+              <InputLabel id="status-select-label">Premium</InputLabel>
+              <Select
+                labelId="status-select-label"
+                label="Premium"
+                value={formData.status}
+                onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+              >
+                <MenuItem value="activo">Activo</MenuItem>
+                <MenuItem value="inactivo">Inactivo</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={{ px: 3, py: 2 }}>
+          <Button variant="outlined" onClick={handleCancel}>CANCELAR</Button>
+          <Button variant="contained" onClick={handleConfirm}>CONFIRMAR</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
