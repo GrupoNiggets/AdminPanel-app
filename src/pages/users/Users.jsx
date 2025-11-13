@@ -16,12 +16,15 @@ import {
   IconButton,
   Grid,
   TextField,
+  Dialog,
+  DialogContent,
 } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SearchIcon from '@mui/icons-material/Search'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 import {
   PieChart,
@@ -35,19 +38,31 @@ import {
 export default function Users() {
   const [query, setQuery] = useState('')
   const [users] = useState([
-    { id: 1, name: 'Admin Principal', email: 'admin@panel.com', role: 'Administrador', status: 'activo' },
-    { id: 2, name: 'Juan Pérez', email: 'juan@panel.com', role: 'Editor', status: 'activo' },
-    { id: 3, name: 'María García', email: 'maria@panel.com', role: 'Moderador', status: 'activo' },
-    { id: 4, name: 'Carlos López', email: 'carlos@panel.com', role: 'Usuario', status: 'inactivo' },
-    { id: 5, name: 'Ana Ruiz', email: 'ana@panel.com', role: 'Usuario', status: 'activo' },
-    { id: 6, name: 'Luis Gómez', email: 'luis@panel.com', role: 'Editor', status: 'activo' },
+    { id: 1, name: 'Alejandro Hernández', email: 'alheadmin@radiuserp.com', role: 'admin', status: 'activo' },
+    { id: 2, name: 'Andoni Iriso', email: 'aniradmin@radiuserp.com', role: 'admin', status: 'activo' },
+    { id: 3, name: 'Igor Lizasp', email: 'igliadmin@radiuserp.com', role: 'admin', status: 'activo' },
+    { id: 4, name: 'Gonzalo Luna', email: 'goluadmin@radiuserp.com', role: 'admin', status: 'inactivo' },
+    { id: 5, name: 'Íñigo Ruiz de la Torre', email: 'inruadmin@radiuserp.com', role: 'admin', status: 'activo' },
+    { id: 6, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 7, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 8, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 9, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 10, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 11, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 12, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 13, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 14, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 15, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 16, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+
   ])
 
+  const [ventanaEditar, setVentanaEditar] = useState(false)
+  const [editarUser, setEditarUser] = useState(null)
+
   const ROLE_COLORS = {
-    Administrador: '#d32f2f',
-    Editor: '#7b1fa2',
-    Moderador: '#1976d2',
-    Usuario: '#2e7d32',
+    admin: '#d32f2f',
+    user: '#2e7d32',
     default: '#757575',
   }
 
@@ -150,8 +165,9 @@ export default function Users() {
                     </TableCell>
 
                     <TableCell align="center">
-                      <IconButton size="small" color="primary"><EditIcon /></IconButton>
-                      <IconButton size="small" color="error"><DeleteIcon /></IconButton>
+                      <IconButton name="Editar" size="small" color="primary" onClick={() => { setEditarUser(u); setVentanaEditar(true) }}><EditIcon /></IconButton>
+                      <IconButton name="Borrar" size="small" color="error"><DeleteIcon /></IconButton>
+                      <IconButton name="Perfil" size="small" color="disabled"><AccountCircleIcon /></IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -161,7 +177,8 @@ export default function Users() {
         </Grid>
 
         {/* Right: Pie Chart */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4}/>
+        <Grid item xs={12} ml={31} md={4}/>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Distribución por rol</Typography>
             <Box sx={{ width: '100%', height: 300 }}>
@@ -174,7 +191,6 @@ export default function Users() {
                     outerRadius="80%"
                     innerRadius="45%"
                     paddingAngle={4}
-                    label={(entry) => `${entry.name} (${entry.value})`}
                   >
                     {roleCounts.map((entry, index) => {
                       const color = ROLE_COLORS[entry.name] || ROLE_COLORS.default
@@ -197,7 +213,12 @@ export default function Users() {
             </Box>
           </Paper>
         </Grid>
-      </Grid>
+
+        <Dialog open={ventanaEditar} onClose={() => setVentanaEditar(false)} maxWidth="sm" fullWidth>
+          <DialogContent sx={{ minHeight: 220, bgcolor:'#fff' }}>
+          {"en blanco"}
+          </DialogContent>
+          </Dialog>
     </Box>
   )
 }
