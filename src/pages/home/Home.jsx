@@ -34,88 +34,90 @@ export default function Home() {
   ]
 
   return (
-    <Box sx={{ p: 4, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-      <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#000000' }}>
-        Dashboard
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        Visión general del sistema
-      </Typography>
-
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, color: '#000000' }}>
-        Estadísticas del Sistema
-      </Typography>
-      <Grid container spacing={3}>
-        {stats.map((stat, i) => (
-          <Grid item xs={6} sm={6} md={3} key={i}>
-            <Card elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)' } }}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <Box sx={{ color: stat.color, mb: 1 }}>{stat.icon}</Box>
-                <Typography variant={{ xs: 'h4', md: 'h3' }} sx={{ fontWeight: 700, color: stat.color, mb: 0.5 }}>
-                  {stat.value}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: { xs: '0.75rem', md: '0.875rem' } }}>
-                  {stat.label}
-                </Typography>
-              </CardContent>
-            </Card>
+    <Box sx={{ p: 2, bgcolor: '#f5f5f5', height: 'calc(100vh - 64px)', overflow: 'hidden', maxWidth: '1800px', mx: 'auto' }}>
+      <Grid container spacing={2} sx={{ height: '100%' }}>
+        {/* Estadísticas - 30% altura */}
+        <Grid item xs={12} sx={{ height: '30%' }}>
+          <Grid container spacing={1.5} sx={{ height: '100%' }}>
+            {stats.map((stat, i) => (
+              <Grid item xs={3} key={i} sx={{ height: '100%' }}>
+                <Card elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', boxShadow: 4 } }}>
+                  <CardContent sx={{ textAlign: 'center', p: 1.5, width: '100%' }}>
+                    <Box sx={{ color: stat.color, mb: 0.5 }}>{stat.icon}</Box>
+                    <Typography variant="h3" sx={{ fontWeight: 700, color: stat.color, mb: 0.5 }}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+                      {stat.label}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        <Grid item xs={12} lg={6}>
-          <Paper elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 3, height: '100%' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#000000' }}>
-              Accesos Rápidos
-            </Typography>
-            <List>
-              {quickLinks.map((link, i) => (
-                <ListItem
-                  key={i}
-                  component="a"
-                  href={link.url}
-                  sx={{
-                    borderRadius: 1,
-                    mb: 0.5,
-                    textDecoration: 'none',
-                    color: 'text.primary',
-                    transition: 'all 0.2s',
-                    '&:hover': {
-                      bgcolor: '#f5f5f5'
-                    }
-                  }}
-                >
-                  <ListItemIcon sx={{ minWidth: 40, color: link.color }}>{link.icon}</ListItemIcon>
-                  <ListItemText primary={<Typography fontWeight={500}>{link.name}</Typography>} />
-                  <ArrowForwardIcon sx={{ color: 'text.disabled' }} />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
         </Grid>
 
-        <Grid item xs={12} lg={6}>
-          <Paper elevation={2} sx={{ p: 3, height: '100%', bgcolor: '#ffffff', borderRadius: 2 }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 2, color: '#000000' }}>
-              Actividad Reciente
-            </Typography>
-            <List>
-              {recentActivity.map((activity, i) => (
-                <ListItem key={i} sx={{ bgcolor: '#fafafa', borderRadius: 1, mb: 0.5 }}>
-                  <ListItemIcon sx={{ color: '#000000' }}>{activity.icon}</ListItemIcon>
-                  <ListItemText
-                    primary={<Typography fontWeight={500}>{activity.action}</Typography>}
-                    secondary={
-                      <Typography variant="caption" color="text.secondary">
-                        {activity.user} · {activity.time}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
+        {/* Accesos Rápidos y Actividad Reciente - 70% altura */}
+        <Grid item xs={12} sx={{ height: '70%' }}>
+          <Grid container spacing={2} sx={{ height: '100%' }}>
+            <Grid item xs={12} lg={5} sx={{ height: '100%' }}>
+              <Paper elevation={2} sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5, color: '#000000', textAlign: 'center' }}>
+                  Accesos Rápidos
+                </Typography>
+                <List dense sx={{ flex: 1, overflow: 'hidden' }}>
+                  {quickLinks.map((link, i) => (
+                    <ListItem
+                      key={i}
+                      component="a"
+                      href={link.url}
+                      sx={{
+                        borderRadius: 1.5,
+                        mb: 0.75,
+                        p: 1.25,
+                        textDecoration: 'none',
+                        color: 'text.primary',
+                        transition: 'all 0.2s',
+                        border: '2px solid transparent',
+                        '&:hover': {
+                          bgcolor: '#f8f9fa',
+                          borderColor: link.color,
+                          transform: 'translateX(4px)'
+                        }
+                      }}
+                    >
+                      <ListItemIcon sx={{ minWidth: 36, color: link.color }}>{link.icon}</ListItemIcon>
+                      <ListItemText primary={<Typography fontWeight={600} fontSize="0.9rem">{link.name}</Typography>} />
+                      <ArrowForwardIcon sx={{ color: link.color, fontSize: '1.1rem' }} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} lg={7} sx={{ height: '100%' }}>
+              <Paper elevation={2} sx={{ p: 2, height: '100%', bgcolor: '#ffffff', borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5, color: '#000000', textAlign: 'center' }}>
+                  Actividad Reciente
+                </Typography>
+                <List dense sx={{ flex: 1, overflow: 'hidden' }}>
+                  {recentActivity.map((activity, i) => (
+                    <ListItem key={i} sx={{ bgcolor: '#f8f9fa', borderRadius: 1.5, mb: 0.75, p: 1.25, border: '1px solid #e9ecef' }}>
+                      <ListItemIcon sx={{ color: '#000000', minWidth: 36 }}>{activity.icon}</ListItemIcon>
+                      <ListItemText
+                        primary={<Typography fontWeight={600} fontSize="0.9rem">{activity.action}</Typography>}
+                        secondary={
+                          <Typography variant="caption" color="text.secondary">
+                            {activity.user} · {activity.time}
+                          </Typography>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Box>
