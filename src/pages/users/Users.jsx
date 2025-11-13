@@ -111,10 +111,18 @@ export default function Users() {
     users.forEach(u => { map[u.status] = (map[u.status] || 0) + 1 })
     return Object.entries(map).map(([name, value]) => ({ name, value }))
   }, [users])
-  const PREMIUM_COLORS = { activo: '#e6be3bff', inactivo: '#1a7679ff' }
+  const PREMIUM_COLORS = { activo: '#e7cd64ff', inactivo: '#eea0cfff' }
 
   return (
-    <Box sx={{ width: '100%', p: 2 }}>
+    <Box
+      sx={{
+        width: '100%',
+        p: 2,
+        minHeight: '100vh',          // ocupar viewport completo
+        boxSizing: 'border-box',
+        overflowY: 'auto',          // scroll interno si hace falta (evita barra externa)
+      }}
+    >
       <Paper elevation={0} sx={{ mb: 2, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <PeopleIcon sx={{ color: '#0b5cff' }} />
@@ -224,11 +232,11 @@ export default function Users() {
         </Grid>
 
         {/* Right: two pie charts side-by-side */}
-        <Grid item xs={12} ml={30} md={4}>
+        <Grid item xs={12} ml={35} md={4}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Paper sx={{ p: 2, height: '100%' }}>
-                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Roles</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Distribución por rol</Typography>
                 <Box sx={{ width: '100%', height: 220 }}>
                   <ResponsiveContainer>
                     <PieChart>
@@ -280,6 +288,7 @@ export default function Users() {
                         ))}
                       </Pie>
                       <Tooltip />
+                      {/* se muestra la misma leyenda que "Distribución por rol" mediante chips abajo */}
                     </PieChart>
                   </ResponsiveContainer>
                 </Box>
@@ -288,8 +297,8 @@ export default function Users() {
                 <Box sx={{ mt: 1 }}>
                   <Typography variant="caption" color="text.secondary">Leyenda</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-                    {premiumCounts.map(r => (
-                      <Chip key={r.name} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: PREMIUM_COLORS[r.name] || '#9e9e9e', color: '#fff' }} />
+                    {roleCounts.map(r => (
+                      <Chip key={`legend-${r.name}`} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: ROLE_COLORS[r.name] || ROLE_COLORS.default, color: '#fff' }} />
                     ))}
                   </Box>
                 </Box>
