@@ -105,7 +105,6 @@ export default function Users() {
     return Object.entries(map).map(([role, value]) => ({ name: role, value }))
   }, [users])
 
-  // Conteo simple para "Premium" / no-Premium
   const premiumCounts = useMemo(() => {
     const map = {}
     users.forEach(u => { map[u.premium] = (map[u.premium] || 0) + 1 })
@@ -118,66 +117,69 @@ export default function Users() {
       sx={{
         width: '100%',
         p: 2,
-        minHeight: '100vh',          // ocupar viewport completo
+        minHeight: '100vh',
         boxSizing: 'border-box',
-        overflowY: 'auto',          // scroll interno si hace falta (evita barra externa)
+        overflowY: 'auto',
       }}
     >
-      <Paper elevation={0} sx={{ mb: 2, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Paper elevation={0} sx={{ mb: 2, p: 2, display: 'flex', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <PeopleIcon sx={{ color: '#0b5cff' }} />
           <Typography variant="h5" sx={{ fontWeight: 700 }}>Administración de Usuarios</Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-          <TextField
-            size="small"
-            placeholder="Buscar por nombre, email o rol"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon fontSize="small" />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ mr: 6 }}
-          />
-          {/* botón eliminado de aquí para colocarlo encima de la lista */}
-        </Box>
       </Paper>
 
-      {/* Botón Agregar por encima de la lista */}
-      <Grid container spacing={2} sx={{ mb: 1 }}>
-        <Grid item xs={12} md={8} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
-        </Grid>
-      </Grid>
-
+      {/* === SECCIÓN MODIFICADA === */}
       <Grid container spacing={2}>
-        {/* Left: Metrics + Table */}
+        {/* Fila 1: Tarjetas de resumen y espacio vacío a la derecha */}
         <Grid item xs={12} md={8}>
-          <Grid container spacing={2} sx={{ mb: 1 }}>
-            <Grid item xs={12} sm={4}>
-              <Paper sx={{ p: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper sx={{ p: 2, height: '100%' }}>
                 <Typography variant="subtitle2" color="text.secondary">Total registrados</Typography>
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.length}</Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <Paper sx={{ p: 2 }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper sx={{ p: 2, height: '100%' }}>
                 <Typography variant="subtitle2" color="text.secondary">Activos</Typography>
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.premium === 'activo').length}</Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <Paper sx={{ p: 2 }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Paper sx={{ p: 2, height: '100%' }}>
                 <Typography variant="subtitle2" color="text.secondary">Inactivos</Typography>
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.premium !== 'activo').length}</Typography>
               </Paper>
             </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: '100%', justifyContent: 'space-between' }}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="Buscar por nombre, e..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Button fullWidth variant="contained" startIcon={<AddIcon />}>
+                  Agregar usuario
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
+        </Grid>
+        {/* Espacio vacío para alinear la cuadrícula */}
+        <Grid item xs={12} md={4} />
 
+        {/* Fila 2: Tabla de usuarios y gráficos */}
+        <Grid item xs={12} md={8}>
           <TableContainer component={Paper} elevation={2}>
             <Table>
               <TableHead>
@@ -189,7 +191,6 @@ export default function Users() {
                   <TableCell align="center"><strong>Acciones</strong></TableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {filtered.map(u => (
                   <TableRow key={u.id} hover>
@@ -202,15 +203,12 @@ export default function Users() {
                         </Box>
                       </Box>
                     </TableCell>
-
                     <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
                       <Typography color="text.secondary">{u.email}</Typography>
                     </TableCell>
-
                     <TableCell>
                       <Chip label={u.role} size="small" sx={{ bgcolor: ROLE_COLORS[u.role] || ROLE_COLORS.default, color: '#fff', fontWeight: 600 }} />
                     </TableCell>
-
                     <TableCell>
                       <Chip
                         label={u.premium === 'activo' ? 'Activo' : 'Inactivo'}
@@ -218,7 +216,6 @@ export default function Users() {
                         color={u.premium === 'activo' ? 'success' : 'default'}
                       />
                     </TableCell>
-
                     <TableCell align="center">
                       <IconButton name="Editar" size="small" color="primary" onClick={() => { setEditarUser(u); setVentanaEditar(true) }}><EditIcon /></IconButton>
                       <IconButton name="Borrar" size="small" color="error"><DeleteIcon /></IconButton>
@@ -231,23 +228,15 @@ export default function Users() {
           </TableContainer>
         </Grid>
 
-        {/* Right: two pie charts side-by-side */}
-        <Grid item xs={12} ml={35} md={4}>
+        <Grid item xs={12} md={4}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} md={12}>
               <Paper sx={{ p: 2, height: '100%' }}>
                 <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Roles</Typography>
                 <Box sx={{ width: '100%', height: 220 }}>
                   <ResponsiveContainer>
                     <PieChart>
-                      <Pie
-                        data={roleCounts}
-                        dataKey="value"
-                        nameKey="name"
-                        outerRadius="70%"
-                        innerRadius="35%"
-                        paddingAngle={4}
-                      >
+                      <Pie data={roleCounts} dataKey="value" nameKey="name" outerRadius="70%" innerRadius="35%" paddingAngle={4}>
                         {roleCounts.map((entry, index) => {
                           const color = ROLE_COLORS[entry.name] || ROLE_COLORS.default
                           return <Cell key={`cell-${index}`} fill={color} />
@@ -257,7 +246,6 @@ export default function Users() {
                     </PieChart>
                   </ResponsiveContainer>
                 </Box>
-
                 <Box sx={{ mt: 1 }}>
                   <Typography variant="caption" color="text.secondary">Leyenda</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
@@ -268,32 +256,21 @@ export default function Users() {
                 </Box>
               </Paper>
             </Grid>
-
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} md={12}>
               <Paper sx={{ p: 2, height: '100%' }}>
                 <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Usuarios Premium</Typography>
                 <Box sx={{ width: '100%', height: 220 }}>
                   <ResponsiveContainer>
                     <PieChart>
-                      <Pie
-                        data={premiumCounts}
-                        dataKey="value"
-                        nameKey="name"
-                        outerRadius="70%"
-                        innerRadius="35%"
-                        paddingAngle={4}
-                      >
+                      <Pie data={premiumCounts} dataKey="value" nameKey="name" outerRadius="70%" innerRadius="35%" paddingAngle={4}>
                         {premiumCounts.map((entry, index) => (
                           <Cell key={`prem-${index}`} fill={PREMIUM_COLORS[entry.name] || '#9e9e9e'} />
                         ))}
                       </Pie>
                       <Tooltip />
-                      {/* se muestra la misma leyenda que "Distribución por rol" mediante chips abajo */}
                     </PieChart>
                   </ResponsiveContainer>
                 </Box>
-
-                {/* Leyenda igual a la de "Distribución por rol" */}
                 <Box sx={{ mt: 1 }}>
                   <Typography variant="caption" color="text.secondary">Leyenda</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
@@ -307,6 +284,8 @@ export default function Users() {
           </Grid>
         </Grid>
       </Grid>
+      {/* === FIN DE LA SECCIÓN MODIFICADA === */}
+
 
       <Dialog open={ventanaEditar} onClose={() => setVentanaEditar(false)} maxWidth="sm" fullWidth>
         <DialogContent sx={{ position: 'relative', pt: 4, pb: 0, bgcolor: '#fff' }}>
