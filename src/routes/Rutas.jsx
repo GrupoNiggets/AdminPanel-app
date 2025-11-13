@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
+import DashboardIcon from '@mui/icons-material/Dashboard'
 import Modulos from '../components/Modulos'
 import Home from '../pages/home/Home'
-
-export function Link({ to, children, style }) {
-	return (
-		<a href={'#' + to} style={style}>{children}</a>
-	)
-}
 
 export function navigate(to) {
 	window.location.hash = to
@@ -20,48 +17,37 @@ function Header() {
 	const path = currentPath()
 	
 	return (
-		<header style={{
-			display:'flex',
-			alignItems:'center',
-			justifyContent:'space-between',
-			padding:'12px 20px',
-			background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-			color:'#fff',
-			boxShadow:'0 2px 8px rgba(0,0,0,0.15)',
-			marginBottom:20
-		}}>
-			<h1 style={{margin:0,fontSize:22,fontWeight:600}}>🎯 Admin Panel</h1>
-			<nav style={{display:'flex',gap:8}}>
-				<a 
-					href="#/" 
-					style={{
-						padding:'8px 16px',
-						borderRadius:6,
-						textDecoration:'none',
-						color:'#fff',
-						background: path === '/' ? 'rgba(255,255,255,0.3)' : 'transparent',
-						fontWeight: path === '/' ? 600 : 400,
-						transition:'all 0.2s'
-					}}
-				>
-					🏠 Inicio
-				</a>
-				<a 
-					href="#/modules" 
-					style={{
-						padding:'8px 16px',
-						borderRadius:6,
-						textDecoration:'none',
-						color:'#fff',
-						background: path.startsWith('/modules') ? 'rgba(255,255,255,0.3)' : 'transparent',
-						fontWeight: path.startsWith('/modules') ? 600 : 400,
-						transition:'all 0.2s'
-					}}
-				>
-					📦 Módulos
-				</a>
-			</nav>
-		</header>
+		<AppBar position="static" sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', mb: 3 }}>
+			<Toolbar>
+				<Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
+					🎯 Admin Panel
+				</Typography>
+				<Box sx={{ display: 'flex', gap: 1 }}>
+					<Button 
+						color="inherit"
+						href="#/"
+						startIcon={<HomeIcon />}
+						sx={{ 
+							fontWeight: path === '/' ? 600 : 400,
+							bgcolor: path === '/' ? 'rgba(255,255,255,0.2)' : 'transparent'
+						}}
+					>
+						Inicio
+					</Button>
+					<Button 
+						color="inherit"
+						href="#/modules"
+						startIcon={<DashboardIcon />}
+						sx={{ 
+							fontWeight: path.startsWith('/modules') ? 600 : 400,
+							bgcolor: path.startsWith('/modules') ? 'rgba(255,255,255,0.2)' : 'transparent'
+						}}
+					>
+						Módulos
+					</Button>
+				</Box>
+			</Toolbar>
+		</AppBar>
 	)
 }
 
@@ -77,36 +63,38 @@ export default function Rutas() {
 	// Ruta home
 	if (path === '/') {
 		return (
-			<div>
+			<Box>
 				<Header />
-				<main>
+				<Container maxWidth="xl">
 					<Home />
-				</main>
-			</div>
+				</Container>
+			</Box>
 		)
 	}
 
 	// Rutas de módulos
 	if (path.startsWith('/modules')) {
 		return (
-			<div>
+			<Box>
 				<Header />
-				<main style={{padding:'0 20px'}}>
+				<Container maxWidth="xl">
 					<Modulos path={path} navigate={navigate} />
-				</main>
-			</div>
+				</Container>
+			</Box>
 		)
 	}
 
 	// 404
 	return (
-		<div>
+		<Box>
 			<Header />
-			<main style={{padding:20,textAlign:'center'}}>
-				<h2>❌ 404 — No encontrado</h2>
-				<p style={{color:'#6b7280'}}>Ruta: <code>{path}</code></p>
-				<a href="#/" style={{color:'#4f46e5',textDecoration:'none',fontWeight:500}}>← Volver al inicio</a>
-			</main>
-		</div>
+			<Container maxWidth="xl">
+				<Box sx={{ textAlign: 'center', py: 5 }}>
+					<Typography variant="h4" gutterBottom>❌ 404 — No encontrado</Typography>
+					<Typography color="text.secondary" sx={{ mb: 2 }}>Ruta: <code>{path}</code></Typography>
+					<Button variant="contained" href="#/">← Volver al inicio</Button>
+				</Box>
+			</Container>
+		</Box>
 	)
 }

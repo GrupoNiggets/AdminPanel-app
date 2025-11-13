@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import './Users.css'
+import { Box, Paper, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Chip, IconButton } from '@mui/material'
+import PeopleIcon from '@mui/icons-material/People'
+import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export default function Users() {
   const [users] = useState([
@@ -20,42 +24,56 @@ export default function Users() {
   }
 
   return (
-    <div className="users-container">
-      <div className="users-header">
-        <h3>👥 Gestión de Usuarios</h3>
-        <button className="btn-add-user">+ Agregar usuario</button>
-      </div>
+    <Box>
+      <Paper sx={{ bgcolor: '#dbeafe', p: 2, mb: 2, borderBottom: 2, borderColor: '#0ea5e9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#0c4a6e' }}>
+          <PeopleIcon /> Gestión de Usuarios
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />}>Agregar usuario</Button>
+      </Paper>
 
-      <div className="users-table">
-        <div className="table-header">
-          <div>Nombre</div>
-          <div>Email</div>
-          <div>Rol</div>
-          <div>Estado</div>
-          <div>Acciones</div>
-        </div>
-        {users.map(user => (
-          <div key={user.id} className="table-row">
-            <div className="user-name">
-              <div className="user-avatar">{user.name.charAt(0)}</div>
-              <span>{user.name}</span>
-            </div>
-            <div className="user-email">{user.email}</div>
-            <div>
-              <span className="role-badge" style={{background: getRoleBadge(user.role)}}>{user.role}</span>
-            </div>
-            <div>
-              <span className={`status-badge ${user.status}`}>
-                {user.status === 'activo' ? '✓ Activo' : '○ Inactivo'}
-              </span>
-            </div>
-            <div className="user-actions">
-              <button className="btn-action">✏️</button>
-              <button className="btn-action">🗑️</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+      <Box sx={{ p: 2 }}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ bgcolor: '#f0f9ff' }}>
+                <TableCell><strong>Nombre</strong></TableCell>
+                <TableCell><strong>Email</strong></TableCell>
+                <TableCell><strong>Rol</strong></TableCell>
+                <TableCell><strong>Estado</strong></TableCell>
+                <TableCell align="center"><strong>Acciones</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map(user => (
+                <TableRow key={user.id} sx={{ '&:hover': { bgcolor: 'grey.50' } }}>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Avatar sx={{ bgcolor: '#0ea5e9', width: 36, height: 36 }}>{user.name.charAt(0)}</Avatar>
+                      <Typography>{user.name}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell><Typography color="text.secondary">{user.email}</Typography></TableCell>
+                  <TableCell>
+                    <Chip label={user.role} size="small" sx={{ bgcolor: getRoleBadge(user.role), color: 'white', fontWeight: 600 }} />
+                  </TableCell>
+                  <TableCell>
+                    <Chip 
+                      label={user.status === 'activo' ? '✓ Activo' : '○ Inactivo'} 
+                      size="small" 
+                      color={user.status === 'activo' ? 'success' : 'default'}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton size="small" color="primary"><EditIcon /></IconButton>
+                    <IconButton size="small" color="error"><DeleteIcon /></IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   )
 }

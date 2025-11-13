@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import './Posts.css'
+import { Box, Paper, Typography, Button, Card, CardContent, CardActions, Chip, Grid } from '@mui/material'
+import ArticleIcon from '@mui/icons-material/Article'
+import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import PersonIcon from '@mui/icons-material/Person'
 
 export default function Posts() {
   const [posts] = useState([
@@ -9,29 +16,43 @@ export default function Posts() {
   ])
 
   return (
-    <div className="posts-container">
-      <div className="posts-header">
-        <h3>📝 Publicaciones</h3>
-        <button className="btn-new-post">+ Nueva publicación</button>
-      </div>
+    <Box>
+      <Paper sx={{ bgcolor: '#dbeafe', p: 2, mb: 2, borderBottom: 2, borderColor: 'primary.main', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#1e40af' }}>
+          <ArticleIcon /> Publicaciones
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />}>Nueva publicación</Button>
+      </Paper>
 
-      <div className="posts-grid">
-        {posts.map(post => (
-          <div key={post.id} className="post-card">
-            <div className="post-category">{post.category}</div>
-            <h4 className="post-title">{post.title}</h4>
-            <div className="post-meta">
-              <span>✍️ {post.author}</span>
-              <span>📅 {post.date}</span>
-              <span>👁️ {post.views} vistas</span>
-            </div>
-            <div className="post-actions">
-              <button className="btn-edit">Editar</button>
-              <button className="btn-delete">Eliminar</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          {posts.map(post => (
+            <Grid item xs={12} sm={6} md={4} key={post.id}>
+              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#eff6ff', border: '1px solid #bfdbfe', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-4px)', boxShadow: 4 } }}>
+                <CardContent sx={{ flex: 1 }}>
+                  <Chip label={post.category} size="small" color="primary" sx={{ mb: 1, fontWeight: 600 }} />
+                  <Typography variant="h6" color="#1e3a8a" gutterBottom>{post.title}</Typography>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, color: 'text.secondary' }}>
+                    <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <PersonIcon fontSize="small" /> {post.author}
+                    </Typography>
+                    <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <CalendarTodayIcon fontSize="small" /> {post.date}
+                    </Typography>
+                    <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <VisibilityIcon fontSize="small" /> {post.views} vistas
+                    </Typography>
+                  </Box>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+                  <Button size="small" startIcon={<EditIcon />} sx={{ color: '#3730a3', bgcolor: '#e0e7ff', '&:hover': { bgcolor: '#c7d2fe' } }}>Editar</Button>
+                  <Button size="small" startIcon={<DeleteIcon />} sx={{ color: '#991b1b', bgcolor: '#fee2e2', '&:hover': { bgcolor: '#fecaca' } }}>Eliminar</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Box>
   )
 }

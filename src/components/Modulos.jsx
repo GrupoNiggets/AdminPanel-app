@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { Box, Button, Card, CardContent, CardActions, Typography, Chip, Grid, Paper } from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Chat from '../pages/chat/Chat'
 import Bugs from '../pages/bugs/Bugs'
 import Posts from '../pages/posts/Posts'
@@ -35,43 +40,53 @@ function saveInstalled(list) {
 // Componente para listar módulos
 function ModulosList({ installed, onToggle, onOpen }) {
 	return (
-		<div>
-			<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-				<h2 style={{margin:0}}>📦 Módulos disponibles</h2>
-				<button 
+		<Box>
+			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+				<Typography variant="h4" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					📦 Módulos disponibles
+				</Typography>
+				<Button 
+					variant="contained" 
+					color="error" 
 					onClick={() => { localStorage.removeItem(KEY); window.location.reload() }}
-					style={{padding:'8px 14px',background:'#ef4444',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontSize:13}}
 				>
 					Reset installs
-				</button>
-			</div>
+				</Button>
+			</Box>
 
-			<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:16}}>
+			<Grid container spacing={2}>
 				{MODULES.map(m => (
-					<div key={m.id} style={{border:'1px solid #e5e7eb',padding:16,borderRadius:8,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,0.1)'}}>
-						<div style={{display:'flex',justifyContent:'space-between',alignItems:'start',marginBottom:8}}>
-							<h3 style={{margin:0,fontSize:18,color:'#1f2937'}}>{m.name}</h3>
-							{installed.includes(m.id) && <span style={{background:'#10b981',color:'#fff',padding:'2px 8px',borderRadius:4,fontSize:11,fontWeight:600}}>INSTALADO</span>}
-						</div>
-						<p style={{color:'#6b7280',fontSize:14,marginBottom:12}}>{m.description}</p>
-						<div style={{display:'flex',gap:8}}>
-							<button 
-								onClick={() => onToggle(m.id)}
-								style={{flex:1,padding:'8px 12px',background:installed.includes(m.id) ? '#fef2f2' : '#eff6ff',color:installed.includes(m.id) ? '#991b1b' : '#1e40af',border:'1px solid',borderColor:installed.includes(m.id) ? '#fecaca' : '#bfdbfe',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:500}}
-							>
-								{installed.includes(m.id) ? '❌ Desinstalar' : '✅ Instalar'}
-							</button>
-							<button 
-								onClick={() => onOpen(m.id)}
-								style={{padding:'8px 16px',background:'#4f46e5',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:500}}
-							>
-								Abrir →
-							</button>
-						</div>
-					</div>
+					<Grid item xs={12} sm={6} md={4} key={m.id}>
+						<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+							<CardContent sx={{ flex: 1 }}>
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
+									<Typography variant="h6">{m.name}</Typography>
+									{installed.includes(m.id) && <Chip label="INSTALADO" size="small" color="success" />}
+								</Box>
+								<Typography variant="body2" color="text.secondary">{m.description}</Typography>
+							</CardContent>
+							<CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+								<Button 
+									variant="outlined"
+									color={installed.includes(m.id) ? 'error' : 'success'}
+									onClick={() => onToggle(m.id)}
+									startIcon={installed.includes(m.id) ? <CancelIcon /> : <CheckCircleIcon />}
+								>
+									{installed.includes(m.id) ? 'Desinstalar' : 'Instalar'}
+								</Button>
+								<Button 
+									variant="contained"
+									onClick={() => onOpen(m.id)}
+									endIcon={<ArrowForwardIcon />}
+								>
+									Abrir
+								</Button>
+							</CardActions>
+						</Card>
+					</Grid>
 				))}
-			</div>
-		</div>
+			</Grid>
+		</Box>
 	)
 }
 
@@ -81,13 +96,13 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 	
 	if (!mod) {
 		return (
-			<div style={{textAlign:'center',padding:40}}>
-				<h2>❌ Módulo no encontrado</h2>
-				<p style={{color:'#6b7280'}}>ID: {modId}</p>
-				<button onClick={onBack} style={{padding:'8px 16px',background:'#4f46e5',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',marginTop:12}}>
-					← Volver a módulos
-				</button>
-			</div>
+			<Box sx={{ textAlign: 'center', py: 5 }}>
+				<Typography variant="h4" gutterBottom>❌ Módulo no encontrado</Typography>
+				<Typography color="text.secondary" sx={{ mb: 2 }}>ID: {modId}</Typography>
+				<Button variant="contained" onClick={onBack} startIcon={<ArrowBackIcon />}>
+					Volver a módulos
+				</Button>
+			</Box>
 		)
 	}
 
@@ -99,40 +114,42 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 			case 'posts': return <Posts />
 			case 'status': return <Status />
 			case 'users': return <Users />
-			default: return <div style={{color:'#999',padding:20,textAlign:'center'}}>Componente no disponible</div>
+			default: return <Typography color="text.secondary" sx={{ p: 3, textAlign: 'center' }}>Componente no disponible</Typography>
 		}
 	}
 
 	return (
-		<div>
-			<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16,padding:16,background:'#f9fafb',borderRadius:8}}>
-				<div>
-					<h2 style={{margin:0,fontSize:24}}>{mod.name}</h2>
-					<p style={{margin:'4px 0 0 0',color:'#6b7280',fontSize:14}}>{mod.description}</p>
-				</div>
-				<div style={{display:'flex',gap:8,alignItems:'center'}}>
-					<span style={{padding:'6px 12px',background:installed.includes(mod.id) ? '#d1fae5' : '#fee2e2',color:installed.includes(mod.id) ? '#065f46' : '#991b1b',borderRadius:6,fontSize:13,fontWeight:600}}>
-						{installed.includes(mod.id) ? '✓ Instalado' : '○ No instalado'}
-					</span>
-					<button 
+		<Box>
+			<Paper sx={{ p: 2, mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: 'grey.50' }}>
+				<Box>
+					<Typography variant="h5">{mod.name}</Typography>
+					<Typography variant="body2" color="text.secondary">{mod.description}</Typography>
+				</Box>
+				<Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+					<Chip 
+						label={installed.includes(mod.id) ? '✓ Instalado' : '○ No instalado'}
+						color={installed.includes(mod.id) ? 'success' : 'default'}
+					/>
+					<Button 
+						variant="contained"
 						onClick={() => onToggle(mod.id)}
-						style={{padding:'8px 14px',background:'#4f46e5',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:500}}
 					>
 						{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
-					</button>
-					<button 
+					</Button>
+					<Button 
+						variant="outlined"
 						onClick={onBack}
-						style={{padding:'8px 14px',background:'#fff',color:'#374151',border:'1px solid #d1d5db',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:500}}
+						startIcon={<ArrowBackIcon />}
 					>
-						← Volver
-					</button>
-				</div>
-			</div>
+						Volver
+					</Button>
+				</Box>
+			</Paper>
 
-			<div style={{background:'#fff',borderRadius:8,overflow:'hidden',boxShadow:'0 1px 3px rgba(0,0,0,0.1)'}}>
+			<Paper elevation={2}>
 				{renderPageComponent(mod.id)}
-			</div>
-		</div>
+			</Paper>
+		</Box>
 	)
 }
 
