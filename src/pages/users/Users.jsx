@@ -42,28 +42,28 @@ import {
 export default function Users() {
   const [query, setQuery] = useState('')
   const [users] = useState([
-    { id: 1, name: 'Alejandro Hernández', email: 'alheadmin@radiuserp.com', role: 'admin', status: 'activo' },
-    { id: 2, name: 'Andoni Iriso', email: 'aniradmin@radiuserp.com', role: 'admin', status: 'activo' },
-    { id: 3, name: 'Igor Lizasp', email: 'igliadmin@radiuserp.com', role: 'admin', status: 'activo' },
-    { id: 4, name: 'Gonzalo Luna', email: 'goluadmin@radiuserp.com', role: 'admin', status: 'inactivo' },
-    { id: 5, name: 'Íñigo Ruiz de la Torre', email: 'inruadmin@radiuserp.com', role: 'admin', status: 'activo' },
-    { id: 6, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 7, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 8, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 9, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 10, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 11, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 12, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 13, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 14, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 15, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
-    { id: 16, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', status: 'activo' },
+    { id: 1, name: 'Alejandro Hernández', email: 'alheadmin@radiuserp.com', role: 'admin', premium: 'activo' },
+    { id: 2, name: 'Andoni Iriso', email: 'aniradmin@radiuserp.com', role: 'admin', premium: 'activo' },
+    { id: 3, name: 'Igor Lizasp', email: 'igliadmin@radiuserp.com', role: 'admin', premium: 'activo' },
+    { id: 4, name: 'Gonzalo Luna', email: 'goluadmin@radiuserp.com', role: 'admin', premium: 'inactivo' },
+    { id: 5, name: 'Íñigo Ruiz de la Torre', email: 'inruadmin@radiuserp.com', role: 'admin', premium: 'activo' },
+    { id: 6, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 7, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 8, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 9, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 10, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 11, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 12, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 13, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 14, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 15, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
+    { id: 16, name: 'Luis Gómez', email: 'luis@panel.com', role: 'user', premium: 'activo' },
   ])
 
   const [ventanaEditar, setVentanaEditar] = useState(false)
   const [editarUser, setEditarUser] = useState(null)
 
-  const [formData, setFormData] = useState({ name: '', email: '', role: 'user', status: 'activo' })
+  const [formData, setFormData] = useState({ name: '', email: '', role: 'user', premium: 'activo' })
   
   useEffect(() => {
     if (editarUser) {
@@ -71,7 +71,7 @@ export default function Users() {
         name: editarUser.name || '',
         email: editarUser.email || '',
         role: editarUser.role || 'user',
-        status: editarUser.status || 'activo',
+        premium: editarUser.premium || 'activo',
       })
     }
   }, [editarUser])
@@ -105,13 +105,13 @@ export default function Users() {
     return Object.entries(map).map(([role, value]) => ({ name: role, value }))
   }, [users])
 
-  // Conteo simple para "Premium" / no-Premium (aquí reutilizo `status` como ejemplo)
+  // Conteo simple para "Premium" / no-Premium
   const premiumCounts = useMemo(() => {
     const map = {}
-    users.forEach(u => { map[u.status] = (map[u.status] || 0) + 1 })
+    users.forEach(u => { map[u.premium] = (map[u.premium] || 0) + 1 })
     return Object.entries(map).map(([name, value]) => ({ name, value }))
   }, [users])
-  const PREMIUM_COLORS = { activo: '#e7cd64ff', inactivo: '#eea0cfff' }
+  const PREMIUM_COLORS = { activo: '#ce4278ff', inactivo: '#6b5435ff' }
 
   return (
     <Box
@@ -167,13 +167,13 @@ export default function Users() {
             <Grid item xs={12} sm={4}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle2" color="text.secondary">Activos</Typography>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.status === 'activo').length}</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.premium === 'activo').length}</Typography>
               </Paper>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle2" color="text.secondary">Inactivos</Typography>
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.status !== 'activo').length}</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>{users.filter(u => u.premium !== 'activo').length}</Typography>
               </Paper>
             </Grid>
           </Grid>
@@ -213,9 +213,9 @@ export default function Users() {
 
                     <TableCell>
                       <Chip
-                        label={u.status === 'activo' ? 'Activo' : 'Inactivo'}
+                        label={u.premium === 'activo' ? 'Activo' : 'Inactivo'}
                         size="small"
-                        color={u.status === 'activo' ? 'success' : 'default'}
+                        color={u.premium === 'activo' ? 'success' : 'default'}
                       />
                     </TableCell>
 
@@ -236,7 +236,7 @@ export default function Users() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Paper sx={{ p: 2, height: '100%' }}>
-                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Distribución por rol</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>Roles</Typography>
                 <Box sx={{ width: '100%', height: 220 }}>
                   <ResponsiveContainer>
                     <PieChart>
@@ -297,8 +297,8 @@ export default function Users() {
                 <Box sx={{ mt: 1 }}>
                   <Typography variant="caption" color="text.secondary">Leyenda</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-                    {roleCounts.map(r => (
-                      <Chip key={`legend-${r.name}`} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: ROLE_COLORS[r.name] || ROLE_COLORS.default, color: '#fff' }} />
+                    {premiumCounts.map(r => (
+                      <Chip key={`legend-${r.name}`} label={`${r.name} — ${r.value}`} size="small" sx={{ bgcolor: PREMIUM_COLORS[r.name] || PREMIUM_COLORS.default, color: '#fff' }} />
                     ))}
                   </Box>
                 </Box>
@@ -351,12 +351,12 @@ export default function Users() {
             </FormControl>
 
             <FormControl fullWidth size="small">
-              <InputLabel id="status-select-label">Premium</InputLabel>
+              <InputLabel id="premium-select-label">Premium</InputLabel>
               <Select
-                labelId="status-select-label"
+                labelId="premium-select-label"
                 label="Premium"
-                value={formData.status}
-                onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+                value={formData.premium}
+                onChange={(e) => setFormData(prev => ({ ...prev, premium: e.target.value }))}
               >
                 <MenuItem value="activo">Activo</MenuItem>
                 <MenuItem value="inactivo">Inactivo</MenuItem>
