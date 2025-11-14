@@ -42,7 +42,7 @@ export default function Home() {
   ]
 
   return (
-    <Box sx={{ bgcolor: '#f5f5f5', height: 'calc(100vh - 64px)', overflow: 'visible', m: 0, p: 0 }}>
+    <Box sx={{ bgcolor: '#f5f5f5', height: 'calc(100vh - 64px)', overflow: 'hidden', m: 0, p: 0 }}>
       <Grid container spacing={0} sx={{ height: '100%', m: 0 }}>
         {/* Columna Izquierda - Accesos Rápidos */}
         <Grid item xs={12} lg={1.3} sx={{ height: '100%', p: 0 }}>
@@ -148,13 +148,13 @@ export default function Home() {
                   borderRadius: 0, 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  overflow: 'visible',
+                  overflow: 'auto',
                   border: '1px solid #f0f0f0'
                 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#000000' }}>
                     Actividad Reciente
                   </Typography>
-                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'visible', pr: 1, maxHeight: '100%' }}>
+                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'auto', pr: 0.5, maxHeight: '100%' }}>
                     {recentActivity.slice(0, 4).map((activity, i) => (
                       <Box key={i} className="activity-item" sx={{ 
                         bgcolor: '#f8f9fa', 
@@ -209,13 +209,13 @@ export default function Home() {
                   borderRadius: 0, 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  overflow: 'visible',
+                  overflow: 'auto',
                   border: '1px solid #f0f0f0'
                 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#000000' }}>
                     Más Actividad
                   </Typography>
-                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'visible', pr: 1, maxHeight: '100%' }}>
+                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'auto', pr: 0.5, maxHeight: '100%' }}>
                     {recentActivity.slice(4, 8).map((activity, i) => (
                       <Box key={i} className="activity-item" sx={{ 
                         bgcolor: '#f8f9fa', 
