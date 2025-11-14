@@ -15,6 +15,7 @@ function UserTable({
   paginatedUsers,
   ROLE_COLORS,
   onEditRequest,
+  onDeleteRequest,
   currentPage,
   totalPages,
   filteredUserCount,
@@ -33,49 +34,58 @@ function UserTable({
         sx={{
           mb: 1,
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: "column",
           alignItems: "center",
+          gap: 1,
         }}
       >
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handlePreviousPage}
-          disabled={currentPage === 0}
-        >
-          Anterior
-        </Button>
         <Typography variant="body2" color="text.secondary">
           Página {currentPage + 1} de {totalPages} ({filteredUserCount}{" "}
           usuarios)
         </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleNextPage}
-          disabled={currentPage >= totalPages - 1}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
         >
-          Siguiente
-        </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handlePreviousPage}
+            disabled={currentPage === 0}
+          >
+            Anterior
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleNextPage}
+            disabled={currentPage >= totalPages - 1}
+          >
+            Siguiente
+          </Button>
+        </Box>
       </Box>
 
       <div className="table-wrapper">
         <table className="user-table">
           <thead className="table-head">
             <tr style={{ backgroundColor: "#f5f7ff" }}>
-              <th>
+              <th className="col-usuario">
                 <strong>Usuario</strong>
               </th>
-              <th>
+              <th className="col-email">
                 <strong>Email</strong>
               </th>
-              <th>
+              <th className="col-rol">
                 <strong>Rol</strong>
               </th>
-              <th>
+              <th className="col-premium">
                 <strong>Premium</strong>
               </th>
-              <th style={{ textAlign: "center" }}>
+              <th className="col-acciones" style={{ textAlign: "center" }}>
                 <strong>Acciones</strong>
               </th>
             </tr>
@@ -83,7 +93,7 @@ function UserTable({
           <tbody className="table-body">
             {paginatedUsers.map((u) => (
               <tr key={u.id} className="table-row">
-                <td>
+                <td className="col-usuario">
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Avatar sx={{ bgcolor: "#0b5cff", width: 36, height: 36 }}>
                       {u.name.charAt(0)}
@@ -96,10 +106,10 @@ function UserTable({
                     </Box>
                   </Box>
                 </td>
-                <td>
+                <td className="col-email">
                   <Typography color="text.secondary">{u.email}</Typography>
                 </td>
-                <td>
+                <td className="col-rol">
                   <Chip
                     label={u.role}
                     size="small"
@@ -110,14 +120,14 @@ function UserTable({
                     }}
                   />
                 </td>
-                <td>
+                <td className="col-premium">
                   <Chip
                     label={u.premium === "activo" ? "Activo" : "Inactivo"}
                     size="small"
                     color={u.premium === "activo" ? "success" : "default"}
                   />
                 </td>
-                <td style={{ textAlign: "center" }}>
+                <td className="col-acciones" style={{ textAlign: "center" }}>
                   <IconButton
                     name="Editar"
                     size="small"
@@ -126,10 +136,22 @@ function UserTable({
                   >
                     <EditIcon />
                   </IconButton>
-                  <IconButton name="Borrar" size="small" color="error">
+                  <IconButton
+                    name="Borrar"
+                    size="small"
+                    color="error"
+                    onClick={() => onDeleteRequest(u)}
+                  >
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton name="Perfil" size="small" color="disabled">
+                  <IconButton
+                    name="Perfil"
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                      window.location.hash = `#/users/${u.id}`;
+                    }}
+                  >
                     <AccountCircleIcon />
                   </IconButton>
                 </td>
@@ -142,7 +164,11 @@ function UserTable({
                   height: 53 * emptyRows,
                 }}
               >
-                <td colSpan="5" />
+                <td className="col-usuario" />
+                <td className="col-email" />
+                <td className="col-rol" />
+                <td className="col-premium" />
+                <td className="col-acciones" />
               </tr>
             )}
           </tbody>

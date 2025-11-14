@@ -57,7 +57,7 @@ function UserStats({
             <input
               type="text"
               className="custom-input"
-              placeholder="Buscar por nombre, e..."
+              placeholder="Buscar por nombre, email, rol o premium"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />

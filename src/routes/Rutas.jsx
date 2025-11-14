@@ -4,6 +4,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import Modulos from '../components/Modulos'
 import Home from '../pages/home/Home'
+import UserDetail from '../pages/users/UserDetail'
 
 export function navigate(to) {
 	window.location.hash = to
@@ -70,6 +71,17 @@ export default function Rutas() {
 			<Box>
 				<Header />
 				<Home />
+			</Box>
+		)
+	}
+
+	// Ruta de detalle de usuario
+	if (path.startsWith('/users/')) {
+		const userId = path.split('/users/')[1]
+		return (
+			<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
+				<Header />
+				<UserDetail userId={userId} navigate={navigate} />
 			</Box>
 		)
 	}

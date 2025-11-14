@@ -97,6 +97,7 @@ body {
 .user-table {
   width: 100%;
   border-collapse: collapse; /* Une los bordes de las celdas */
+  table-layout: fixed; /* Fija el layout de la tabla */
 }
 
 .user-table th,
@@ -104,11 +105,47 @@ body {
   padding: calc(var(--spacing-unit) * 2);
   text-align: left;
   border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-table th {
   font-weight: 600;
   font-size: 14px;
+}
+
+/* Anchos fijos para las columnas */
+.user-table th.col-usuario,
+.user-table td.col-usuario {
+  width: 30%;
+}
+
+.user-table th.col-email,
+.user-table td.col-email {
+  width: 30%;
+}
+
+.user-table th.col-rol,
+.user-table td.col-rol {
+  width: 12%;
+}
+
+.user-table th.col-premium,
+.user-table td.col-premium {
+  width: 12%;
+}
+
+.user-table th.col-acciones,
+.user-table td.col-acciones {
+  width: 16%;
+}
+
+/* Permitir que el texto se ajuste en las columnas de Usuario y Email */
+.user-table td.col-usuario,
+.user-table td.col-email {
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 /* Eliminar el borde de la última fila */

@@ -9,6 +9,7 @@ import UserStats from "../../components/userComponents/UserStats";
 import UserTable from "../../components/userComponents/UserTable";
 import UserCharts from "../../components/userComponents/UserCharts";
 import EditUserDialog from "../../components/userComponents/EditUserDialog";
+import DeleteUserDialog from "../../components/userComponents/DeleteUserDialog";
 
 export default function Users() {
   const [query, setQuery] = useState("");
@@ -29,7 +30,7 @@ export default function Users() {
     },
     {
       id: 3,
-      name: "Igor Lizasp",
+      name: "Igor Lizaso",
       email: "igliadmin@radiuserp.com",
       role: "admin",
       premium: "activo",
@@ -130,6 +131,9 @@ export default function Users() {
   const [ventanaEditar, setVentanaEditar] = useState(false);
   const [editarUser, setEditarUser] = useState(null);
 
+  const [ventanaEliminar, setVentanaEliminar] = useState(false);
+  const [eliminarUser, setEliminarUser] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(0);
   const usersPerPage = 5;
 
@@ -165,6 +169,23 @@ export default function Users() {
     setVentanaEditar(true);
   };
 
+  const handleDeleteRequest = (user) => {
+    setEliminarUser(user);
+    setVentanaEliminar(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    console.log("Confirmar eliminación:", eliminarUser);
+    // Aquí iría la lógica para eliminar el usuario
+    setVentanaEliminar(false);
+    setEliminarUser(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setVentanaEliminar(false);
+    setEliminarUser(null);
+  };
+
   const ROLE_COLORS = {
     admin: "#d32f2f",
     user: "#2e7d32",
@@ -173,14 +194,23 @@ export default function Users() {
 
   const PREMIUM_COLORS = { activo: "#ce4278ff", inactivo: "#6b5435ff" };
 
+  // Función para normalizar acentos y caracteres especiales
+  const normalizeText = (text) => {
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
     if (!q) return users;
+    const normalizedQuery = normalizeText(q);
     return users.filter(
       (u) =>
-        u.name.toLowerCase().includes(q) ||
-        u.email.toLowerCase().includes(q) ||
-        u.role.toLowerCase().includes(q)
+        normalizeText(u.name).includes(normalizedQuery) ||
+        normalizeText(u.email).includes(normalizedQuery) ||
+        normalizeText(u.role).includes(normalizedQuery)
     );
   }, [query, users]);
 
@@ -263,6 +293,7 @@ export default function Users() {
               paginatedUsers={paginatedUsers}
               ROLE_COLORS={ROLE_COLORS}
               onEditRequest={handleEditRequest}
+              onDeleteRequest={handleDeleteRequest}
               currentPage={currentPage}
               totalPages={totalPages}
               filteredUserCount={filtered.length}
@@ -288,6 +319,13 @@ export default function Users() {
         onConfirm={handleConfirm}
         formData={formData}
         setFormData={setFormData}
+      />
+
+      <DeleteUserDialog
+        open={ventanaEliminar}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        userName={eliminarUser?.name || ""}
       />
     </Box>
   );
