@@ -36,6 +36,11 @@
   padding: 12px;
   margin-bottom: 12px;
   border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.bug-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .bug-header-row {
   display: flex;
