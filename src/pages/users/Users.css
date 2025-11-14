@@ -1,114 +1,146 @@
-.users-container {
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
+/* --- VARIABLES GLOBALES --- */
+:root {
+  --spacing-unit: 8px;
+  --border-radius: 4px;
+  --border-color: #e0e0e0;
+  --text-secondary: #6c757d;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-.users-header {
-  background: #dbeafe;
-  padding: 16px;
+
+body {
+  font-family: var(--font-family);
+  background-color: #f4f6f8; /* Un fondo similar al de la imagen */
+}
+
+/* --- LAYOUT PRINCIPAL (Reemplazo de Grid) --- */
+.main-layout {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #0ea5e9;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2);
 }
-.users-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #0c4a6e;
+
+.layout-row {
+  width: 100%;
 }
-.btn-add-user {
-  background: #0ea5e9;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
+
+.layout-row-main-content {
+  display: flex;
+  flex-wrap: wrap; /* Para responsividad */
+  gap: calc(var(--spacing-unit) * 2);
 }
-.btn-add-user:hover {
-  background: #0284c7;
+
+.table-section {
+  flex: 2; /* Ocupa 2/3 del espacio */
+  min-width: 300px; /* Para evitar que se comprima demasiado */
 }
-.users-table {
-  padding: 16px;
+
+.charts-section {
+  flex: 1; /* Ocupa 1/3 del espacio */
+  min-width: 250px;
 }
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr;
-  gap: 12px;
-  padding: 12px;
-  background: #f0f9ff;
-  border-radius: 6px;
-  font-weight: 600;
-  color: #0c4a6e;
-  font-size: 13px;
-  margin-bottom: 8px;
+
+/* --- ESTADÍSTICAS (UserStats) --- */
+.stats-container {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 2);
 }
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr;
-  gap: 12px;
-  padding: 12px;
-  background: #f8fafc;
-  border: 1px solid #e0f2fe;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  align-items: center;
+
+.stat-item {
+  flex: 1; /* Cada item ocupa el mismo espacio */
 }
-.user-name {
+
+/* --- CAMPO DE BÚSQUEDA (Reemplazo de TextField) --- */
+.search-input-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
 }
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #0ea5e9;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
+
+.search-input-icon {
+  position: absolute;
+  left: calc(var(--spacing-unit) * 1.5);
+  color: var(--text-secondary);
+  pointer-events: none; /* Para poder hacer clic en el input a través del icono */
+}
+
+/* Estilo base para todos los inputs personalizados */
+.custom-input {
+  width: 100%;
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
   font-size: 16px;
+  font-family: var(--font-family);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-sizing: border-box; /* Importante para que el padding no afecte el ancho total */
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.user-email {
-  color: #64748b;
+
+.custom-input:focus {
+  outline: none;
+  border-color: #0b5cff; /* Color primario de MUI */
+  box-shadow: 0 0 0 2px rgba(11, 92, 255, 0.2);
+}
+
+/* Añadimos padding a la izquierda en el input de búsqueda para el icono */
+.search-input-wrapper .custom-input {
+  padding-left: calc(var(--spacing-unit) * 4.5);
+}
+
+/* --- TABLA DE USUARIOS (UserTable) --- */
+.table-wrapper {
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  overflow: hidden; /* Para que el borde redondeado se aplique a la tabla */
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse; /* Une los bordes de las celdas */
+}
+
+.user-table th,
+.user-table td {
+  padding: calc(var(--spacing-unit) * 2);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-table th {
+  font-weight: 600;
   font-size: 14px;
 }
-.role-badge {
-  display: inline-block;
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
+
+/* Eliminar el borde de la última fila */
+.user-table tbody tr:last-child td {
+  border-bottom: none;
 }
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
+
+/* Efecto hover en las filas de la tabla */
+.user-table .table-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
-.status-badge.activo {
-  background: #d1fae5;
-  color: #065f46;
-}
-.status-badge.inactivo {
-  background: #fee2e2;
-  color: #991b1b;
-}
-.user-actions {
+
+/* --- GRÁFICOS (UserCharts) --- */
+.charts-container {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2);
 }
-.btn-action {
-  background: #e0f2fe;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
+
+.chart-item {
+  width: 100%;
+}
+
+/* --- DIÁLOGO DE EDICIÓN (EditUserDialog) --- */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 0.5);
+}
+
+.form-field label {
   font-size: 14px;
-}
-.btn-action:hover {
-  background: #bae6fd;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
