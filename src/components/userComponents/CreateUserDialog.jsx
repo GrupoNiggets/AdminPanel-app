@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
+function CreateUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogContent
@@ -30,9 +30,9 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
           <div className="form-field">
-            <label htmlFor="edit-user-name">Usuario</label>
+            <label htmlFor="create-user-name">Usuario</label>
             <input
-              id="edit-user-name"
+              id="create-user-name"
               type="text"
               className="custom-input"
               value={formData.name}
@@ -43,9 +43,9 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
           </div>
 
           <div className="form-field">
-            <label htmlFor="edit-user-email">Email</label>
+            <label htmlFor="create-user-email">Email</label>
             <input
-              id="edit-user-email"
+              id="create-user-email"
               type="email"
               className="custom-input"
               value={formData.email}
@@ -56,9 +56,9 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
           </div>
 
           <FormControl fullWidth size="small">
-            <InputLabel id="role-select-label">Rol</InputLabel>
+            <InputLabel id="create-role-select-label">Rol</InputLabel>
             <Select
-              labelId="role-select-label"
+              labelId="create-role-select-label"
               label="Rol"
               value={formData.role}
               onChange={(e) =>
@@ -71,9 +71,9 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
           </FormControl>
 
           <FormControl fullWidth size="small">
-            <InputLabel id="premium-select-label">Premium</InputLabel>
+            <InputLabel id="create-premium-select-label">Premium</InputLabel>
             <Select
-              labelId="premium-select-label"
+              labelId="create-premium-select-label"
               label="Premium"
               value={formData.premium ? "true" : "false"}
               onChange={(e) =>
@@ -95,11 +95,13 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
           CANCELAR
         </Button>
         <Button variant="contained" onClick={onConfirm}>
-          CONFIRMAR
+          GUARDAR
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default EditUserDialog;
+export default CreateUserDialog;
+
+

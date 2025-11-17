@@ -7,15 +7,18 @@ function UserStats({
   totalUsers,
   activeUsers,
   inactiveUsers,
+  adminCount,
+  userCount,
   query,
   setQuery,
+  onAddUser,
 }) {
   return (
     <div className="stats-container">
       <div className="stat-item">
         <Paper sx={{ bgcolor: "#b5a5a5ff", p: 2, height: "55%" }}>
           <Typography variant="subtitle2" color="text.secondary">
-            Total registrados
+            Total de usuarios
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             {totalUsers}
@@ -25,7 +28,7 @@ function UserStats({
       <div className="stat-item">
         <Paper sx={{ bgcolor: "#b5a5a5ff", p: 2, height: "55%" }}>
           <Typography variant="subtitle2" color="text.secondary">
-            Activos
+            Premium
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             {activeUsers}
@@ -35,10 +38,30 @@ function UserStats({
       <div className="stat-item">
         <Paper sx={{ bgcolor: "#b5a5a5ff", p: 2, height: "55%" }}>
           <Typography variant="subtitle2" color="text.secondary">
-            Inactivos
+            No Premium
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             {inactiveUsers}
+          </Typography>
+        </Paper>
+      </div>
+      <div className="stat-item">
+        <Paper sx={{ bgcolor: "#b5a5a5ff", p: 2, height: "55%" }}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Administradores
+          </Typography>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            {adminCount}
+          </Typography>
+        </Paper>
+      </div>
+      <div className="stat-item">
+        <Paper sx={{ bgcolor: "#b5a5a5ff", p: 2, height: "55%" }}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Usuarios
+          </Typography>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            {userCount}
           </Typography>
         </Paper>
       </div>
@@ -62,7 +85,12 @@ function UserStats({
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          <Button fullWidth variant="contained" startIcon={<AddIcon />}>
+          <Button
+            fullWidth
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={onAddUser}
+          >
             Agregar usuario
           </Button>
         </Box>
