@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './Bugs.css';
 import AddBugsModal from './AddBugsModal';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const STATUS_COLORS = {
   abierto: '#f44336',
@@ -31,7 +35,6 @@ export default function BugsDashboard() {
     bug.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Añadir nuevo bug desde el modal
   const handleAddBug = (newBug) => {
     setBugs(prev => [
       ...prev,
@@ -39,94 +42,87 @@ export default function BugsDashboard() {
     ]);
   };
 
+  // Datos para el gráfico
+  const statusCounts = {
+    abierto: bugs.filter(b => b.status === 'abierto').length,
+    'en progreso': bugs.filter(b => b.status === 'en progreso').length,
+    resuelto: bugs.filter(b => b.status === 'resuelto').length,
+  };
+
+  const chartData = {
+    labels: ['Abierto', 'En progreso', 'Resuelto'],
+    datasets: [
+      {
+        data: [statusCounts.abierto, statusCounts['en progreso'], statusCounts.resuelto],
+        backgroundColor: [STATUS_COLORS.abierto, STATUS_COLORS['en progreso'], STATUS_COLORS.resuelto],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div style={{ background: '#f9fafb', minHeight: '100vh', padding: '40px 20px' }}>
-      <div className="bugs-container">
+      <div className="dashboard-grid">
 
-        {/* HEADER */}
-        <div className="bugs-header">
-          <h3>Dashboard de Bugs</h3>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div className="bugs-stats">
-              <div className="stat-item">Total: {bugs.length}</div>
-              <div className="stat-item">Abiertos: {bugs.filter(b => b.status === 'abierto').length}</div>
+        {/* IZQUIERDA - Dashboard de Bugs */}
+        <div>
+          <div className="bugs-header">
+            <h3>Dashboard de Bugs</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="bugs-stats">
+                <div className="stat-item">Total: {bugs.length}</div>
+                <div className="stat-item">Abiertos: {statusCounts.abierto}</div>
+              </div>
+              <button className="add-bug-btn" onClick={() => setIsModalOpen(true)}>
+                + Nuevo Bug
+              </button>
             </div>
+          </div>
 
-            <button
-              className="add-bug-btn"
-              onClick={() => setIsModalOpen(true)}
-            >
-              + Nuevo Bug
-            </button>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+            <select className="filter-select" value={filter} onChange={(e) => setFilter(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="abierto">Abiertos</option>
+              <option value="en progreso">En progreso</option>
+              <option value="resuelto">Resueltos</option>
+            </select>
+
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Buscar bug..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="bugs-list">
+            {filteredBugs.map(bug => (
+              <div key={bug.id} className="bug-card" style={{ borderLeftColor: PRIORITY_COLORS[bug.priority] }}>
+                <div className="bug-header-row">
+                  <div className="bug-id">#{bug.id}</div>
+                  <div className="bug-status" style={{ backgroundColor: STATUS_COLORS[bug.status] }}>
+                    {bug.status}
+                  </div>
+                  <div className="bug-priority"
+                       style={{ color: PRIORITY_COLORS[bug.priority], border: `1px solid ${PRIORITY_COLORS[bug.priority]}` }}>
+                    {bug.priority}
+                  </div>
+                </div>
+                <div className="bug-title">{bug.title}</div>
+                <div className="bug-footer">Reportado por: <strong>{bug.reporter}</strong></div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* FILTRO + BUSCADOR */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <select
-            className="filter-select"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option value="todos">Todos</option>
-            <option value="abierto">Abiertos</option>
-            <option value="en progreso">En progreso</option>
-            <option value="resuelto">Resueltos</option>
-          </select>
-
-          <input
-            className="search-input"
-            type="text"
-            placeholder="Buscar bug..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        {/* DERECHA - Gráfico */}
+        <div style={{ maxWidth: '400px', marginLeft: '40px' }}>
+          <h3>Estado de Bugs</h3>
+          <Pie data={chartData} />
         </div>
 
-        {/* LISTA */}
-        <div className="bugs-list">
-          {filteredBugs.map(bug => (
-            <div
-              key={bug.id}
-              className="bug-card"
-              style={{ borderLeftColor: PRIORITY_COLORS[bug.priority] }}
-            >
-              <div className="bug-header-row">
-                <div className="bug-id">#{bug.id}</div>
-
-                <div className="bug-status" style={{ backgroundColor: STATUS_COLORS[bug.status] }}>
-                  {bug.status}
-                </div>
-
-                <div
-                  className="bug-priority"
-                  style={{
-                    color: PRIORITY_COLORS[bug.priority],
-                    border: `1px solid ${PRIORITY_COLORS[bug.priority]}`
-                  }}
-                >
-                  {bug.priority}
-                </div>
-              </div>
-
-              <div className="bug-title">{bug.title}</div>
-
-              <div className="bug-footer">
-                Reportado por: <strong>{bug.reporter}</strong>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* MODAL */}
-        {isModalOpen && (
-          <AddBugModal
-            onClose={() => setIsModalOpen(false)}
-            onSave={handleAddBug}
-          />
-        )}
-
+        {isModalOpen && <AddBugModal onClose={() => setIsModalOpen(false)} onSave={handleAddBug} />}
       </div>
     </div>
   );
