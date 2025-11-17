@@ -20,10 +20,10 @@ export default function BugsDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [bugs, setBugs] = useState([
-    { id: 1, title: 'Error en login con email', status: 'abierto', priority: 'alta', reporter: 'Juan' },
-    { id: 2, title: 'Botón de guardar no responde', status: 'en progreso', priority: 'media', reporter: 'Ana' },
-    { id: 3, title: 'Carga lenta en dashboard', status: 'resuelto', priority: 'baja', reporter: 'Carlos' },
-    { id: 4, title: 'Error 404 en módulo usuarios', status: 'abierto', priority: 'alta', reporter: 'María' },
+    { id: 1, title: 'Error en login con email', status: 'abierto', priority: 'alta', reporter: 'Andoni' },
+    { id: 2, title: 'Botón de guardar no responde', status: 'en progreso', priority: 'media', reporter: 'Iñigo' },
+    { id: 3, title: 'Carga lenta en dashboard', status: 'resuelto', priority: 'baja', reporter: 'Igor' },
+    { id: 4, title: 'Error 404 en módulo usuarios', status: 'abierto', priority: 'alta', reporter: 'Alejandro' },
   ]);
 
   const filteredBugs = bugs.filter(bug =>
@@ -61,7 +61,7 @@ export default function BugsDashboard() {
             </button>
           </div>
         </div>
-        
+
         {/* FILTRO + BUSCADOR */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <select
