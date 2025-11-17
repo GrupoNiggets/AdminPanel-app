@@ -7,7 +7,6 @@ import PeopleIcon from "@mui/icons-material/People";
 
 import UserStats from "../../components/userComponents/UserStats";
 import UserTable from "../../components/userComponents/UserTable";
-import UserCharts from "../../components/userComponents/UserCharts";
 import EditUserDialog from "../../components/userComponents/EditUserDialog";
 import DeleteUserDialog from "../../components/userComponents/DeleteUserDialog";
 import CreateUserDialog from "../../components/userComponents/CreateUserDialog";
@@ -207,23 +206,6 @@ export default function Users() {
     }
   };
 
-  const roleCounts = useMemo(() => {
-    const map = {};
-    users.forEach((u) => {
-      map[u.role] = (map[u.role] || 0) + 1;
-    });
-    return Object.entries(map).map(([role, value]) => ({ name: role, value }));
-  }, [users]);
-
-  const premiumCounts = useMemo(() => {
-    const map = { Activo: 0, Inactivo: 0 };
-    users.forEach((u) => {
-      const label = getPremiumLabel(u.premium);
-      map[label] = (map[label] || 0) + 1;
-    });
-    return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [users]);
-
   const totalUsers = users.length;
   const activeUsers = useMemo(() => users.filter((u) => Boolean(u.premium)).length, [users]);
   const inactiveUsers = totalUsers - activeUsers;
@@ -276,14 +258,6 @@ export default function Users() {
               handlePreviousPage={handlePreviousPage}
               handleNextPage={handleNextPage}
               usersPerPage={usersPerPage}
-            />
-          </div>
-          <div className="charts-section">
-            <UserCharts
-              roleCounts={roleCounts}
-              premiumCounts={premiumCounts}
-              ROLE_COLORS={ROLE_COLORS}
-              PREMIUM_COLORS={PREMIUM_COLORS}
             />
           </div>
         </div>
