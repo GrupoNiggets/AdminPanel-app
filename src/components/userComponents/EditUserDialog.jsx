@@ -75,13 +75,16 @@ function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
             <Select
               labelId="premium-select-label"
               label="Premium"
-              value={formData.premium}
+              value={formData.premium ? "true" : "false"}
               onChange={(e) =>
-                setFormData((prev) => ({ ...prev, premium: e.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  premium: e.target.value === "true",
+                }))
               }
             >
-              <MenuItem value="activo">Activo</MenuItem>
-              <MenuItem value="inactivo">Inactivo</MenuItem>
+              <MenuItem value="true">Activo</MenuItem>
+              <MenuItem value="false">Inactivo</MenuItem>
             </Select>
           </FormControl>
         </Box>

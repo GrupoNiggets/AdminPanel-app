@@ -91,72 +91,75 @@ function UserTable({
             </tr>
           </thead>
           <tbody className="table-body">
-            {paginatedUsers.map((u) => (
-              <tr key={u.id} className="table-row">
-                <td className="col-usuario">
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Avatar sx={{ bgcolor: "#0b5cff", width: 36, height: 36 }}>
-                      {u.name.charAt(0)}
-                    </Avatar>
-                    <Box>
-                      <Typography sx={{ fontWeight: 600 }}>{u.name}</Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        ID: {u.id}
-                      </Typography>
+            {paginatedUsers.map((u) => {
+              const isPremium = Boolean(u.premium);
+              return (
+                <tr key={u.id} className="table-row">
+                  <td className="col-usuario">
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Avatar sx={{ bgcolor: "#0b5cff", width: 36, height: 36 }}>
+                        {u.name.charAt(0)}
+                      </Avatar>
+                      <Box>
+                        <Typography sx={{ fontWeight: 600 }}>{u.name}</Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          ID: {u.id}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </td>
-                <td className="col-email">
-                  <Typography color="text.secondary">{u.email}</Typography>
-                </td>
-                <td className="col-rol">
-                  <Chip
-                    label={u.role}
-                    size="small"
-                    sx={{
-                      bgcolor: ROLE_COLORS[u.role] || ROLE_COLORS.default,
-                      color: "#fff",
-                      fontWeight: 600,
-                    }}
-                  />
-                </td>
-                <td className="col-premium">
-                  <Chip
-                    label={u.premium === "activo" ? "Activo" : "Inactivo"}
-                    size="small"
-                    color={u.premium === "activo" ? "success" : "default"}
-                  />
-                </td>
-                <td className="col-acciones" style={{ textAlign: "center" }}>
-                  <IconButton
-                    name="Editar"
-                    size="small"
-                    color="primary"
-                    onClick={() => onEditRequest(u)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    name="Borrar"
-                    size="small"
-                    color="error"
-                    onClick={() => onDeleteRequest(u)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton
-                    name="Perfil"
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      window.location.hash = `#/users/${u.id}`;
-                    }}
-                  >
-                    <AccountCircleIcon />
-                  </IconButton>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="col-email">
+                    <Typography color="text.secondary">{u.email}</Typography>
+                  </td>
+                  <td className="col-rol">
+                    <Chip
+                      label={u.role}
+                      size="small"
+                      sx={{
+                        bgcolor: ROLE_COLORS[u.role] || ROLE_COLORS.default,
+                        color: "#fff",
+                        fontWeight: 600,
+                      }}
+                    />
+                  </td>
+                  <td className="col-premium">
+                    <Chip
+                      label={isPremium ? "Activo" : "Inactivo"}
+                      size="small"
+                      color={isPremium ? "success" : "default"}
+                    />
+                  </td>
+                  <td className="col-acciones" style={{ textAlign: "center" }}>
+                    <IconButton
+                      name="Editar"
+                      size="small"
+                      color="primary"
+                      onClick={() => onEditRequest(u)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      name="Borrar"
+                      size="small"
+                      color="error"
+                      onClick={() => onDeleteRequest(u)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      name="Perfil"
+                      size="small"
+                      color="primary"
+                      onClick={() => {
+                        window.location.hash = `#/users/${u.id}`;
+                      }}
+                    >
+                      <AccountCircleIcon />
+                    </IconButton>
+                  </td>
+                </tr>
+              );
+            })}
 
             {emptyRows > 0 && (
               <tr

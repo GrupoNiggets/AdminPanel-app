@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 
 import "./Users.css";
 
@@ -10,123 +10,42 @@ import UserTable from "../../components/userComponents/UserTable";
 import UserCharts from "../../components/userComponents/UserCharts";
 import EditUserDialog from "../../components/userComponents/EditUserDialog";
 import DeleteUserDialog from "../../components/userComponents/DeleteUserDialog";
+import { listUsers, getUser, createUser, updateUser, deleteUser } from "./dataUsers";
+
+const toPremiumBoolean = (value) => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized === "activo" || normalized === "active" || normalized === "true" || normalized === "1";
+  }
+  return Boolean(value);
+};
+
+const getPremiumLabel = (value) => (value ? "Activo" : "Inactivo");
 
 export default function Users() {
   const [query, setQuery] = useState("");
-  const [users] = useState([
-    {
-      id: 1,
-      name: "Alejandro Hernández",
-      email: "alheadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 2,
-      name: "Andoni Iriso",
-      email: "aniradmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 3,
-      name: "Igor Lizaso",
-      email: "igliadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 4,
-      name: "Gonzalo Luna",
-      email: "goluadmin@radiuserp.com",
-      role: "admin",
-      premium: "inactivo",
-    },
-    {
-      id: 5,
-      name: "Íñigo Ruiz de la Torre",
-      email: "inruadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 6,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 7,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 8,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 9,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 10,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 11,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 12,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 13,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 14,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 15,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 16,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+
+  const loadUsers = useCallback(async () => {
+    try {
+      const data = await listUsers();
+      if (Array.isArray(data)) {
+        setUsers(
+          data.map((user) => ({
+            ...user,
+            premium: toPremiumBoolean(user.premium),
+          }))
+        );
+      }
+    } catch (error) {
+      console.error("Error cargando usuarios:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const [ventanaEditar, setVentanaEditar] = useState(false);
   const [editarUser, setEditarUser] = useState(null);
@@ -141,7 +60,7 @@ export default function Users() {
     name: "",
     email: "",
     role: "user",
-    premium: "activo",
+    premium: false,
   });
 
   useEffect(() => {
@@ -150,14 +69,25 @@ export default function Users() {
         name: editarUser.name || "",
         email: editarUser.email || "",
         role: editarUser.role || "user",
-        premium: editarUser.premium || "activo",
+        premium: toPremiumBoolean(editarUser.premium),
       });
     }
   }, [editarUser]);
 
-  const handleConfirm = () => {
-    console.log("Confirmar edición:", formData);
-    setVentanaEditar(false);
+  const handleConfirm = async () => {
+    if (!editarUser?.id) {
+      return;
+    }
+
+    try {
+      await updateUser(editarUser.id, formData);
+      await loadUsers();
+    } catch (error) {
+      console.error("Error actualizando usuario:", error);
+    } finally {
+      setVentanaEditar(false);
+      setEditarUser(null);
+    }
   };
 
   const handleCancel = () => {
@@ -174,11 +104,20 @@ export default function Users() {
     setVentanaEliminar(true);
   };
 
-  const handleDeleteConfirm = () => {
-    console.log("Confirmar eliminación:", eliminarUser);
-    // Aquí iría la lógica para eliminar el usuario
-    setVentanaEliminar(false);
-    setEliminarUser(null);
+  const handleDeleteConfirm = async () => {
+    if (!eliminarUser?.id) {
+      return;
+    }
+
+    try {
+      await deleteUser(eliminarUser.id);
+      await loadUsers();
+    } catch (error) {
+      console.error("Error eliminando usuario:", error);
+    } finally {
+      setVentanaEliminar(false);
+      setEliminarUser(null);
+    }
   };
 
   const handleDeleteCancel = () => {
@@ -192,7 +131,7 @@ export default function Users() {
     default: "#757575",
   };
 
-  const PREMIUM_COLORS = { activo: "#ce4278ff", inactivo: "#6b5435ff" };
+  const PREMIUM_COLORS = { Activo: "#ce4278ff", Inactivo: "#6b5435ff", default: "#9e9e9e" };
 
   // Función para normalizar acentos y caracteres especiales
   const normalizeText = (text) => {
@@ -210,7 +149,8 @@ export default function Users() {
       (u) =>
         normalizeText(u.name).includes(normalizedQuery) ||
         normalizeText(u.email).includes(normalizedQuery) ||
-        normalizeText(u.role).includes(normalizedQuery)
+        normalizeText(u.role).includes(normalizedQuery) ||
+        normalizeText(getPremiumLabel(u.premium)).includes(normalizedQuery)
     );
   }, [query, users]);
 
@@ -243,18 +183,16 @@ export default function Users() {
   }, [users]);
 
   const premiumCounts = useMemo(() => {
-    const map = {};
+    const map = { Activo: 0, Inactivo: 0 };
     users.forEach((u) => {
-      map[u.premium] = (map[u.premium] || 0) + 1;
+      const label = getPremiumLabel(u.premium);
+      map[label] = (map[label] || 0) + 1;
     });
     return Object.entries(map).map(([name, value]) => ({ name, value }));
   }, [users]);
 
   const totalUsers = users.length;
-  const activeUsers = useMemo(
-    () => users.filter((u) => u.premium === "activo").length,
-    [users]
-  );
+  const activeUsers = useMemo(() => users.filter((u) => Boolean(u.premium)).length, [users]);
   const inactiveUsers = totalUsers - activeUsers;
 
   return (
