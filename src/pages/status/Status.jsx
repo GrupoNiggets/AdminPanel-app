@@ -9,39 +9,43 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 export default function Status() {
   const [time, setTime] = useState(new Date().toLocaleTimeString('es-ES'))
   const [apiStatus, setApiStatus] = useState('desconocido')
+  const [pingMessage, setPingMessage] = useState('')
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const clock = setInterval(() => {
       setTime(new Date().toLocaleTimeString('es-ES'))
     }, 1000)
-    return () => clearInterval(interval)
+    return () => clearInterval(clock)
   }, [])
 
-  //llamada API
-  const checkApi = async () => {
-    try {
-      const res = await fetch('/status')
-      if (res.ok) {
-        setApiStatus('activo')
-      } else {
-        setApiStatus('error')
-      }
-    } catch {
+  // función que hace el ping
+async function sendPing() {
+  try {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/")
+    if (res.ok) {
+      setApiStatus('activo')
+      setPingMessage('API funcionando ✅')
+      setTimeout(() => setPingMessage(''), 3000)
+    } else {
       setApiStatus('error')
+      setPingMessage('Ping fallido ❌')
+      setTimeout(() => setPingMessage(''), 3000)
     }
+  } catch {
+    setApiStatus('error')
+    setPingMessage('Ping fallido ❌')
+    setTimeout(() => setPingMessage(''), 3000)
   }
+}
 
-  //ping basico
-  const sendPing = async () => {
-    try {
-      const res = await fetch('/status/ping', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
-      if (res.ok) {
-        console.log('Ping enviado')
-      }
-    } catch (e) {
-      console.error('Error enviando ping', e)
-    }
-  }
+
+  // ping automático cada 5 minutos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      sendPing()
+    }, 5*60000) 
+    return () => clearInterval(interval)
+  }, [])
 
   const metrics = [
     { label: 'CPU', value: '23%', status: 'normal', icon: <MemoryIcon sx={{ fontSize: 40 }} /> },
@@ -66,10 +70,9 @@ export default function Status() {
         <Chip label={`Actualizado: ${time}`} size="small" sx={{ bgcolor: 'white', color: '#4d7c0f' }} />
       </Paper>
 
-      <Box sx={{ my: 2, display: 'flex', gap: 1 }}>
-        <Button variant="contained" color="success" onClick={checkApi}>Chequear API</Button>
-        <Button variant="outlined" color="success" onClick={sendPing}>Enviar Ping</Button>
-        <Typography sx={{ alignSelf: 'center' }}>Estado API: {apiStatus}</Typography>
+      <Box sx={{ my: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
+        <Button variant="contained" color="success" onClick={sendPing}>Comprobar Ping</Button>
+        {pingMessage && <Chip label={pingMessage} color={pingMessage.includes('✅') ? 'success' : 'error'} size="small" />}
       </Box>
 
       <Grid container spacing={3}>
