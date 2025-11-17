@@ -1,91 +1,18 @@
 import React, { useState } from 'react';
-import { Box, Paper, Typography, Chip, Grid, Stack, Button } from '@mui/material';
-import BugReportIcon from '@mui/icons-material/BugReport';
+import './Bugs.css';
 
-// Colores por estado y prioridad
 const STATUS_COLORS = {
   abierto: '#f44336',
-  'en progreso': '#ff9800',
+  'en progreso': '#ffff00ff',
   resuelto: '#4caf50',
 };
 
 const PRIORITY_COLORS = {
-  alta: '#f44336',
-  media: '#ff9800',
-  baja: '#2196f3',
+  alta: '#ef4444',
+  media: '#f59e0b',
+  baja: '#3b82f6',
 };
 
-// Componente de resumen de bugs
-function BugSummary({ bugs }) {
-  const total = bugs.length;
-  const abiertos = bugs.filter(b => b.status === 'abierto').length;
-
-  return (
-    <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3, bgcolor: '#fff8e1' }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" spacing={2}>
-        <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1, fontWeight: 600, color: '#92400e' }}>
-          <BugReportIcon /> Reportes de Bugs
-        </Typography>
-        <Stack direction="row" spacing={1}>
-          <Chip label={`Total: ${total}`} size="small" sx={{ bgcolor: 'white', color: '#92400e', fontWeight: 600 }} />
-          <Chip label={`Abiertos: ${abiertos}`} size="small" sx={{ bgcolor: 'white', color: '#92400e', fontWeight: 600 }} />
-        </Stack>
-      </Stack>
-    </Paper>
-  );
-}
-
-// Componente de tarjeta de bug
-function BugCard({ bug }) {
-  return (
-    <Paper
-      elevation={3}
-      sx={{
-        p: 3,
-        borderRadius: 3,
-        height: '100%',
-        transition: 'transform 0.2s, box-shadow 0.2s',
-        '&:hover': { transform: 'translateY(-6px)', boxShadow: 8 },
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Stack spacing={1}>
-        <Stack direction="row" spacing={1} flexWrap="wrap">
-          <Chip label={`#${bug.id}`} size="small" sx={{ bgcolor: '#f5f5f5', fontWeight: 600 }} />
-          <Chip
-            label={bug.status}
-            size="small"
-            sx={{
-              bgcolor: STATUS_COLORS[bug.status],
-              color: 'white',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-            }}
-          />
-          <Chip
-            label={bug.priority.toUpperCase()}
-            size="small"
-            sx={{
-              color: PRIORITY_COLORS[bug.priority],
-              bgcolor: '#f5f5f5',
-              fontWeight: 700,
-            }}
-          />
-        </Stack>
-        <Typography variant="subtitle1" fontWeight={600}>
-          {bug.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Reportado por: <strong>{bug.reporter}</strong>
-        </Typography>
-      </Stack>
-    </Paper>
-  );
-}
-
-// Componente principal
 export default function BugsDashboard() {
   const [bugs] = useState([
     { id: 1, title: 'Error en login con email', status: 'abierto', priority: 'alta', reporter: 'Juan' },
@@ -95,23 +22,44 @@ export default function BugsDashboard() {
   ]);
 
   return (
-    <Box sx={{ p: 5, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 1 }}>
-        🐛 Gestión de Bugs
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        Dashboard elegante de seguimiento de errores
-      </Typography>
+    <div style={{ background: '#f9fafb', minHeight: '100vh', padding: '40px 20px' }}>
+      <div className="bugs-container">
+        <div className="bugs-header">
+          <h3>Dashboard de Bugs</h3>
+          <div className="bugs-stats">
+            <div className="stat-item">Total: {bugs.length}</div>
+            <div className="stat-item">Abiertos: {bugs.filter(b => b.status === 'abierto').length}</div>
+          </div>
+        </div>
 
-      <BugSummary bugs={bugs} />
-
-      <Grid container spacing={3}>
-        {bugs.map(bug => (
-          <Grid item xs={12} sm={6} lg={4} key={bug.id}>
-            <BugCard bug={bug} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+        <div className="bugs-list">
+          {bugs.map(bug => (
+            <div
+              key={bug.id}
+              className="bug-card"
+              style={{ borderLeftColor: PRIORITY_COLORS[bug.priority] }}
+            >
+              <div className="bug-header-row">
+                <div className="bug-id">#{bug.id}</div>
+                <div className="bug-status" style={{ backgroundColor: STATUS_COLORS[bug.status] }}>
+                  {bug.status}
+                </div>
+                <div
+                  className="bug-priority"
+                  style={{
+                    color: PRIORITY_COLORS[bug.priority],
+                    border: `1px solid ${PRIORITY_COLORS[bug.priority]}`
+                  }}
+                >
+                  {bug.priority}
+                </div>
+              </div>
+              <div className="bug-title">{bug.title}</div>
+              <div className="bug-footer">Reportado por: <strong>{bug.reporter}</strong></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
