@@ -148,7 +148,7 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 					<Typography variant="h5" sx={{ fontWeight: 800, mt: 2, mb: 0.5, ml: 2 , color: '#161313ff' }}>{mod.name}</Typography>
 					<Typography variant="body2" ml="18px" color="text.secondary">{mod.description}</Typography>
 				</Box>
-				<Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+				<Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', mr: 2 }}>
 					<Chip 
 						label={installed.includes(mod.id) ? 'Instalado' : 'No instalado'}
 						sx={{ bgcolor: installed.includes(mod.id) ? '#2e7d32' : '#757575', color: '#fff', fontWeight: 500 }}
@@ -160,14 +160,6 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 						onClick={() => onToggle(mod.id)}
 					>
 						{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
-					</Button>
-					<Button 
-						variant="outlined"
-						size="small"
-						onClick={onBack}
-						startIcon={<ArrowBackIcon />}
-					>
-						Volver
 					</Button>
 				</Box>
 			</Paper>

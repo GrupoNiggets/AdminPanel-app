@@ -1,0 +1,102 @@
+import React from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+
+function EditUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogContent
+        sx={{ position: "relative", pt: 4, pb: 0, bgcolor: "#fff" }}
+      >
+        <Button
+          size="small"
+          onClick={onClose}
+          sx={{ position: "absolute", top: 8, right: 8 }}
+        >
+          Atrás
+        </Button>
+
+        <Box
+          component="form"
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <div className="form-field">
+            <label htmlFor="edit-user-name">Usuario</label>
+            <input
+              id="edit-user-name"
+              type="text"
+              className="custom-input"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="edit-user-email">Email</label>
+            <input
+              id="edit-user-email"
+              type="email"
+              className="custom-input"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, email: e.target.value }))
+              }
+            />
+          </div>
+
+          <FormControl fullWidth size="small">
+            <InputLabel id="role-select-label">Rol</InputLabel>
+            <Select
+              labelId="role-select-label"
+              label="Rol"
+              value={formData.role}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, role: e.target.value }))
+              }
+            >
+              <MenuItem value="admin">Administrador</MenuItem>
+              <MenuItem value="user">Usuario</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth size="small">
+            <InputLabel id="premium-select-label">Premium</InputLabel>
+            <Select
+              labelId="premium-select-label"
+              label="Premium"
+              value={formData.premium}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, premium: e.target.value }))
+              }
+            >
+              <MenuItem value="activo">Activo</MenuItem>
+              <MenuItem value="inactivo">Inactivo</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </DialogContent>
+
+      <DialogActions sx={{ px: 3, py: 2 }}>
+        <Button variant="outlined" onClick={onClose}>
+          CANCELAR
+        </Button>
+        <Button variant="contained" onClick={onConfirm}>
+          CONFIRMAR
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export default EditUserDialog;
