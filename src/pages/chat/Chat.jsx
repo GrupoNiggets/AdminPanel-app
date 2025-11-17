@@ -200,12 +200,28 @@ export default function Chat() {
                   <Typography variant="subtitle2" fontWeight="bold">
                     {msgUser?.name || 'Usuario desconocido'}
                   </Typography>
-                  <Chip 
-                    label={msgUser?.role || 'N/A'} 
-                    size="small" 
-                    color="primary" 
-                    sx={{ fontSize: 11, height: 20 }} 
-                  />
+                  {(() => {
+                    const roleLabel = msgUser?.role || 'N/A'
+                    const rl = String(roleLabel).toLowerCase()
+                    const baseSx = { fontSize: 11, height: 20 }
+                    let chipSx = baseSx
+
+                    if (rl === 'admin') {
+                      chipSx = { ...baseSx, bgcolor: '#ef4444', color: '#fff' } // rojo
+                    } else if (rl === 'mod' || rl === 'moderator') {
+                      chipSx = { ...baseSx, bgcolor: '#3b82f6', color: '#fff' } // azul
+                    } else {
+                      chipSx = { ...baseSx, bgcolor: '#6b7280', color: '#fff' } // gris
+                    }
+
+                    return (
+                      <Chip
+                        label={roleLabel}
+                        size="small"
+                        sx={chipSx}
+                      />
+                    )
+                  })()}
                 </Box>
                 <Typography variant="caption" color="text.secondary">
                   {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : ''}
