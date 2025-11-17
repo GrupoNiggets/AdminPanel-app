@@ -9,16 +9,42 @@ import Bugs from '../pages/bugs/Bugs'
 import Posts from '../pages/posts/Posts'
 import Status from '../pages/status/Status'
 import Users from '../pages/users/Users'
+import './Modulos.css'
 
 // Versión muy simple de Modulos: lista fija de módulos (chat, bugs, posts, status, usuarios).
 // Guardamos sólo los módulos instalados (ids) en localStorage.
 
 const MODULES = [
-	{ id: 'chat', name: 'Chat', description: 'Mensajería y conversaciones en tiempo real' },
-	{ id: 'bugs', name: 'Bugs', description: 'Reportes y seguimiento de errores' },
-	{ id: 'posts', name: 'Posts', description: 'Gestión de publicaciones y contenido' },
-	{ id: 'status', name: 'Status', description: 'Estados del sistema y monitoreo' },
-	{ id: 'users', name: 'Usuarios', description: 'Administración de usuarios y permisos' }
+	{ 
+		id: 'chat', 
+		name: 'Chat', 
+		description: 'Mensajería y conversaciones en tiempo real',
+		image: 'https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=500&q=80'
+	},
+	{ 
+		id: 'bugs', 
+		name: 'Bugs', 
+		description: 'Reportes y seguimiento de errores',
+		image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80'
+	},
+	{ 
+		id: 'posts', 
+		name: 'Posts', 
+		description: 'Gestión de publicaciones y contenido',
+		image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&q=80'
+	},
+	{ 
+		id: 'status', 
+		name: 'Status', 
+		description: 'Estados del sistema y monitoreo',
+		image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80'
+	},
+	{ 
+		id: 'users', 
+		name: 'Usuarios', 
+		description: 'Administración de usuarios y permisos',
+		image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80'
+	}
 ]
 
 const KEY = 'ap_installed_modules'
@@ -40,76 +66,58 @@ function saveInstalled(list) {
 // Componente para listar módulos
 function ModulosList({ installed, onToggle, onOpen }) {
 	return (
-		<Box sx={{ p: 4, bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-				<Box>
-					<Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#000000' }}>
-						Módulos del Sistema
-					</Typography>
-					<Typography variant="body1" color="text.secondary">
-						Gestiona los módulos instalados en tu plataforma
-					</Typography>
-				</Box>
-				<Button 
-					variant="outlined" 
-					color="error" 
-					size="small"
+		<div className="modulos-container">
+			<div className="modulos-header">
+				<div>
+					<h2 className="modulos-title">Módulos del Sistema</h2>
+					<p className="modulos-subtitle">Gestiona los módulos instalados en tu plataforma</p>
+				</div>
+				<button 
+					className="restore-button"
 					onClick={() => { localStorage.removeItem(KEY); window.location.reload() }}
 				>
 					Restaurar instalación
-				</Button>
-			</Box>
+				</button>
+			</div>
 
-			<Grid container spacing={3}>
+			<div className="modulos-grid">
 				{MODULES.map(m => (
-					<Grid item xs={12} sm={6} lg={4} key={m.id}>
-						<Card 
-							elevation={2} 
-							sx={{ 
-								display: 'flex', 
-								flexDirection: 'column', 
-								bgcolor: '#ffffff', 
-								borderRadius: 2, 
-								height: '100%',
-								transition: 'transform 0.2s, box-shadow 0.2s', 
-								'&:hover': { 
-									transform: 'translateY(-4px)',
-									boxShadow: 4
-								} 
-							}}
-						>
-							<CardContent sx={{ flex: 1 }}>
-								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 2 }}>
-									<Typography variant="h6" sx={{ fontWeight: 600, color: '#000000' }}>{m.name}</Typography>
-									{installed.includes(m.id) && <Chip label="Instalado" size="small" sx={{ bgcolor: '#2e7d32', color: '#fff', fontWeight: 500 }} />}
-								</Box>
-								<Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>{m.description}</Typography>
-							</CardContent>
-							<CardActions sx={{ justifyContent: 'space-between', p: 2 }}>
-								<Button 
-									variant="outlined"
-									size="small"
-									color={installed.includes(m.id) ? 'error' : 'primary'}
+					<div className="modulo-card" key={m.id}>
+						<div 
+							className="modulo-card-image"
+							style={{ backgroundImage: `url(${m.image})` }}
+						/>
+						<div className="modulo-card-content">
+							<div className="modulo-card-header">
+								<h3 className="modulo-name">{m.name}</h3>
+								{installed.includes(m.id) && (
+									<span className="modulo-chip">Instalado</span>
+								)}
+							</div>
+							<p className="modulo-description">{m.description}</p>
+							<div className="modulo-actions">
+								<button 
+									className={`modulo-button ${installed.includes(m.id) ? 'modulo-button-uninstall' : 'modulo-button-install'}`}
 									onClick={() => onToggle(m.id)}
-									startIcon={installed.includes(m.id) ? <CancelIcon /> : <CheckCircleIcon />}
 								>
-									{installed.includes(m.id) ? 'Desinstalar' : 'Instalar'}
-								</Button>
-								<Button 
-									variant="contained"
-									size="small"
-									sx={{ bgcolor: '#000000', '&:hover': { bgcolor: '#333333' } }}
+									{installed.includes(m.id) ? (
+										<><CancelIcon fontSize="small" /> Desinstalar</>
+									) : (
+										<><CheckCircleIcon fontSize="small" /> Instalar</>
+									)}
+								</button>
+								<button 
+									className="modulo-button modulo-button-open"
 									onClick={() => onOpen(m.id)}
-									endIcon={<ArrowForwardIcon />}
 								>
-									Abrir
-								</Button>
-							</CardActions>
-						</Card>
-					</Grid>
+									Abrir <ArrowForwardIcon fontSize="small" />
+								</button>
+							</div>
+						</div>
+					</div>
 				))}
-			</Grid>
-		</Box>
+			</div>
+		</div>
 	)
 }
 
@@ -119,13 +127,13 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 	
 	if (!mod) {
 		return (
-			<Box sx={{ p: 4, textAlign: 'center', bgcolor: '#f5f5f5', minHeight: '100vh' }}>
-				<Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: '#d32f2f' }}>Módulo no encontrado</Typography>
-				<Typography color="text.secondary" sx={{ mb: 3 }}>ID: {modId}</Typography>
-				<Button variant="contained" sx={{ bgcolor: '#000000', '&:hover': { bgcolor: '#333333' } }} onClick={onBack} startIcon={<ArrowBackIcon />}>
-					Volver a módulos
-				</Button>
-			</Box>
+			<div className="modulo-error">
+				<h2>Módulo no encontrado</h2>
+				<p>ID: {modId}</p>
+				<button className="back-button" onClick={onBack}>
+					<ArrowBackIcon fontSize="small" /> Volver a módulos
+				</button>
+			</div>
 		)
 	}
 
@@ -143,26 +151,31 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 
 	return (
 		<Box sx={{ width: '100%', m: 0, p: 0 }}>
-			<Paper elevation={0} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#ffffff' }}>
-				<Box>
-					<Typography variant="h5" sx={{ fontWeight: 800, mt: 2, mb: 0.5, ml: 2 , color: '#161313ff' }}>{mod.name}</Typography>
-					<Typography variant="body2" ml="18px" color="text.secondary">{mod.description}</Typography>
-				</Box>
-				<Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', mr: 2 }}>
-					<Chip 
-						label={installed.includes(mod.id) ? 'Instalado' : 'No instalado'}
-						sx={{ bgcolor: installed.includes(mod.id) ? '#2e7d32' : '#757575', color: '#fff', fontWeight: 500 }}
-					/>
-					<Button 
-						variant="outlined"
-						size="small"
-						color={installed.includes(mod.id) ? 'error' : 'primary'}
-						onClick={() => onToggle(mod.id)}
-					>
-						{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
-					</Button>
-				</Box>
-			</Paper>
+			<div 
+				className="modulo-detail-banner"
+				style={{ backgroundImage: `url(${mod.image})` }}
+			>
+				<div className="modulo-detail-overlay">
+					<div className="modulo-detail-info">
+						<h2>{mod.name}</h2>
+						<p>{mod.description}</p>
+					</div>
+					<div className="modulo-detail-actions">
+						<span className={`modulo-chip ${installed.includes(mod.id) ? '' : 'not-installed'}`}>
+							{installed.includes(mod.id) ? 'Instalado' : 'No instalado'}
+						</span>
+						<button 
+							className={`modulo-button ${installed.includes(mod.id) ? 'modulo-button-uninstall' : 'modulo-button-install'}`}
+							onClick={() => onToggle(mod.id)}
+						>
+							{installed.includes(mod.id) ? 'Desinstalar' : 'Instalar'}
+						</button>
+						<button className="back-button" onClick={onBack}>
+							<ArrowBackIcon fontSize="small" /> Volver
+						</button>
+					</div>
+				</div>
+			</div>
 
 			<Paper elevation={0} sx={{ bgcolor: '#ffffff' }}>
 				{renderPageComponent(mod.id)}
