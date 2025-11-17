@@ -10,6 +10,7 @@ import UserTable from "../../components/userComponents/UserTable";
 import UserCharts from "../../components/userComponents/UserCharts";
 import EditUserDialog from "../../components/userComponents/EditUserDialog";
 import DeleteUserDialog from "../../components/userComponents/DeleteUserDialog";
+import CreateUserDialog from "../../components/userComponents/CreateUserDialog";
 import { listUsers, getUser, createUser, updateUser, deleteUser } from "./dataUsers";
 
 const toPremiumBoolean = (value) => {
@@ -52,6 +53,13 @@ export default function Users() {
 
   const [ventanaEliminar, setVentanaEliminar] = useState(false);
   const [eliminarUser, setEliminarUser] = useState(null);
+  const [ventanaCrear, setVentanaCrear] = useState(false);
+  const [createFormData, setCreateFormData] = useState({
+    name: "",
+    email: "",
+    role: "user",
+    premium: false,
+  });
 
   const [currentPage, setCurrentPage] = useState(0);
   const usersPerPage = 5;
@@ -125,6 +133,31 @@ export default function Users() {
     setEliminarUser(null);
   };
 
+  const handleCreateOpen = () => {
+    setCreateFormData({
+      name: "",
+      email: "",
+      role: "user",
+      premium: false,
+    });
+    setVentanaCrear(true);
+  };
+
+  const handleCreateCancel = () => {
+    setVentanaCrear(false);
+  };
+
+  const handleCreateConfirm = async () => {
+    try {
+      await createUser(createFormData);
+      await loadUsers();
+    } catch (error) {
+      console.error("Error creando usuario:", error);
+    } finally {
+      setVentanaCrear(false);
+    }
+  };
+
   const ROLE_COLORS = {
     admin: "#d32f2f",
     user: "#2e7d32",
@@ -194,6 +227,8 @@ export default function Users() {
   const totalUsers = users.length;
   const activeUsers = useMemo(() => users.filter((u) => Boolean(u.premium)).length, [users]);
   const inactiveUsers = totalUsers - activeUsers;
+  const adminCount = useMemo(() => users.filter((u) => u.role === "admin").length, [users]);
+  const normalUserCount = useMemo(() => users.filter((u) => u.role === "user").length, [users]);
 
   return (
     <Box
@@ -221,8 +256,11 @@ export default function Users() {
             totalUsers={totalUsers}
             activeUsers={activeUsers}
             inactiveUsers={inactiveUsers}
+            adminCount={adminCount}
+            userCount={normalUserCount}
             query={query}
             setQuery={setQuery}
+            onAddUser={handleCreateOpen}
           />
         </div>
         <div className="layout-row-main-content">
@@ -264,6 +302,14 @@ export default function Users() {
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
         userName={eliminarUser?.name || ""}
+      />
+
+      <CreateUserDialog
+        open={ventanaCrear}
+        onClose={handleCreateCancel}
+        onConfirm={handleCreateConfirm}
+        formData={createFormData}
+        setFormData={setCreateFormData}
       />
     </Box>
   );
