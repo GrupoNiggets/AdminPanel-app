@@ -1,132 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { Box, Paper, Typography, Button, Avatar, Chip } from "@mui/material";
+import { Box, Paper, Typography, Button, Avatar, Chip, CircularProgress } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { getUser } from "./dataUsers";
+
+const toPremiumBoolean = (value) => {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized === "activo" || normalized === "active" || normalized === "true" || normalized === "1";
+  }
+  return Boolean(value);
+};
 
 function UserDetail({ userId, navigate }) {
   const [user, setUser] = useState(null);
-
-  // Datos de ejemplo - en producción esto vendría de una API
-  // Estos deben coincidir con los datos en Users.jsx
-  const mockUsers = [
-    {
-      id: 1,
-      name: "Alejandro Hernández",
-      email: "alheadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 2,
-      name: "Andoni Iriso",
-      email: "aniradmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 3,
-      name: "Igor Lizaso",
-      email: "igliadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 4,
-      name: "Gonzalo Luna",
-      email: "goluadmin@radiuserp.com",
-      role: "admin",
-      premium: "inactivo",
-    },
-    {
-      id: 5,
-      name: "Íñigo Ruiz de la Torre",
-      email: "inruadmin@radiuserp.com",
-      role: "admin",
-      premium: "activo",
-    },
-    {
-      id: 6,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 7,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 8,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 9,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 10,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 11,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 12,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 13,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 14,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 15,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-    {
-      id: 16,
-      name: "Luis Gómez",
-      email: "luis@panel.com",
-      role: "user",
-      premium: "activo",
-    },
-  ];
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Buscar el usuario por ID
-    const foundUser = mockUsers.find((u) => u.id === parseInt(userId));
-    setUser(foundUser);
+    let isMounted = true;
+
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const data = await getUser(userId);
+        if (isMounted) {
+          setUser(
+            data
+              ? {
+                  ...data,
+                  premium: toPremiumBoolean(data.premium),
+                }
+              : null
+          );
+        }
+      } catch (error) {
+        console.error("Error obteniendo usuario:", error);
+        if (isMounted) {
+          setUser(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUser();
+
+    return () => {
+      isMounted = false;
+    };
   }, [userId]);
 
   const ROLE_COLORS = {
@@ -134,6 +58,23 @@ function UserDetail({ userId, navigate }) {
     user: "#2e7d32",
     default: "#757575",
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          boxSizing: "border-box",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (!user) {
     return (
@@ -230,6 +171,26 @@ function UserDetail({ userId, navigate }) {
               </Typography>
             </Box>
 
+          {user.createdAt && (
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
+                Fecha de creación
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                {new Date(user.createdAt).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}{" "}
+                —{" "}
+                {new Date(user.createdAt).toLocaleTimeString("es-ES", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </Typography>
+            </Box>
+          )}
+
             <Box>
               <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
                 Rol
@@ -250,9 +211,9 @@ function UserDetail({ userId, navigate }) {
                 Estado Premium
               </Typography>
               <Chip
-                label={user.premium === "activo" ? "Activo" : "Inactivo"}
+                label={user.premium ? "Activo" : "Inactivo"}
                 size="medium"
-                color={user.premium === "activo" ? "success" : "default"}
+                color={user.premium ? "success" : "default"}
               />
             </Box>
           </Box>
