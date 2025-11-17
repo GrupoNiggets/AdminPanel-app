@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Paper, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Chip } from '@mui/material'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import MemoryIcon from '@mui/icons-material/Memory'
@@ -7,11 +7,20 @@ import NetworkCheckIcon from '@mui/icons-material/NetworkCheck'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function Status() {
+  const [time, setTime] = useState(new Date().toLocaleTimeString('es-ES'))
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date().toLocaleTimeString('es-ES'))
+    }, 1000) // actualiza el reloj cada segundo
+    return () => clearInterval(interval)
+  }, [])
+
   const metrics = [
-    { label: 'CPU', value: '23%', status: 'normal', icon: <MemoryIcon sx={{fontSize: 40}} /> },
-    { label: 'Memoria', value: '1.8GB / 8GB', status: 'normal', icon: <MemoryIcon sx={{fontSize: 40}} /> },
-    { label: 'Disco', value: '45GB / 256GB', status: 'normal', icon: <StorageIcon sx={{fontSize: 40}} /> },
-    { label: 'Red', value: '125 Mbps', status: 'bueno', icon: <NetworkCheckIcon sx={{fontSize: 40}} /> }
+    { label: 'CPU', value: '23%', status: 'normal', icon: <MemoryIcon sx={{ fontSize: 40 }} /> },
+    { label: 'Memoria', value: '1.8GB / 8GB', status: 'normal', icon: <MemoryIcon sx={{ fontSize: 40 }} /> },
+    { label: 'Disco', value: '45GB / 256GB', status: 'normal', icon: <StorageIcon sx={{ fontSize: 40 }} /> },
+    { label: 'Red', value: '125 Mbps', status: 'bueno', icon: <NetworkCheckIcon sx={{ fontSize: 40 }} /> }
   ]
 
   const services = [
@@ -27,11 +36,11 @@ export default function Status() {
         <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, color: '#000000', fontWeight: 700 }}>
           <BarChartIcon sx={{ color: '#000000' }} /> Monitoreo del Sistema
         </Typography>
-        <Chip label={`Actualizado: ${new Date().toLocaleTimeString('es-ES')}`} size="small" sx={{ bgcolor: 'white', color: '#4d7c0f' }} />
+        <Chip label={`Actualizado: ${time}`} size="small" sx={{ bgcolor: 'white', color: '#4d7c0f' }} />
       </Paper>
 
       <Box>
-      <Grid container spacing={3}>
+        <Grid container spacing={3}>
           {metrics.map((metric, idx) => (
             <Grid item xs={6} sm={6} md={3} key={idx}>
               <Card sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d' }}>
