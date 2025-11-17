@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Paper, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Chip } from '@mui/material'
+import { Box, Paper, Typography, Card, CardContent, Grid, List, ListItem, ListItemText, Chip, Button } from '@mui/material'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import MemoryIcon from '@mui/icons-material/Memory'
 import StorageIcon from '@mui/icons-material/Storage'
@@ -8,13 +8,40 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function Status() {
   const [time, setTime] = useState(new Date().toLocaleTimeString('es-ES'))
+  const [apiStatus, setApiStatus] = useState('desconocido')
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString('es-ES'))
-    }, 1000) // actualiza el reloj cada segundo
+    }, 1000)
     return () => clearInterval(interval)
   }, [])
+
+  //llamada API
+  const checkApi = async () => {
+    try {
+      const res = await fetch('/status')
+      if (res.ok) {
+        setApiStatus('activo')
+      } else {
+        setApiStatus('error')
+      }
+    } catch {
+      setApiStatus('error')
+    }
+  }
+
+  //ping basico
+  const sendPing = async () => {
+    try {
+      const res = await fetch('/status/ping', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
+      if (res.ok) {
+        console.log('Ping enviado')
+      }
+    } catch (e) {
+      console.error('Error enviando ping', e)
+    }
+  }
 
   const metrics = [
     { label: 'CPU', value: '23%', status: 'normal', icon: <MemoryIcon sx={{ fontSize: 40 }} /> },
@@ -24,8 +51,8 @@ export default function Status() {
   ]
 
   const services = [
-    { name: 'Base de datos', status: 'activo', uptime: '99.9%' },
-    { name: 'API REST', status: 'activo', uptime: '99.7%' },
+    { name: 'Base de datos', status: apiStatus, uptime: '99.9%' },
+    { name: 'API REST', status: apiStatus, uptime: '99.7%' },
     { name: 'Cache Redis', status: 'activo', uptime: '100%' },
     { name: 'CDN', status: 'activo', uptime: '99.5%' }
   ]
@@ -39,41 +66,45 @@ export default function Status() {
         <Chip label={`Actualizado: ${time}`} size="small" sx={{ bgcolor: 'white', color: '#4d7c0f' }} />
       </Paper>
 
-      <Box>
-        <Grid container spacing={3}>
-          {metrics.map((metric, idx) => (
-            <Grid item xs={6} sm={6} md={3} key={idx}>
-              <Card sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d' }}>
-                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Box>{metric.icon}</Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="caption" color="#65a30d" fontWeight={600} textTransform="uppercase">{metric.label}</Typography>
-                    <Typography variant="h6" fontWeight="bold" sx={{ my: 0.5 }}>{metric.value}</Typography>
-                    <Chip label={metric.status} size="small" color="success" sx={{ fontSize: 11, height: 20 }} />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" color="#3f6212" gutterBottom>Servicios activos</Typography>
-          <List>
-            {services.map((service, i) => (
-              <ListItem key={i} sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d', borderRadius: 1, mb: 1 }}>
-                <ListItemText
-                  primary={service.name}
-                  secondary={`Uptime: ${service.uptime}`}
-                  primaryTypographyProps={{ fontWeight: 600 }}
-                  secondaryTypographyProps={{ color: '#65a30d' }}
-                />
-                <Chip icon={<CheckCircleIcon />} label={service.status} size="small" color="success" sx={{ fontWeight: 600 }} />
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
+      <Box sx={{ my: 2, display: 'flex', gap: 1 }}>
+        <Button variant="contained" color="success" onClick={checkApi}>Chequear API</Button>
+        <Button variant="outlined" color="success" onClick={sendPing}>Enviar Ping</Button>
+        <Typography sx={{ alignSelf: 'center' }}>Estado API: {apiStatus}</Typography>
       </Box>
+
+      <Grid container spacing={3}>
+        {metrics.map((metric, idx) => (
+          <Grid item xs={6} sm={6} md={3} key={idx}>
+            <Card sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d' }}>
+              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box>{metric.icon}</Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" color="#65a30d" fontWeight={600} textTransform="uppercase">{metric.label}</Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ my: 0.5 }}>{metric.value}</Typography>
+                  <Chip label={metric.status} size="small" color="success" sx={{ fontSize: 11, height: 20 }} />
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Paper sx={{ p: 2, mt: 2 }}>
+        <Typography variant="h6" color="#3f6212" gutterBottom>Servicios activos</Typography>
+        <List>
+          {services.map((service, i) => (
+            <ListItem key={i} sx={{ bgcolor: '#f7fee7', border: '1px solid #d9f99d', borderRadius: 1, mb: 1 }}>
+              <ListItemText
+                primary={service.name}
+                secondary={`Uptime: ${service.uptime}`}
+                primaryTypographyProps={{ fontWeight: 600 }}
+                secondaryTypographyProps={{ color: '#65a30d' }}
+              />
+              <Chip icon={<CheckCircleIcon />} label={service.status} size="small" color="success" sx={{ fontWeight: 600 }} />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
     </Box>
   )
 }
