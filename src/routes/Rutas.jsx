@@ -65,6 +65,26 @@ export default function Rutas() {
 		return () => window.removeEventListener('hashchange', onHash)
 	}, [])
 
+	// Actualizar título de la ventana según la ruta
+	useEffect(() => {
+		const titles = {
+			'/': 'Dashboard - Radius ERP',
+			'/modules': 'Módulos - Radius ERP',
+			'/modules/chat': 'Chat - Radius ERP',
+			'/modules/bugs': 'Bugs - Radius ERP',
+			'/modules/posts': 'Posts - Radius ERP',
+			'/modules/status': 'Status - Radius ERP',
+			'/modules/users': 'Usuarios - Radius ERP'
+		}
+
+		// Título específico o por defecto
+		if (path.startsWith('/users/')) {
+			document.title = 'Usuario - Radius ERP'
+		} else {
+			document.title = titles[path] || 'Admin Panel - Radius ERP'
+		}
+	}, [path])
+
 	// Ruta home
 	if (path === '/') {
 		return (
