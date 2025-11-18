@@ -7,20 +7,19 @@ import NetworkCheckIcon from '@mui/icons-material/NetworkCheck'
 import './Status.css'
 
 export default function Status() {
-  const [time, setTime] = useState(new Date().toLocaleTimeString('es-ES'))
+  const [time, setTime] = useState("—")   // hora inicial vacía
   const [apiStatus, setApiStatus] = useState('desconocido')
   const [pingMessage, setPingMessage] = useState('')
 
-  useEffect(() => {
-    const clock = setInterval(() => {
-      setTime(new Date().toLocaleTimeString('es-ES'))
-    }, 1000)
-    return () => clearInterval(clock)
-  }, [])
+  // ❌ reloj eliminado
 
   async function sendPing() {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/")
+
+      // actualiza la hora SOLO cuando se hace ping
+      setTime(new Date().toLocaleTimeString('es-ES'))
+
       if (res.ok) {
         setApiStatus('activo')
         setPingMessage('API funcionando ✅')
@@ -33,6 +32,7 @@ export default function Status() {
     } catch {
       setApiStatus('error')
       setPingMessage('Ping fallido ❌')
+      setTime(new Date().toLocaleTimeString('es-ES'))
       setTimeout(() => setPingMessage(''), 3000)
     }
   }
@@ -61,7 +61,6 @@ export default function Status() {
   return (
     <Paper className="status-container" elevation={0}>
       
-      {/* HEADER */}
       <Box className="status-header">
         <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <BarChartIcon /> Monitoreo del Sistema
@@ -69,7 +68,6 @@ export default function Status() {
         <Typography className="status-time">Actualizado: {time}</Typography>
       </Box>
 
-      {/* BOTÓN DE PING */}
       <Box sx={{ my: 2, pl: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
         <Button variant="contained" color="success" onClick={sendPing}>
           Comprobar Ping
@@ -83,7 +81,6 @@ export default function Status() {
         )}
       </Box>
 
-      {/* METRICS GRID */}
       <Grid container spacing={2} sx={{ pl: 2 }}>
         {metrics.map((m, i) => (
           <Grid item xs={12} sm={6} md={3} key={i}>
@@ -101,7 +98,6 @@ export default function Status() {
         ))}
       </Grid>
 
-      {/* SERVICES */}
       <Box className="services-section">
         <Typography variant="h6" sx={{ mb: 1 }}>Servicios activos</Typography>
 
@@ -121,4 +117,3 @@ export default function Status() {
     </Paper>
   )
 }
-
