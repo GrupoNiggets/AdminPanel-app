@@ -13,6 +13,7 @@ export default function Chat() {
   const [newMsg, setNewMsg] = useState('')
   const [editingId, setEditingId] = useState(null)
   const [editingContent, setEditingContent] = useState('')
+  const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
   const scrollToBottom = () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -24,7 +25,14 @@ export default function Chat() {
         headers: { 'Cache-Control': 'no-cache' }
       })
       const data = await res.json()
-      if (res.ok) setMessages(data.data ?? [])
+      console.log('Mensajes recibidos:', data.data)
+      if (res.ok) {
+        // Ordenar por createdAt para mantener orden cronológico
+        const sorted = (data.data ?? []).sort((a, b) => 
+          new Date(a.createdAt) - new Date(b.createdAt)
+        )
+        setMessages(sorted)
+      }
       setTimeout(scrollToBottom, 50)
     } catch (err) { console.error(err) }
   }
@@ -34,10 +42,14 @@ export default function Chat() {
       const res = await fetch('http://localhost:3000/api/v1/users')
       const data = await res.json()
       if (res.ok) {
-        setUsers(data.data ?? [])
-        setCurrentUser(data.data[0] || null) // por defecto primer usuario
+        const usersList = data.data ?? []
+        console.log('Usuarios cargados:', usersList) // Debug
+        setUsers(usersList)
+        setCurrentUser(usersList[0] || null) // por defecto primer usuario
       }
-    } catch (err) { console.error(err) }
+    } catch (err) { 
+      console.error('Error al cargar usuarios:', err) 
+    }
   }
 
   useEffect(() => {
@@ -47,14 +59,28 @@ export default function Chat() {
 
   // Crear mensaje
   const sendMessage = async () => {
-    if (!newMsg.trim() || !currentUser) return
+    if (!newMsg.trim()) {
+      setError('Escribe un mensaje')
+      return
+    }
+    
+    if (!currentUser) {
+      setError('Selecciona un usuario')
+      return
+    }
+    
+    setError(null)
 
     const payload = {
       content: newMsg,
-      userId: currentUser.id,
+      userId: String(currentUser.id),  // Convertir a string
       messageId: crypto.randomUUID(),
       meta: {}
     }
+
+    console.log('========== PAYLOAD ENVIADO ==========')
+    console.log(JSON.stringify(payload, null, 2))
+    console.log('====================================')
 
     try {
       const res = await fetch('http://localhost:3000/api/v1/chat', {
@@ -63,12 +89,29 @@ export default function Chat() {
         body: JSON.stringify(payload)
       })
       const data = await res.json()
-      if (!res.ok) return console.error('Error backend:', data)
+      
+      console.log('========== RESPUESTA DEL SERVIDOR ==========')
+      console.log('Status:', res.status)
+      console.log('Success:', data.success)
+      console.log('Message:', data.message)
+      console.log('Code:', data.code)
+      console.log('Details:', data.details)
+      console.log('Data completo:', JSON.stringify(data, null, 2))
+      console.log('============================================')
+      
+      if (!res.ok) {
+        const errorMsg = data.details ? `${data.message}: ${data.details.join(', ')}` : data.message
+        setError(errorMsg || 'Error al enviar el mensaje')
+        return
+      }
 
       setMessages(prev => [...prev, data.data])
       setNewMsg('')
       setTimeout(scrollToBottom, 50)
-    } catch (err) { console.error(err) }
+    } catch (err) { 
+      console.error('Error al enviar mensaje:', err)
+      setError('Error de conexión al servidor')
+    }
   }
 
   // Guardar edición
@@ -84,10 +127,10 @@ export default function Chat() {
       const data = await res.json()
       if (!res.ok) return console.error('Error backend:', data)
 
-      setMessages(prev => prev.map(m => m.id === msgId ? data.data : m))
+      // Mantener la posición original, solo actualizar el contenido
+      setMessages(prev => prev.map(m => m.id === msgId ? { ...m, content: editingContent } : m))
       setEditingId(null)
       setEditingContent('')
-      setTimeout(scrollToBottom, 50)
     } catch (err) { console.error(err) }
   }
 
@@ -107,6 +150,14 @@ export default function Chat() {
 
   return (
     <Paper elevation={0} sx={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* ERROR ALERT */}
+      {error && (
+        <Box sx={{ bgcolor: '#fee2e2', color: '#991b1b', p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="body2">{error}</Typography>
+          <Button size="small" onClick={() => setError(null)} sx={{ color: '#991b1b', minWidth: 'auto' }}>✕</Button>
+        </Box>
+      )}
+      
       {/* HEADER */}
       <Box sx={{ bgcolor: '#000', color: 'white', p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Typography variant="h6">Chat Empresarial</Typography>
@@ -133,17 +184,49 @@ export default function Chat() {
 
       {/* MENSAJES */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: 3 }}>
-        {messages.map(msg => (
-          <Paper key={msg.id} sx={{ p: 1.5, mb: 1.5 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="subtitle2" fontWeight="bold">{msg.user?.name}</Typography>
-                <Chip label={msg.user?.role} size="small" color="primary" sx={{ fontSize: 11, height: 20 }} />
+        {messages.map(msg => {
+          // Buscar el usuario correspondiente de múltiples formas
+          const msgUser = msg.user || 
+            users.find(u => String(u.id) === String(msg.userId)) ||
+            users.find(u => u._id === msg.userId) ||
+            users.find(u => u.id === msg.userId)
+          
+          console.log('Mensaje userId:', msg.userId, 'Usuario encontrado:', msgUser)
+          
+          return (
+            <Paper key={msg.id} sx={{ p: 1.5, mb: 1.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    {msgUser?.name || 'Usuario desconocido'}
+                  </Typography>
+                  {(() => {
+                    const roleLabel = msgUser?.role || 'N/A'
+                    const rl = String(roleLabel).toLowerCase()
+                    const baseSx = { fontSize: 11, height: 20 }
+                    let chipSx = baseSx
+
+                    if (rl === 'admin') {
+                      chipSx = { ...baseSx, bgcolor: '#ef4444', color: '#fff' } // rojo
+                    } else if (rl === 'mod' || rl === 'moderator') {
+                      chipSx = { ...baseSx, bgcolor: '#3b82f6', color: '#fff' } // azul
+                    } else {
+                      chipSx = { ...baseSx, bgcolor: '#6b7280', color: '#fff' } // gris
+                    }
+
+                    return (
+                      <Chip
+                        label={roleLabel}
+                        size="small"
+                        sx={chipSx}
+                      />
+                    )
+                  })()}
+                </Box>
+                <Typography variant="caption" color="text.secondary">
+                  {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : ''}
+                </Typography>
               </Box>
-              <Typography variant="caption" color="text.secondary">
-                {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : ''}
-              </Typography>
-            </Box>
 
             {/* EDICIÓN */}
             {editingId === msg.id ? (
@@ -174,7 +257,7 @@ export default function Chat() {
             ) : (
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
                 <Typography>{msg.content}</Typography>
-                {msg.userId === currentUser?.id && (
+                {String(msg.userId) === String(currentUser?.id) && (
                   <Box>
                     <IconButton size="small" onClick={() => { setEditingId(msg.id); setEditingContent(msg.content) }}>
                       <EditIcon fontSize="small" />
@@ -187,7 +270,7 @@ export default function Chat() {
               </Box>
             )}
           </Paper>
-        ))}
+        )})}
         <div ref={bottomRef} />
       </Box>
 
