@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, shell } from 'electron';
 
 let mainWindow;
 
@@ -15,6 +15,92 @@ function createWindow() {
     autoHideMenuBar: false,
     backgroundColor: '#ffffff'
   });
+
+  // --- INICIO DE LA LÓGICA DEL MENÚ ---
+
+  
+  const menuTemplate = [
+    {
+      label: 'Módulos',
+      submenu: [
+        {
+          label: 'Bugs',
+          click: () => {
+            // Acción al hacer clic en Submenú 1.1
+            console.log('Has hecho clic en el módulo Bugs');
+          }
+        },
+        {
+          label: 'Chat',
+          click: () => {
+            console.log('Has hecho clic en el módulo Chat');
+          }
+        },
+        {
+          label: 'Posts',
+          click: () => {
+            console.log('Has hecho clic en el módulo Posts');
+          }
+        },
+        {
+          label: 'Status',
+          click: () => {
+            console.log('Has hecho clic en el módulo Status');
+          }
+        },
+        {
+          label: 'Usuarios',
+          click: () => {
+            console.log('Has hecho clic en el módulo Usuarios');
+          }
+        }
+      ]
+    },
+    {
+      label: 'Información',
+      submenu: [
+        {
+          label: 'Informe',
+          click: () => {
+            console.log('Has hecho clic en Información');
+          }
+        },
+        {
+          label: 'Github API',
+          click: () => {
+            console.log('Has hecho clic en el enlace a Github API');
+          },
+          click: async () => {
+            await shell.openExternal('https://github.com/GrupoNiggets/AdminPanel-api');
+          }
+        },
+        {
+          label: 'Github APP',
+          click: () => {
+            console.log('Has hecho clic en el enlace a Github APP');
+          },
+          click: async () => {
+            await shell.openExternal('https://github.com/GrupoNiggets/AdminPanel-app');
+          }
+        },
+        {
+          label: 'Documentación',
+          click: () => {
+            console.log('Has hecho clic en Documentación');
+          }
+        }
+      ]
+    },
+  ];
+
+  // 2. Construir el menú desde la plantilla
+  const menu = Menu.buildFromTemplate(menuTemplate);
+
+  // 3. Establecer el menú de la aplicación
+  Menu.setApplicationMenu(menu);
+
+  // --- FIN DE LA LÓGICA DEL MENÚ ---
+
 
   const devUrl = 'http://localhost:5173';
 
