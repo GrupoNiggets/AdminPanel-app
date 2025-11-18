@@ -42,23 +42,23 @@ export default function Home() {
   ]
 
   return (
-    <Box sx={{ bgcolor: '#f5f5f5', height: 'calc(100vh - 64px)', overflow: 'hidden', m: 0, p: 0 }}>
-      <Grid container spacing={0} sx={{ height: '100%', m: 0 }}>
+    <Box sx={{ bgcolor: '#f5f5f5', height: 'calc(100vh - 64px)', overflow: 'hidden', m: 0, p: 1.5 }}>
+      <Grid container spacing={1.5} sx={{ height: '100%' }}>
         {/* Columna Izquierda - Accesos Rápidos */}
-        <Grid item xs={12} lg={1.3} sx={{ height: '100%', p: 0 }}>
-          <Paper elevation={3} sx={{ bgcolor: '#ffffff', borderRadius: 0, p: 1.5, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'visible' }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#000000', fontSize: '1.05rem' }}>
+        <Grid item xs={12} lg={2} sx={{ height: '100%' }}>
+          <Paper elevation={3} sx={{ bgcolor: '#ffffff', borderRadius: 2, p: 2, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#000000', fontSize: '1.1rem' }}>
               Accesos Rápidos
             </Typography>
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1.5, overflow: 'visible' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               {quickLinks.map((link, i) => (
                 <Box
                   key={i}
                   component="a"
                   href={link.url}
                   sx={{
-                    borderRadius: 2,
-                    p: 2,
+                    borderRadius: 1.5,
+                    p: 1.5,
                     textDecoration: 'none',
                     color: 'text.primary',
                     transition: 'all 0.3s',
@@ -75,22 +75,23 @@ export default function Home() {
                   }}
                 >
                   <Box sx={{ 
-                    minWidth: 48, 
-                    height: 48, 
-                    borderRadius: 2, 
+                    minWidth: 40, 
+                    height: 40, 
+                    borderRadius: 1.5, 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'center',
                     bgcolor: link.color,
                     color: 'white',
-                    mr: 2
+                    mr: 1.5,
+                    '& svg': { fontSize: '1.25rem' }
                   }}>
                     {link.icon}
                   </Box>
-                  <Typography fontWeight={700} fontSize="1rem" sx={{ flex: 1 }}>
+                  <Typography fontWeight={600} fontSize="0.875rem" sx={{ flex: 1 }}>
                     {link.name}
                   </Typography>
-                  <ArrowForwardIcon sx={{ color: link.color, fontSize: '1.5rem', flexShrink: 0 }} />
+                  <ArrowForwardIcon sx={{ color: link.color, fontSize: '1.25rem', flexShrink: 0 }} />
                 </Box>
               ))}
             </Box>
@@ -98,19 +99,15 @@ export default function Home() {
         </Grid>
 
         {/* Columna Derecha - Estadísticas arriba y dos bloques abajo */}
-        <Grid item xs={12} lg={10.7} sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 0, pl: 0.5, pr: 2 }}>
-          {/* Estadísticas - 18% altura */}
-          <Box sx={{ height: '18%', mb: 0.5 }}>
-            <Grid container spacing={0.5} sx={{ height: '100%' }}>
+        <Grid item xs={12} lg={10} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          {/* Estadísticas - Altura fija más compacta */}
+          <Box sx={{ mb: 1.5 }}>
+            <Grid container spacing={1.5}>
               {stats.map((stat, i) => (
-                <Grid item xs={12} sm={6} md={2.4} key={i} sx={{ height: '100%' }}>
+                <Grid item xs={12} sm={6} md={2.4} key={i}>
                   <Card elevation={4} sx={{ 
                     bgcolor: '#ffffff', 
-                    borderRadius: 0, 
-                    height: '100%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
+                    borderRadius: 2, 
                     transition: 'all 0.3s',
                     border: '1px solid #f0f0f0',
                     '&:hover': { 
@@ -119,13 +116,13 @@ export default function Home() {
                       borderColor: stat.color
                     } 
                   }}>
-                    <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, width: '100%', justifyContent: 'flex-start', pl: 3 }}>
-                      <Box sx={{ color: stat.color, display: 'flex', alignItems: 'center', '& svg': { fontSize: '3rem' } }}>{stat.icon}</Box>
+                    <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: '16px !important' }}>
+                      <Box sx={{ color: stat.color, display: 'flex', alignItems: 'center', '& svg': { fontSize: '2.5rem' } }}>{stat.icon}</Box>
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography variant="h2" sx={{ fontWeight: 800, color: stat.color, fontSize: '2.5rem', lineHeight: 1 }}>
+                        <Typography variant="h2" sx={{ fontWeight: 800, color: stat.color, fontSize: '2rem', lineHeight: 1 }}>
                           {stat.value}
                         </Typography>
-                        <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 600, fontSize: '0.9rem', mt: 0.5 }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, fontSize: '0.8rem', mt: 0.25 }}>
                           {stat.label}
                         </Typography>
                       </Box>
@@ -136,61 +133,68 @@ export default function Home() {
             </Grid>
           </Box>
 
-          {/* Dos bloques 50/50 - 82% altura */}
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={0.5} sx={{ height: '100%' }}>
+          {/* Dos bloques 50/50 - Resto de la altura */}
+          <Box sx={{ flex: 1, minHeight: 0 }}>
+            <Grid container spacing={1.5} sx={{ height: '100%' }}>
               {/* Bloque Izquierdo - Actividad Reciente */}
-              <Grid item xs={12} md={6} sx={{ height: '100%' }}>
+              <Grid item xs={12} md={6} sx={{ height: '100%', display: 'flex' }}>
                 <Paper elevation={4} sx={{ 
                   p: 2, 
-                  height: '100%', 
+                  width: '100%',
                   bgcolor: '#ffffff', 
-                  borderRadius: 0, 
+                  borderRadius: 2, 
                   display: 'flex', 
-                  flexDirection: 'column', 
-                  overflow: 'auto',
+                  flexDirection: 'column',
                   border: '1px solid #f0f0f0'
                 }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#000000' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#000000', fontSize: '1.1rem', flexShrink: 0 }}>
                     Actividad Reciente
                   </Typography>
-                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'auto', pr: 0.5, maxHeight: '100%' }}>
+                  <Box sx={{ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 1,
+                    flex: 1,
+                    justifyContent: 'space-evenly'
+                  }}>
                     {recentActivity.slice(0, 4).map((activity, i) => (
-                      <Box key={i} className="activity-item" sx={{ 
+                      <Box key={i} sx={{ 
                         bgcolor: '#f8f9fa', 
-                        borderRadius: 2, 
-                        mb: 1.5, 
+                        borderRadius: 1.5, 
                         p: 1.5, 
                         border: '2px solid #e9ecef',
                         display: 'flex', 
                         alignItems: 'center',
                         transition: 'all 0.2s',
+                        flex: '1 1 0',
+                        minHeight: 0,
                         '&:hover': {
                           bgcolor: '#f0f0f0',
                           borderColor: '#000000',
-                          transform: 'translateX(10px)',
-                          boxShadow: 4
+                          transform: 'translateX(8px)',
+                          boxShadow: 2
                         }
                       }}>
-                        <Box className="activity-icon" sx={{ 
+                        <Box sx={{ 
                           minWidth: 48, 
                           height: 48, 
-                          borderRadius: 2, 
+                          borderRadius: 1.5, 
                           bgcolor: '#000000', 
                           color: 'white',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          mr: 2,
+                          mr: 1.5,
+                          flexShrink: 0,
                           '& svg': { fontSize: '1.5rem' }
                         }}>
                           {activity.icon}
                         </Box>
-                        <Box className="activity-info" sx={{ flex: 1 }}>
-                          <Typography className="activity-action" fontWeight={700} fontSize="0.875rem" sx={{ mb: 0.3, lineHeight: 1.2 }}>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                          <Typography fontWeight={700} fontSize="0.875rem" sx={{ mb: 0.3, lineHeight: 1.3 }}>
                             {activity.action}
                           </Typography>
-                          <Typography className="activity-meta" variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.75rem' }}>
+                          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.75rem' }}>
                             {activity.user} · {activity.time}
                           </Typography>
                         </Box>
@@ -201,57 +205,64 @@ export default function Home() {
               </Grid>
 
               {/* Bloque Derecho - Más Actividad */}
-              <Grid item xs={12} md={6} sx={{ height: '100%' }}>
+              <Grid item xs={12} md={6} sx={{ height: '100%', display: 'flex' }}>
                 <Paper elevation={4} sx={{ 
                   p: 2, 
-                  height: '100%', 
+                  width: '100%',
                   bgcolor: '#ffffff', 
-                  borderRadius: 0, 
+                  borderRadius: 2, 
                   display: 'flex', 
-                  flexDirection: 'column', 
-                  overflow: 'auto',
+                  flexDirection: 'column',
                   border: '1px solid #f0f0f0'
                 }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#000000' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#000000', fontSize: '1.1rem', flexShrink: 0 }}>
                     Más Actividad
                   </Typography>
-                  <Box className="activity-list" sx={{ flex: 1, overflowY: 'auto', pr: 0.5, maxHeight: '100%' }}>
+                  <Box sx={{ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 1,
+                    flex: 1,
+                    justifyContent: 'space-evenly'
+                  }}>
                     {recentActivity.slice(4, 8).map((activity, i) => (
-                      <Box key={i} className="activity-item" sx={{ 
+                      <Box key={i} sx={{ 
                         bgcolor: '#f8f9fa', 
-                        borderRadius: 2, 
-                        mb: 1.5, 
+                        borderRadius: 1.5, 
                         p: 1.5, 
                         border: '2px solid #e9ecef',
                         display: 'flex', 
                         alignItems: 'center',
                         transition: 'all 0.2s',
+                        flex: '1 1 0',
+                        minHeight: 0,
                         '&:hover': {
                           bgcolor: '#f0f0f0',
                           borderColor: '#000000',
-                          transform: 'translateX(10px)',
-                          boxShadow: 4
+                          transform: 'translateX(8px)',
+                          boxShadow: 2
                         }
                       }}>
-                        <Box className="activity-icon" sx={{ 
+                        <Box sx={{ 
                           minWidth: 48, 
                           height: 48, 
-                          borderRadius: 2, 
+                          borderRadius: 1.5, 
                           bgcolor: '#000000', 
                           color: 'white',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          mr: 2,
+                          mr: 1.5,
+                          flexShrink: 0,
                           '& svg': { fontSize: '1.5rem' }
                         }}>
                           {activity.icon}
                         </Box>
-                        <Box className="activity-info" sx={{ flex: 1 }}>
-                          <Typography className="activity-action" fontWeight={700} fontSize="0.875rem" sx={{ mb: 0.3, lineHeight: 1.2 }}>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                          <Typography fontWeight={700} fontSize="0.875rem" sx={{ mb: 0.3, lineHeight: 1.3 }}>
                             {activity.action}
                           </Typography>
-                          <Typography className="activity-meta" variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.75rem' }}>
+                          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.75rem' }}>
                             {activity.user} · {activity.time}
                           </Typography>
                         </Box>
