@@ -146,9 +146,12 @@ export default function Home() {
                   flexDirection: 'column',
                   border: '1px solid #f0f0f0'
                 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#000000', fontSize: '1.1rem', flexShrink: 0 }}>
-                    Actividad Reciente
-                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, flexShrink: 0 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#000000', fontSize: '1.1rem' }}>
+                      Actividad Reciente
+                    </Typography>
+                    <Chip label="DEV" size="small" sx={{ bgcolor: '#3b82f6', color: 'white', fontWeight: 600, fontSize: '0.7rem', height: 20 }} />
+                  </Box>
                   <Box sx={{ 
                     display: 'flex',
                     flexDirection: 'column',
@@ -214,9 +217,12 @@ export default function Home() {
                   flexDirection: 'column',
                   border: '1px solid #f0f0f0'
                 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#000000', fontSize: '1.1rem', flexShrink: 0 }}>
-                    Más Actividad
-                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, flexShrink: 0 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#000000', fontSize: '1.1rem' }}>
+                      Más Actividad
+                    </Typography>
+                    <Chip label="DEV" size="small" sx={{ bgcolor: '#3b82f6', color: 'white', fontWeight: 600, fontSize: '0.7rem', height: 20 }} />
+                  </Box>
                   <Box sx={{ 
                     display: 'flex',
                     flexDirection: 'column',
