@@ -1,18 +1,17 @@
-/* --- VARIABLES GLOBALES --- */
 :root {
   --spacing-unit: 8px;
   --border-radius: 4px;
   --border-color: #e0e0e0;
   --text-secondary: #6c757d;
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   font-family: var(--font-family);
-  background-color: #f4f6f8; /* Un fondo similar al de la imagen */
+  background-color: #f4f6f8;
 }
 
-/* --- LAYOUT PRINCIPAL (Reemplazo de Grid) --- */
 .main-layout {
   display: flex;
   flex-direction: column;
@@ -25,31 +24,29 @@ body {
 
 .layout-row-main-content {
   display: flex;
-  flex-wrap: wrap; /* Para responsividad */
+  flex-wrap: wrap;
   gap: calc(var(--spacing-unit) * 2);
 }
 
 .table-section {
-  flex: 2; /* Ocupa 2/3 del espacio */
-  min-width: 300px; /* Para evitar que se comprima demasiado */
+  flex: 2;
+  min-width: 300px;
 }
 
 .charts-section {
-  flex: 1; /* Ocupa 1/3 del espacio */
+  flex: 1;
   min-width: 250px;
 }
 
-/* --- ESTADÍSTICAS (UserStats) --- */
 .stats-container {
   display: flex;
   gap: calc(var(--spacing-unit) * 2);
 }
 
 .stat-item {
-  flex: 1; /* Cada item ocupa el mismo espacio */
+  flex: 1;
 }
 
-/* --- CAMPO DE BÚSQUEDA (Reemplazo de TextField) --- */
 .search-input-wrapper {
   position: relative;
   display: flex;
@@ -60,10 +57,9 @@ body {
   position: absolute;
   left: calc(var(--spacing-unit) * 1.5);
   color: var(--text-secondary);
-  pointer-events: none; /* Para poder hacer clic en el input a través del icono */
+  pointer-events: none;
 }
 
-/* Estilo base para todos los inputs personalizados */
 .custom-input {
   width: 100%;
   padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
@@ -71,33 +67,31 @@ body {
   font-family: var(--font-family);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  box-sizing: border-box; /* Importante para que el padding no afecte el ancho total */
+  box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .custom-input:focus {
   outline: none;
-  border-color: #0b5cff; /* Color primario de MUI */
+  border-color: #0b5cff;
   box-shadow: 0 0 0 2px rgba(11, 92, 255, 0.2);
 }
 
-/* Añadimos padding a la izquierda en el input de búsqueda para el icono */
 .search-input-wrapper .custom-input {
   padding-left: calc(var(--spacing-unit) * 4.5);
 }
 
-/* --- TABLA DE USUARIOS (UserTable) --- */
 .table-wrapper {
   background-color: #fff;
   border-radius: var(--border-radius);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  overflow: hidden; /* Para que el borde redondeado se aplique a la tabla */
+  overflow: hidden;
 }
 
 .user-table {
   width: 100%;
-  border-collapse: collapse; /* Une los bordes de las celdas */
-  table-layout: fixed; /* Fija el layout de la tabla */
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .user-table th,
@@ -115,7 +109,6 @@ body {
   font-size: 14px;
 }
 
-/* Anchos fijos para las columnas */
 .user-table th.col-usuario,
 .user-table td.col-usuario {
   width: 30%;
@@ -141,24 +134,20 @@ body {
   width: 16%;
 }
 
-/* Permitir que el texto se ajuste en las columnas de Usuario y Email */
 .user-table td.col-usuario,
 .user-table td.col-email {
   white-space: normal;
   word-wrap: break-word;
 }
 
-/* Eliminar el borde de la última fila */
 .user-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* Efecto hover en las filas de la tabla */
 .user-table .table-row:hover {
   background-color: rgba(0, 0, 0, 0.04);
 }
 
-/* --- GRÁFICOS (UserCharts) --- */
 .charts-container {
   display: flex;
   flex-direction: column;
@@ -169,7 +158,6 @@ body {
   width: 100%;
 }
 
-/* --- DIÁLOGO DE EDICIÓN (EditUserDialog) --- */
 .form-field {
   display: flex;
   flex-direction: column;

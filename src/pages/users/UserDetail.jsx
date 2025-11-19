@@ -1,18 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Box, Paper, Typography, Button, Avatar, Chip, CircularProgress } from "@mui/material";
+//IMPORTS
+import { useState, useEffect } from "react";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Avatar,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { getUser } from "./dataUsers";
 
+//toPremiumBoolean PARA ACEPTAR STRINGS DISTINTOS
 const toPremiumBoolean = (value) => {
   if (typeof value === "boolean") return value;
   if (typeof value === "string") {
     const normalized = value.trim().toLowerCase();
-    return normalized === "activo" || normalized === "active" || normalized === "true" || normalized === "1";
+    return (
+      normalized === "activo" ||
+      normalized === "active" ||
+      normalized === "true" ||
+      normalized === "1"
+    );
   }
   return Boolean(value);
 };
 
+//DETALLES DEL USUARIO
 function UserDetail({ userId, navigate }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,6 +36,7 @@ function UserDetail({ userId, navigate }) {
   useEffect(() => {
     let isMounted = true;
 
+    //BUSCAR USUARIO
     const fetchUser = async () => {
       setLoading(true);
       try {
@@ -53,6 +70,7 @@ function UserDetail({ userId, navigate }) {
     };
   }, [userId]);
 
+  //COLORES DE ROLES
   const ROLE_COLORS = {
     admin: "#d32f2f",
     user: "#2e7d32",
@@ -76,6 +94,7 @@ function UserDetail({ userId, navigate }) {
     );
   }
 
+  //SI NO EXISTE EL USUARIO
   if (!user) {
     return (
       <Box
@@ -121,7 +140,9 @@ function UserDetail({ userId, navigate }) {
         >
           Volver
         </Button>
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexGrow: 1 }}>
+        <Box
+          sx={{ display: "flex", gap: 2, alignItems: "center", flexGrow: 1 }}
+        >
           <AccountCircleIcon sx={{ color: "#0b5cff", fontSize: 32 }} />
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             Detalle de Usuario
@@ -137,7 +158,6 @@ function UserDetail({ userId, navigate }) {
             gap: 3,
           }}
         >
-          {/* Información básica */}
           <Box
             sx={{
               display: "flex",
@@ -147,7 +167,9 @@ function UserDetail({ userId, navigate }) {
               borderBottom: "1px solid #e0e0e0",
             }}
           >
-            <Avatar sx={{ bgcolor: "#0b5cff", width: 80, height: 80, fontSize: 32 }}>
+            <Avatar
+              sx={{ bgcolor: "#0b5cff", width: 80, height: 80, fontSize: 32 }}
+            >
               {user.name.charAt(0)}
             </Avatar>
             <Box>
@@ -159,40 +181,48 @@ function UserDetail({ userId, navigate }) {
               </Typography>
             </Box>
           </Box>
-
-          {/* Detalles */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Box>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{ mb: 0.5 }}
+              >
                 Email
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: 500 }}>
                 {user.email}
               </Typography>
             </Box>
-
-          {user.createdAt && (
+            {user.createdAt && (
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{ mb: 0.5 }}
+                >
+                  Fecha de creación
+                </Typography>
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                  {new Date(user.createdAt).toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  —{" "}
+                  {new Date(user.createdAt).toLocaleTimeString("es-ES", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Typography>
+              </Box>
+            )}
             <Box>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
-                Fecha de creación
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                {new Date(user.createdAt).toLocaleDateString("es-ES", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}{" "}
-                —{" "}
-                {new Date(user.createdAt).toLocaleTimeString("es-ES", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </Typography>
-            </Box>
-          )}
-
-            <Box>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{ mb: 0.5 }}
+              >
                 Rol
               </Typography>
               <Chip
@@ -205,9 +235,12 @@ function UserDetail({ userId, navigate }) {
                 }}
               />
             </Box>
-
             <Box>
-              <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{ mb: 0.5 }}
+              >
                 Estado Premium
               </Typography>
               <Chip
@@ -224,4 +257,3 @@ function UserDetail({ userId, navigate }) {
 }
 
 export default UserDetail;
-

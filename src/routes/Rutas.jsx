@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+//IMPORTS
+import { useEffect, useState } from 'react'
 import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import DashboardIcon from '@mui/icons-material/Dashboard'

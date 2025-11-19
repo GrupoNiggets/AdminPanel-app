@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+//IMPORTS
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import "./Users.css";
 
@@ -10,19 +11,33 @@ import UserTable from "../../components/userComponents/UserTable";
 import EditUserDialog from "../../components/userComponents/EditUserDialog";
 import DeleteUserDialog from "../../components/userComponents/DeleteUserDialog";
 import CreateUserDialog from "../../components/userComponents/CreateUserDialog";
-import { listUsers, getUser, createUser, updateUser, deleteUser } from "./dataUsers";
+import {
+  listUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "./dataUsers";
 
+//toPremiumBoolean PARA ACEPTAR STRINGS DISTINTOS
 const toPremiumBoolean = (value) => {
   if (typeof value === "boolean") return value;
   if (typeof value === "string") {
     const normalized = value.trim().toLowerCase();
-    return normalized === "activo" || normalized === "active" || normalized === "true" || normalized === "1";
+    return (
+      normalized === "activo" ||
+      normalized === "active" ||
+      normalized === "true" ||
+      normalized === "1"
+    );
   }
   return Boolean(value);
 };
 
+//getPremiumLabel CON LOS VALORES DE LA ETIQUETA
 const getPremiumLabel = (value) => (value ? "Activo" : "Inactivo");
 
+//FUNCIÓN Users()
 export default function Users() {
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
@@ -47,6 +62,7 @@ export default function Users() {
     loadUsers();
   }, [loadUsers]);
 
+  //useState DE CONSTANTES DE EDICIÓN
   const [ventanaEditar, setVentanaEditar] = useState(false);
   const [editarUser, setEditarUser] = useState(null);
 
@@ -60,6 +76,7 @@ export default function Users() {
     premium: false,
   });
 
+  //useState DE CONSTANTES PARA TENER LOS USUARIOS PAGINADOS
   const [currentPage, setCurrentPage] = useState(0);
   const usersPerPage = 5;
 
@@ -81,6 +98,7 @@ export default function Users() {
     }
   }, [editarUser]);
 
+  //handleConfirm PARA CONFIRMAR LA EDICIÓN DE USUARIO
   const handleConfirm = async () => {
     if (!editarUser?.id) {
       return;
@@ -97,20 +115,24 @@ export default function Users() {
     }
   };
 
+  //handleCancel PARA NEGAR LA EDICIÓN DE USUARIO
   const handleCancel = () => {
     setVentanaEditar(false);
   };
 
+  //handleEditRequest PARA CONSULTA DE EDICIÓN DE USUARIO
   const handleEditRequest = (user) => {
     setEditarUser(user);
     setVentanaEditar(true);
   };
 
+  //handleDeleteRequest PARA CONSULTA DE ELIMINACIÓN DE USUARIO
   const handleDeleteRequest = (user) => {
     setEliminarUser(user);
     setVentanaEliminar(true);
   };
 
+  //handleDeleteConfirm PARA CONFIRMAR LA ELIMINACIÓN DE USUARIO
   const handleDeleteConfirm = async () => {
     if (!eliminarUser?.id) {
       return;
@@ -127,11 +149,13 @@ export default function Users() {
     }
   };
 
+  //handleDeleteCancel PARA CANCELAR ELIMINACIÓN DE USUARIO
   const handleDeleteCancel = () => {
     setVentanaEliminar(false);
     setEliminarUser(null);
   };
 
+  //handleCreateOpen PARA ABRIR LA CREACIÓN DE USUARIO
   const handleCreateOpen = () => {
     setCreateFormData({
       name: "",
@@ -142,10 +166,12 @@ export default function Users() {
     setVentanaCrear(true);
   };
 
+  //handleCreateCancel PARA CANCELAR LA CREACIÓN DE USUARIO
   const handleCreateCancel = () => {
     setVentanaCrear(false);
   };
 
+  //handleCreateConfirm PARA CONFIRMAR LA CREACIÓN DE USUARIO
   const handleCreateConfirm = async () => {
     try {
       await createUser(createFormData);
@@ -157,15 +183,14 @@ export default function Users() {
     }
   };
 
+  //COLORES DE ROLES
   const ROLE_COLORS = {
     admin: "#d32f2f",
     user: "#2e7d32",
     default: "#757575",
   };
 
-  const PREMIUM_COLORS = { Activo: "#ce4278ff", Inactivo: "#6b5435ff", default: "#9e9e9e" };
-
-  // Función para normalizar acentos y caracteres especiales
+  // FUNCIÓN PARA NORMALIZAR SIGNOS DE ACENTUACIÓN
   const normalizeText = (text) => {
     return text
       .normalize("NFD")
@@ -173,6 +198,7 @@ export default function Users() {
       .toLowerCase();
   };
 
+  // FILTRACIÓN CON LA FUNCIÓN ANTERIOR normalizeText
   const filtered = useMemo(() => {
     const q = query.trim();
     if (!q) return users;
@@ -186,31 +212,49 @@ export default function Users() {
     );
   }, [query, users]);
 
+  // USUARIOS PAGINADOS
   const paginatedUsers = useMemo(() => {
     const start = currentPage * usersPerPage;
     const end = start + usersPerPage;
     return filtered.slice(start, end);
   }, [filtered, currentPage, usersPerPage]);
 
+  // TOTAL DE PÁGINAS
   const totalPages = Math.ceil(filtered.length / usersPerPage);
 
+  //handleNextPage PARA MOSTRAR LA SIGUIENTE PÁGINA
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  //handlePreviousPage PARA MOSTRAR LA PÁGINA ANTERIOR
   const handlePreviousPage = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     }
   };
 
+  //USUARIOS TOTALES
   const totalUsers = users.length;
-  const activeUsers = useMemo(() => users.filter((u) => Boolean(u.premium)).length, [users]);
+  //USUARIOS CON PREMIUM
+  const activeUsers = useMemo(
+    () => users.filter((u) => Boolean(u.premium)).length,
+    [users]
+  );
+  //USUARIOS SIN PREMIUM
   const inactiveUsers = totalUsers - activeUsers;
-  const adminCount = useMemo(() => users.filter((u) => u.role === "admin").length, [users]);
-  const normalUserCount = useMemo(() => users.filter((u) => u.role === "user").length, [users]);
+  //USUARIOS ADMINISTRADORES
+  const adminCount = useMemo(
+    () => users.filter((u) => u.role === "admin").length,
+    [users]
+  );
+  //USUARIOS SIN PERMISOS
+  const normalUserCount = useMemo(
+    () => users.filter((u) => u.role === "user").length,
+    [users]
+  );
 
   return (
     <Box

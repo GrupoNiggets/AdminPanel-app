@@ -15,9 +15,6 @@ function createWindow() {
     autoHideMenuBar: false,
     backgroundColor: '#ffffff'
   });
-
-  // --- INICIO DE LA LÓGICA DEL MENÚ ---
-
   
   const menuTemplate = [
     {
@@ -26,7 +23,6 @@ function createWindow() {
         {
           label: 'Bugs',
           click: () => {
-            // Acción al hacer clic en Submenú 1.1
             console.log('Has hecho clic en el módulo Bugs');
           }
         },
@@ -93,13 +89,9 @@ function createWindow() {
     },
   ];
 
-  // 2. Construir el menú desde la plantilla
   const menu = Menu.buildFromTemplate(menuTemplate);
 
-  // 3. Establecer el menú de la aplicación
   Menu.setApplicationMenu(menu);
-
-  // --- FIN DE LA LÓGICA DEL MENÚ ---
 
 
   const devUrl = 'http://localhost:5173';
