@@ -111,7 +111,7 @@ function UserDetail({ userId, navigate }) {
           <Button
             variant="outlined"
             startIcon={<ArrowBackIcon />}
-            onClick={() => navigate("#/modules/users")}
+            onClick={() => navigate("/modules/users")}
             sx={{ mt: 2 }}
           >
             Volver a usuarios
@@ -136,7 +136,7 @@ function UserDetail({ userId, navigate }) {
         <Button
           variant="outlined"
           startIcon={<ArrowBackIcon />}
-          onClick={() => navigate("#/modules/users")}
+          onClick={() => navigate("/modules/users")}
         >
           Volver
         </Button>

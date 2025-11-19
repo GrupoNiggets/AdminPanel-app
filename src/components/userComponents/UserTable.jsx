@@ -7,6 +7,7 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -23,6 +24,7 @@ function UserTable({
   handleNextPage,
   usersPerPage,
 }) {
+  const navigate = useNavigate();
   const emptyRows =
     paginatedUsers.length < usersPerPage
       ? usersPerPage - paginatedUsers.length
@@ -151,7 +153,7 @@ function UserTable({
                       size="small"
                       color="primary"
                       onClick={() => {
-                        window.location.hash = `#/users/${u.id}`;
+                        navigate(`/users/${u.id}`);
                       }}
                     >
                       <AccountCircleIcon />

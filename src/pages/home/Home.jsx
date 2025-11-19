@@ -8,6 +8,7 @@ import {
   Paper,
   Chip,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -108,37 +109,37 @@ export default function Home() {
   const quickLinks = [
     {
       name: "Ver módulos",
-      url: "#/modules",
+      url: "/modules",
       icon: <DashboardIcon />,
       color: "#3b82f6",
     },
     {
       name: "Gestionar usuarios",
-      url: "#/modules/users",
+      url: "/modules/users",
       icon: <PeopleIcon />,
       color: "#8b5cf6",
     },
     {
       name: "Ver posts",
-      url: "#/modules/posts",
+      url: "/modules/posts",
       icon: <ArticleIcon />,
       color: "#06b6d4",
     },
     {
       name: "Chat",
-      url: "#/modules/chat",
+      url: "/modules/chat",
       icon: <ChatIcon />,
       color: "#10b981",
     },
     {
       name: "Revisar bugs",
-      url: "#/modules/bugs",
+      url: "/modules/bugs",
       icon: <BugReportIcon />,
       color: "#f59e0b",
     },
     {
       name: "Estado del sistema",
-      url: "#/modules/status",
+      url: "/modules/status",
       icon: <CheckCircleIcon />,
       color: "#22c55e",
     },
@@ -183,8 +184,8 @@ export default function Home() {
               {quickLinks.map((link, i) => (
                 <Box
                   key={i}
-                  component="a"
-                  href={link.url}
+                  component={Link}
+                  to={link.url}
                   sx={{
                     borderRadius: 1.5,
                     p: 1.5,

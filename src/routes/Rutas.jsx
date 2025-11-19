@@ -1,22 +1,16 @@
 //IMPORTS
-import { useEffect, useState } from 'react'
-import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material'
+import { useEffect } from 'react'
+import { HashRouter, Routes, Route, useNavigate, useLocation, useParams, Link } from 'react-router-dom'
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import Modulos from '../components/Modulos'
 import Home from '../pages/home/Home'
 import UserDetail from '../pages/users/UserDetail'
 
-export function navigate(to) {
-	window.location.hash = to
-}
-
-function currentPath() {
-	return window.location.hash.slice(1) || '/'
-}
-
 function Header() {
-	const path = currentPath()
+	const location = useLocation()
+	const path = location.pathname
 	
 	return (
 		<AppBar position="static" elevation={0} sx={{ bgcolor: '#000000', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
@@ -26,8 +20,9 @@ function Header() {
 				</Typography>
 				<Box sx={{ display: 'flex', gap: { xs: 0, md: 0.5 } }}>
 					<Button 
+						component={Link}
+						to="/"
 						color="inherit"
-						href="#/"
 						startIcon={<HomeIcon />}
 						sx={{ 
 							px: 2,
@@ -39,8 +34,9 @@ function Header() {
 						Dashboard
 					</Button>
 					<Button 
+						component={Link}
+						to="/modules"
 						color="inherit"
-						href="#/modules"
 						startIcon={<DashboardIcon />}
 						sx={{ 
 							px: 2,
@@ -57,14 +53,35 @@ function Header() {
 	)
 }
 
-export default function Rutas() {
-	const [path, setPath] = useState(currentPath())
+// Componente wrapper para pasar navigate a los componentes
+function ModulosWrapper() {
+	const navigate = useNavigate()
+	const location = useLocation()
+	return <Modulos path={location.pathname} navigate={navigate} />
+}
 
-	useEffect(() => {
-		const onHash = () => setPath(currentPath())
-		window.addEventListener('hashchange', onHash)
-		return () => window.removeEventListener('hashchange', onHash)
-	}, [])
+function UserDetailWrapper() {
+	const navigate = useNavigate()
+	const { userId } = useParams()
+	return <UserDetail userId={userId} navigate={navigate} />
+}
+
+function NotFound() {
+	const location = useLocation()
+	return (
+		<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
+			<Header />
+			<Box sx={{ textAlign: 'center', py: 5 }}>
+				<Typography variant="h4" gutterBottom>❌ 404 — No encontrado</Typography>
+				<Typography color="text.secondary" sx={{ mb: 2 }}>Ruta: <code>{location.pathname}</code></Typography>
+				<Button variant="contained" component={Link} to="/">← Volver al inicio</Button>
+			</Box>
+		</Box>
+	)
+}
+
+function AppContent() {
+	const location = useLocation()
 
 	// Actualizar título de la ventana según la ruta
 	useEffect(() => {
@@ -79,53 +96,42 @@ export default function Rutas() {
 		}
 
 		// Título específico o por defecto
-		if (path.startsWith('/users/')) {
+		if (location.pathname.startsWith('/users/')) {
 			document.title = 'Usuario - Radius ERP'
 		} else {
-			document.title = titles[path] || 'Admin Panel - Radius ERP'
+			document.title = titles[location.pathname] || 'Admin Panel - Radius ERP'
 		}
-	}, [path])
+	}, [location.pathname])
 
-	// Ruta home
-	if (path === '/') {
-		return (
-			<Box>
-				<Header />
-				<Home />
-			</Box>
-		)
-	}
-
-	// Ruta de detalle de usuario
-	if (path.startsWith('/users/')) {
-		const userId = path.split('/users/')[1]
-		return (
-			<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
-				<Header />
-				<UserDetail userId={userId} navigate={navigate} />
-			</Box>
-		)
-	}
-
-	// Rutas de módulos
-	if (path.startsWith('/modules')) {
-		return (
-			<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
-				<Header />
-				<Modulos path={path} navigate={navigate} />
-			</Box>
-		)
-	}
-
-	// 404
 	return (
-		<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
-			<Header />
-			<Box sx={{ textAlign: 'center', py: 5 }}>
-				<Typography variant="h4" gutterBottom>❌ 404 — No encontrado</Typography>
-				<Typography color="text.secondary" sx={{ mb: 2 }}>Ruta: <code>{path}</code></Typography>
-				<Button variant="contained" href="#/">← Volver al inicio</Button>
-			</Box>
-		</Box>
+		<Routes>
+			<Route path="/" element={
+				<Box>
+					<Header />
+					<Home />
+				</Box>
+			} />
+			<Route path="/users/:userId" element={
+				<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
+					<Header />
+					<UserDetailWrapper />
+				</Box>
+			} />
+			<Route path="/modules/*" element={
+				<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
+					<Header />
+					<ModulosWrapper />
+				</Box>
+			} />
+			<Route path="*" element={<NotFound />} />
+		</Routes>
+	)
+}
+
+export default function Rutas() {
+	return (
+		<HashRouter>
+			<AppContent />
+		</HashRouter>
 	)
 }
