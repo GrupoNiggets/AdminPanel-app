@@ -16,10 +16,13 @@ function createWindow() {
     backgroundColor: '#ffffff'
   });
 
+  const DevUrl = 'http://localhost:5173';
+
   const menuTemplate = [
     {
       label: 'Inicio',
-      click: () => {
+      click: async () => {
+        mainWindow.loadURL(`${DevUrl}/#/`);
         console.log('Has hecho clic en Inicio');
       }
     },
@@ -28,32 +31,36 @@ function createWindow() {
       submenu: [
         {
           label: 'Bugs',
-          click: () => {
-            mainWindow.loadURL('/#/modules/bugs');
+          click: async () => {
+            mainWindow.loadURL(`${DevUrl}/#/modules/bugs`);
             console.log('Has hecho clic en el módulo Bugs');
           }
         },
         {
           label: 'Chat',
-          click: () => {
+          click: async () => {
+            mainWindow.loadURL(`${DevUrl}/#/modules/chat`);
             console.log('Has hecho clic en el módulo Chat');
           }
         },
         {
           label: 'Posts',
-          click: () => {
+          click: async () => {
+            mainWindow.loadURL(`${DevUrl}/#/modules/posts`);
             console.log('Has hecho clic en el módulo Posts');
           }
         },
         {
           label: 'Status',
-          click: () => {
+          click: async () => {
+            mainWindow.loadURL(`${DevUrl}/#/modules/status`);
             console.log('Has hecho clic en el módulo Status');
           }
         },
         {
           label: 'Usuarios',
-          click: () => {
+          click: async () => {
+            mainWindow.loadURL(`${DevUrl}/#/modules/users`);
             console.log('Has hecho clic en el módulo Usuarios');
           }
         }
@@ -64,7 +71,7 @@ function createWindow() {
       submenu: [
         {
           label: 'Informe',
-          click: () => {
+          click: async () => {
             console.log('Has hecho clic en Información');
           }
         },
@@ -88,7 +95,7 @@ function createWindow() {
         },
         {
           label: 'Documentación',
-          click: () => {
+          click: async () => {
             console.log('Has hecho clic en Documentación');
           }
         },
@@ -109,10 +116,9 @@ function createWindow() {
   Menu.setApplicationMenu(menu);
 
 
-  const devUrl = 'http://localhost:5173';
 
   function loadDevURL(retries = 10) {
-    mainWindow.loadURL(devUrl)
+    mainWindow.loadURL(DevUrl)
       .then(() => {
         console.log('URL cargada correctamente');
       })
