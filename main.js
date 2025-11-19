@@ -15,14 +15,21 @@ function createWindow() {
     autoHideMenuBar: false,
     backgroundColor: '#ffffff'
   });
-  
+
   const menuTemplate = [
+    {
+      label: 'Inicio',
+      click: () => {
+        console.log('Has hecho clic en Inicio');
+      }
+    },
     {
       label: 'Módulos',
       submenu: [
         {
           label: 'Bugs',
           click: () => {
+            mainWindow.loadURL('/#/modules/bugs');
             console.log('Has hecho clic en el módulo Bugs');
           }
         },
@@ -83,6 +90,14 @@ function createWindow() {
           label: 'Documentación',
           click: () => {
             console.log('Has hecho clic en Documentación');
+          }
+        },
+        { type: 'separator' },
+        {
+          label: 'Herramientas de desarrollador',
+          click: () => {
+            mainWindow.webContents.openDevTools();
+            console.log('Has hecho clic en las Herramientas de desarrollador');
           }
         }
       ]
