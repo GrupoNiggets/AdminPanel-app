@@ -7,32 +7,42 @@ import NetworkCheckIcon from '@mui/icons-material/NetworkCheck'
 import './Status.css'
 
 export default function Status() {
-  const [time, setTime] = useState("—")   // hora inicial vacía
+  const [time, setTime] = useState("—")
   const [apiStatus, setApiStatus] = useState('desconocido')
   const [pingMessage, setPingMessage] = useState('')
-
-  // ❌ reloj eliminado
+  const [history, setHistory] = useState(Array(10).fill({ ok: null, timestamp: "" }))
 
   async function sendPing() {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/")
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/ping")
 
-      // actualiza la hora SOLO cuando se hace ping
       setTime(new Date().toLocaleTimeString('es-ES'))
 
-      if (res.ok) {
+      const ok = res.ok
+
+      if (ok) {
         setApiStatus('activo')
         setPingMessage('API funcionando ✅')
-        setTimeout(() => setPingMessage(''), 3000)
       } else {
         setApiStatus('error')
         setPingMessage('Ping fallido ❌')
-        setTimeout(() => setPingMessage(''), 3000)
       }
+
+      setHistory(prev => [
+        { ok, timestamp: new Date().toLocaleTimeString('es-ES') },
+        ...prev.slice(0, 9)
+      ])
+
+      setTimeout(() => setPingMessage(''), 3000)
     } catch {
       setApiStatus('error')
       setPingMessage('Ping fallido ❌')
-      setTime(new Date().toLocaleTimeString('es-ES'))
+
+      setHistory(prev => [
+        { ok: false, timestamp: new Date().toLocaleTimeString('es-ES') },
+        ...prev.slice(0, 9)
+      ])
+
       setTimeout(() => setPingMessage(''), 3000)
     }
   }
@@ -60,7 +70,6 @@ export default function Status() {
 
   return (
     <Paper className="status-container" elevation={0}>
-      
       <Box className="status-header">
         <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <BarChartIcon /> Monitoreo del Sistema
@@ -79,6 +88,20 @@ export default function Status() {
             size="small"
           />
         )}
+      </Box>
+
+      <Box sx={{ pl: 2, mb: 2 }}>
+        <Typography variant="subtitle1" sx={{ mb: 1 }}>Historial de Pings</Typography>
+        <Box className="ping-history">
+          {history.map((h, i) => (
+            <Box
+              key={i}
+              className="ping-item"
+              style={{ background: h.ok === null ? '#e0e0e0' : h.ok ? '#4caf50' : '#f44336' }}
+              title={h.timestamp}
+            />
+          ))}
+        </Box>
       </Box>
 
       <Grid container spacing={2} sx={{ pl: 2 }}>
@@ -100,7 +123,6 @@ export default function Status() {
 
       <Box className="services-section">
         <Typography variant="h6" sx={{ mb: 1 }}>Servicios activos</Typography>
-
         <Box className="services-list">
           {services.map((service, i) => (
             <Box className="service-item" key={i}>
@@ -113,7 +135,6 @@ export default function Status() {
           ))}
         </Box>
       </Box>
-
     </Paper>
   )
 }
