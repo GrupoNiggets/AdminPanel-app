@@ -106,9 +106,10 @@ function createWindow() {
             mainWindow.webContents.openDevTools();
             console.log('Has hecho clic en las Herramientas de desarrollador');
           }
-        }
+        },
       ]
     },
+    { role: 'quit', label: 'Salir'},
   ];
 
   const menu = Menu.buildFromTemplate(menuTemplate);
