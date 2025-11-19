@@ -93,12 +93,16 @@ export default function Status() {
       <Box sx={{ pl: 2, mb: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>Historial de Pings</Typography>
         <Box className="ping-history">
-          {history.map((h, i) => (
-            <Box
-              key={i}
-              className="ping-item"
-              style={{ background: h.ok === null ? '#e0e0e0' : h.ok ? '#4caf50' : '#f44336' }}
-              title={h.timestamp}
+        {history.map((h, i) => (
+          <Box
+            key={i}
+            className="ping-item"
+            style={{ background: h.ok === null ? '#e0e0e0' : h.ok ? '#4caf50' : '#f44336' }}
+            title={
+              h.ok === null
+                ? "Sin ping"
+                : `${h.timestamp}: ${h.ok ? "API funcionando correctamente" : "Ping fallido ❌"}`
+              }
             />
           ))}
         </Box>
