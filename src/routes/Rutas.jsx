@@ -18,7 +18,7 @@ import UserDetail from "../pages/users/UserDetail";
 import Informe from "../pages/informacion/informe/informe";
 import Tutorial from "../pages/informacion/documentacion/tutorial/Tutorial";
 import HowToGuide from "../pages/informacion/documentacion/howToGuide/HowToGuide";
-import MV from "../pages/informacion/documentacion/maquinaVirtual/MV";
+import MV from "../pages/informacion/documentacion/maquinaVirtual/mv";
 
 function Header() {
   const location = useLocation();

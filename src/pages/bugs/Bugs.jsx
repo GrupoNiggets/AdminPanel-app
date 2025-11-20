@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import './Bugs.css';
-import AddBugsModal from './AddBugsModal';
+import React, { useState, useEffect } from "react";
+import "./Bugs.css";
+import AddBugsModal from "./AddBugsModal";
 
 const STATUS_COLORS = {
-  abierto: '#f87171',        // rojo
-  'en progreso': '#fbbf24',  // amarillo
-  resuelto: '#34d399',       // verde
+  ABIERTO: "#f87171", // rojo
+  "EN PROGRESO": "#fbbf24", // amarillo
+  RESUELTO: "#34d399", // verde
 };
 
 const PRIORITY_COLORS = {
-  alta: '#ef4444',
-  media: '#f59e0b',
-  baja: '#3b82f6',
+  ALTA: "#ef4444",
+  MEDIA: "#f59e0b",
+  BAJA: "#34d399",
 };
 
 export default function BugsDashboard() {
@@ -23,41 +23,47 @@ export default function BugsDashboard() {
   // 🔵 CARGAR BUGS desde la API (nuevo)
   const loadBugs = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/v1/bugs');
+      const res = await fetch("http://localhost:3000/api/v1/bugs");
       const data = await res.json();
       if (res.ok) setBugs(data.data ?? []);
     } catch (err) {
-      console.error('Error al cargar bugs:', err);
+      console.error("Error al cargar bugs:", err);
     }
   };
 
-  useEffect(() => { loadBugs(); }, []);
+  useEffect(() => {
+    loadBugs();
+  }, []);
 
   // 🟢 GUARDAR BUG desde el modal (ya conectado en tu modal)
-  const handleAddBug = (newBug) => {
-    setBugs(prev => [...prev, newBug]); // ya NO generamos id falso
+  const handleAddBug = async (newBug) => {
+    // Reload bugs from API to ensure we have the latest data
+    await loadBugs();
   };
 
-  const filteredBugs = bugs.filter(bug =>
-    (filter === "todos" || bug.status === filter) &&
-    bug.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredBugs = bugs.filter((bug) => {
+    // Convertir el filtro a mayúsculas para comparar con los valores de la API
+    const statusFilter = filter === "todos" ? "todos" : filter.toUpperCase();
+    return (
+      (statusFilter === "todos" || bug.status === statusFilter) &&
+      bug.title.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const statusCounts = {
-    abierto: bugs.filter(b => b.status === 'abierto').length,
-    'en progreso': bugs.filter(b => b.status === 'en progreso').length,
-    resuelto: bugs.filter(b => b.status === 'resuelto').length,
+    ABIERTO: bugs.filter((b) => b.status === "ABIERTO").length,
+    "EN PROGRESO": bugs.filter((b) => b.status === "EN PROGRESO").length,
+    RESUELTO: bugs.filter((b) => b.status === "RESUELTO").length,
   };
 
   const priorityCounts = {
-    alta: bugs.filter(b => b.priority === 'alta').length,
-    media: bugs.filter(b => b.priority === 'media').length,
-    baja: bugs.filter(b => b.priority === 'baja').length,
+    ALTA: bugs.filter((b) => b.priority === "ALTA").length,
+    MEDIA: bugs.filter((b) => b.priority === "MEDIA").length,
+    BAJA: bugs.filter((b) => b.priority === "BAJA").length,
   };
 
   return (
     <div className="dashboard-layout">
-
       {/* COLUMNA IZQUIERDA */}
       <div className="left-column">
         <div className="bugs-header">
@@ -87,17 +93,21 @@ export default function BugsDashboard() {
         </div>
 
         <div className="bugs-list">
-          {filteredBugs.map(bug => (
+          {filteredBugs.map((bug) => (
             <div
               key={bug.id}
-              className={`bug-card estado-${bug.status.replace(' ', '-')}`}
+              className={`bug-card prioridad-${bug.priority.toLowerCase()} ${
+                bug.status === "RESUELTO" ? "estado-resuelto" : ""
+              }`}
             >
-              <span className="bug-status">{bug.status}</span>
-              <span className="bug-priority" style={{ color: PRIORITY_COLORS[bug.priority] }}>
-                {bug.priority}
-              </span>
+              <div className="bug-header">
+                <span className="bug-status">{bug.status}</span>
+              </div>
+              <span className="bug-priority">Prioridad {bug.priority}</span>
               <div className="bug-title">{bug.title}</div>
-              <div className="bug-footer">Reportado por: <strong>{bug.reporter}</strong></div>
+              <div className="bug-footer">
+                Reportado por: <strong>{bug.reporter}</strong>
+              </div>
             </div>
           ))}
         </div>
@@ -106,17 +116,32 @@ export default function BugsDashboard() {
       {/* COLUMNA DERECHA */}
       <div className="right-column">
         <h3>Resumen de Bugs</h3>
-        <div>Abiertos: {statusCounts.abierto}</div>
-        <div>En progreso: {statusCounts['en progreso']}</div>
-        <div>Resueltos: {statusCounts.resuelto}</div>
-        <hr style={{ margin: '10px 0' }} />
-        <div>Alta prioridad: {priorityCounts.alta}</div>
-        <div>Media prioridad: {priorityCounts.media}</div>
-        <div>Baja prioridad: {priorityCounts.baja}</div>
+        <div>
+          Abiertos: <strong>{statusCounts.ABIERTO}</strong>
+        </div>
+        <div>
+          En progreso: <strong>{statusCounts["EN PROGRESO"]}</strong>
+        </div>
+        <div>
+          Resueltos: <strong>{statusCounts.RESUELTO}</strong>
+        </div>
+        <hr style={{ margin: "10px 0" }} />
+        <div>
+          Alta prioridad: <strong>{priorityCounts.ALTA}</strong>
+        </div>
+        <div>
+          Media prioridad: <strong>{priorityCounts.MEDIA}</strong>
+        </div>
+        <div>
+          Baja prioridad: <strong>{priorityCounts.BAJA}</strong>
+        </div>
       </div>
 
       {isModalOpen && (
-        <AddBugsModal onClose={() => setIsModalOpen(false)} onSave={handleAddBug} />
+        <AddBugsModal
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleAddBug}
+        />
       )}
     </div>
   );
