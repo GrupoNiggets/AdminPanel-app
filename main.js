@@ -72,9 +72,10 @@ function createWindow() {
         {
           label: 'Informe',
           click: async () => {
-            console.log('Has hecho clic en Información');
-          }
-        },
+            mainWindow.loadURL(`${DevUrl}/#/informacion/informe`);
+        console.log('Has hecho clic en Informe');
+      }
+    },
         {
           label: 'Documentación',
           submenu: [

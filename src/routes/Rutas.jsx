@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import Modulos from '../components/Modulos'
 import Home from '../pages/home/Home'
 import UserDetail from '../pages/users/UserDetail'
+import Informe from '../pages/informacion/informe/informe'
 
 function Header() {
 	const location = useLocation()
@@ -92,7 +93,8 @@ function AppContent() {
 			'/modules/bugs': 'Bugs - Radius ERP',
 			'/modules/posts': 'Posts - Radius ERP',
 			'/modules/status': 'Status - Radius ERP',
-			'/modules/users': 'Usuarios - Radius ERP'
+			'/modules/users': 'Usuarios - Radius ERP',
+			'/informacion/informe': 'Informe - Radius ERP'
 		}
 
 		// Título específico o por defecto
@@ -121,6 +123,12 @@ function AppContent() {
 				<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
 					<Header />
 					<ModulosWrapper />
+				</Box>
+			} />
+			<Route path="/informacion/informe" element={
+				<Box sx={{ width: '100%', height: '100vh', m: 0, p: 0 }}>
+					<Header />
+					<Informe />
 				</Box>
 			} />
 			<Route path="*" element={<NotFound />} />
