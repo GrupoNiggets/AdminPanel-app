@@ -60,26 +60,16 @@ export default function Status() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
 
-    try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/ruta-inexistente")
-      const ok = res.ok
-      const code = res.status
-      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+    const code = 404
+    const ok = false
+    const errorMessage = errorMessages[code]
 
-      setHistory(prev => [
-        { ok, timestamp, errorMessage },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus(ok ? "activo" : "error")
-      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
-    } catch {
-      setHistory(prev => [
-        { ok: false, timestamp, errorMessage: "motivo desconocido" },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus("error")
-      setPingMessage("Ping fallido ❌")
-    }
+    setHistory(prev => [
+      { ok, timestamp, errorMessage },
+      ...prev.slice(0, 9)
+    ])
+    setApiStatus(ok ? "activo" : "error")
+    setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
 
     setTimeout(() => setPingMessage(''), 3000)
   }
@@ -91,26 +81,16 @@ export default function Status() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
 
-    try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/forzar-403")
-      const ok = res.ok
-      const code = res.status
-      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+    const code = 403
+    const ok = false
+    const errorMessage = errorMessages[code]
 
-      setHistory(prev => [
-        { ok, timestamp, errorMessage },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus(ok ? "activo" : "error")
-      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
-    } catch {
-      setHistory(prev => [
-        { ok: false, timestamp, errorMessage: "motivo desconocido" },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus("error")
-      setPingMessage("Ping fallido ❌")
-    }
+    setHistory(prev => [
+      { ok, timestamp, errorMessage },
+      ...prev.slice(0, 9)
+    ])
+    setApiStatus(ok ? "activo" : "error")
+    setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
 
     setTimeout(() => setPingMessage(''), 3000)
   }
@@ -122,26 +102,16 @@ export default function Status() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
 
-    try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/forzar-500")
-      const ok = res.ok
-      const code = res.status
-      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+    const code = 500
+    const ok = false
+    const errorMessage = errorMessages[code]
 
-      setHistory(prev => [
-        { ok, timestamp, errorMessage },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus(ok ? "activo" : "error")
-      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
-    } catch {
-      setHistory(prev => [
-        { ok: false, timestamp, errorMessage: "motivo desconocido" },
-        ...prev.slice(0, 9)
-      ])
-      setApiStatus("error")
-      setPingMessage("Ping fallido ❌")
-    }
+    setHistory(prev => [
+      { ok, timestamp, errorMessage },
+      ...prev.slice(0, 9)
+    ])
+    setApiStatus(ok ? "activo" : "error")
+    setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
 
     setTimeout(() => setPingMessage(''), 3000)
   }
