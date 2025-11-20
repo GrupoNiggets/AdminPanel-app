@@ -16,7 +16,7 @@ function UserStats({
   return (
     <div className="stats-container">
       <div className="stat-item">
-        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "55%" }}>
+        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "100%" }}>
           <Typography variant="subtitle2" color="text.secondary">
             Total de usuarios
           </Typography>
@@ -26,7 +26,7 @@ function UserStats({
         </Paper>
       </div>
       <div className="stat-item">
-        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "55%" }}>
+        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "100%" }}>
           <Typography variant="subtitle2" color="text.secondary">
             Premium
           </Typography>
@@ -36,7 +36,7 @@ function UserStats({
         </Paper>
       </div>
       <div className="stat-item">
-        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "55%" }}>
+        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "100%" }}>
           <Typography variant="subtitle2" color="text.secondary">
             No Premium
           </Typography>
@@ -46,7 +46,7 @@ function UserStats({
         </Paper>
       </div>
       <div className="stat-item">
-        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "55%" }}>
+        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "100%" }}>
           <Typography variant="subtitle2" color="text.secondary">
             Administradores
           </Typography>
@@ -56,7 +56,7 @@ function UserStats({
         </Paper>
       </div>
       <div className="stat-item">
-        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "55%" }}>
+        <Paper sx={{ bgcolor: "darkgray", p: 2, height: "100%" }}>
           <Typography variant="subtitle2" color="text.secondary">
             Usuarios sin permisos
           </Typography>
