@@ -22,9 +22,7 @@ export default function Status() {
     400: "400 Bad Request",
   }
 
-  /** ───────────────────────────────
-   *  PING NORMAL
-   *────────────────────────────────*/
+  //Ping normal
   async function sendPing() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp) // actualizar reloj
@@ -53,9 +51,7 @@ export default function Status() {
     setTimeout(() => setPingMessage(''), 3000)
   }
 
-  /** ───────────────────────────────
-   *  ERROR 404
-   *────────────────────────────────*/
+  //error 404
   async function trigger404Error() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
@@ -74,9 +70,7 @@ export default function Status() {
     setTimeout(() => setPingMessage(''), 3000)
   }
 
-  /** ───────────────────────────────
-   *  ERROR 403
-   *────────────────────────────────*/
+  //error 403
   async function trigger403Error() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
@@ -95,9 +89,7 @@ export default function Status() {
     setTimeout(() => setPingMessage(''), 3000)
   }
 
-  /** ───────────────────────────────
-   *  ERROR 500
-   *────────────────────────────────*/
+  //error 500
   async function trigger500Error() {
     const timestamp = new Date().toLocaleTimeString('es-ES')
     setTime(timestamp)
@@ -116,9 +108,7 @@ export default function Status() {
     setTimeout(() => setPingMessage(''), 3000)
   }
 
-  /** ───────────────────────────────
-   *  AUTO-PING
-   *────────────────────────────────*/
+  //ping automatico cada 5 minutos
   useEffect(() => {
     const interval = setInterval(sendPing, 5 * 60000)
     return () => clearInterval(interval)
