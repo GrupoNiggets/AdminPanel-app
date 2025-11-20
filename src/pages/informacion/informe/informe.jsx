@@ -4,6 +4,7 @@ import codigoImg from '/CapturasPantalla/codigo.png';
 import coleccionesImg from '/CapturasPantalla/colecciones.png';
 import componenteImg from '/CapturasPantalla/componente.png';
 import restapiImg from '/CapturasPantalla/restapi.png';
+import UsersInforme from './usersInforme';
 
 const Informe = () => {
   return (
@@ -180,6 +181,7 @@ const Informe = () => {
             <li>Orden del código, porque podría haber sido más modular</li>
           </ul>
         </div>
+        <UsersInforme />
       </section>
 
       <section className="informe-section conclusion">
