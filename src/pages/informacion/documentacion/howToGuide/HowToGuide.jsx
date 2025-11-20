@@ -10,7 +10,7 @@ const HowToGuide = () => {
 
       <section className="documentacion-section">
         <h2>Guía de Uso</h2>
-        <p>Aquí irá la guía de cómo usar el sistema.</p>
+        <p>Aquí irá el How-to-guide del proyecto. Es decir, la explicación de qué hace cada parte de nuestra ERP.</p>
       </section>
     </div>
   );

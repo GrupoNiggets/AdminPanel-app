@@ -16,7 +16,7 @@ import Modulos from "../components/Modulos";
 import Home from "../pages/home/Home";
 import UserDetail from "../pages/users/UserDetail";
 import Informe from "../pages/informacion/informe/informe";
-import Estructura from "../pages/informacion/documentacion/estructura/Estructura";
+import Tutorial from "../pages/informacion/documentacion/tutorial/Tutorial";
 import HowToGuide from "../pages/informacion/documentacion/howToGuide/HowToGuide";
 import MV from "../pages/informacion/documentacion/maquinaVirtual/MV";
 
@@ -124,7 +124,7 @@ function AppContent() {
       "/modules/status": "Status - Radius ERP",
       "/modules/users": "Usuarios - Radius ERP",
       "/informacion/informe": "Informe - Radius ERP",
-      "/informacion/documentacion/estructura": "Estructura - Radius ERP",
+      "/informacion/documentacion/tutorial": "Tutorial - Radius ERP",
       "/informacion/documentacion/howToGuide": "How-to-guide - Radius ERP",
       "/informacion/documentacion/maquinaVirtual":
         "Máquina Virtual - Radius ERP",
@@ -177,11 +177,11 @@ function AppContent() {
         }
       />
       <Route
-        path="/informacion/documentacion/estructura"
+        path="/informacion/documentacion/tutorial"
         element={
           <Box sx={{ width: "100%", height: "100vh", m: 0, p: 0 }}>
             <Header />
-            <Estructura />
+            <Tutorial />
           </Box>
         }
       />

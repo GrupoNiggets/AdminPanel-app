@@ -80,7 +80,7 @@ function createWindow() {
           label: "Documentación",
           submenu: [
             {
-              label: "API",
+              label: "References",
               click: async () => {
                 mainWindow.loadURL(`http://localhost:3000/api/docs/#/`);
                 console.log("Has hecho clic en API");
@@ -96,14 +96,15 @@ function createWindow() {
               },
             },
             {
-              label: "Explicación estructural",
+              label: "Tutorial",
               click: async () => {
                 mainWindow.loadURL(
-                  `${DevUrl}/#/informacion/documentacion/estructura`
+                  `${DevUrl}/#/informacion/documentacion/tutorial`
                 );
-                console.log("Has hecho clic en Explicación estructural");
+                console.log("Has hecho clic en Tutorial");
               },
             },
+            { type: "separator" },
             {
               label: "Máquina Virtual",
               click: async () => {
