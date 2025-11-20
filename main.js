@@ -76,6 +76,50 @@ function createWindow() {
           }
         },
         {
+          label: 'Documentación',
+          submenu: [
+            {
+              label: 'API',
+              click: async () => {
+                mainWindow.loadURL(`http://localhost:3000/api/docs/#/`);
+                console.log('Has hecho clic en API');
+              }
+            },
+            {
+              label: 'How-to-guide',
+              click: async () => {
+                console.log('Has hecho clic en How-to-guide');
+              }
+            },
+            {
+              label: 'Explicación estructural',
+              click: async () => {
+                console.log('Has hecho clic en Explicación estructural');
+              }
+            },
+            {
+              label: 'Máquina Virtual',
+              click: async () => {
+                console.log('Has hecho clic en Máquina Virtual');
+              }
+            }
+          ]
+        },
+        { type: 'separator' },
+        {
+          label: 'Herramientas de desarrollador',
+          click: () => {
+            mainWindow.webContents.openDevTools();
+            console.log('Has hecho clic en las Herramientas de desarrollador');
+          }
+        },
+      ]
+    },
+    
+    {
+      label: 'Repositorios',
+      submenu: [
+        {
           label: 'Github API',
           click: () => {
             console.log('Has hecho clic en el enlace a Github API');
@@ -93,22 +137,9 @@ function createWindow() {
             await shell.openExternal('https://github.com/GrupoNiggets/AdminPanel-app');
           }
         },
-        {
-          label: 'Documentación',
-          click: async () => {
-            console.log('Has hecho clic en Documentación');
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Herramientas de desarrollador',
-          click: () => {
-            mainWindow.webContents.openDevTools();
-            console.log('Has hecho clic en las Herramientas de desarrollador');
-          }
-        },
       ]
     },
+
     { role: 'quit', label: 'Salir'},
   ];
 
