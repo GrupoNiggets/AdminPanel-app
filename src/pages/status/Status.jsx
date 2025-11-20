@@ -10,47 +10,147 @@ export default function Status() {
   const [time, setTime] = useState("—")
   const [apiStatus, setApiStatus] = useState('desconocido')
   const [pingMessage, setPingMessage] = useState('')
-  const [history, setHistory] = useState(Array(10).fill({ ok: null, timestamp: "" }))
+  const [history, setHistory] = useState(
+    Array(10).fill({ ok: null, timestamp: "", errorMessage: "" })
+  )
 
-  async function sendPing() {
-    try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/ping")
-
-      setTime(new Date().toLocaleTimeString('es-ES'))
-
-      const ok = res.ok
-
-      if (ok) {
-        setApiStatus('activo')
-        setPingMessage('API funcionando ✅')
-      } else {
-        setApiStatus('error')
-        setPingMessage('Ping fallido ❌')
-      }
-
-      setHistory(prev => [
-        { ok, timestamp: new Date().toLocaleTimeString('es-ES') },
-        ...prev.slice(0, 9)
-      ])
-
-      setTimeout(() => setPingMessage(''), 3000)
-    } catch {
-      setApiStatus('error')
-      setPingMessage('Ping fallido ❌')
-
-      setHistory(prev => [
-        { ok: false, timestamp: new Date().toLocaleTimeString('es-ES') },
-        ...prev.slice(0, 9)
-      ])
-
-      setTimeout(() => setPingMessage(''), 3000)
-    }
+  const errorMessages = {
+    500: "500 Internal Server Error",
+    404: "404 Not Found",
+    403: "403 Forbidden",
+    401: "401 Unauthorized",
+    400: "400 Bad Request",
   }
 
+  /** ───────────────────────────────
+   *  PING NORMAL
+   *────────────────────────────────*/
+  async function sendPing() {
+    const timestamp = new Date().toLocaleTimeString('es-ES')
+    setTime(timestamp) // actualizar reloj
+
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/ping")
+      const ok = res.ok
+      let errorMessage = ""
+      if (!ok) errorMessage = errorMessages[res.status] || "motivo desconocido"
+
+      setHistory(prev => [
+        { ok, timestamp, errorMessage },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus(ok ? "activo" : "error")
+      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
+    } catch {
+      setHistory(prev => [
+        { ok: false, timestamp, errorMessage: "motivo desconocido" },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus("error")
+      setPingMessage("Ping fallido ❌")
+    }
+
+    setTimeout(() => setPingMessage(''), 3000)
+  }
+
+  /** ───────────────────────────────
+   *  ERROR 404
+   *────────────────────────────────*/
+  async function trigger404Error() {
+    const timestamp = new Date().toLocaleTimeString('es-ES')
+    setTime(timestamp)
+
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/ruta-inexistente")
+      const ok = res.ok
+      const code = res.status
+      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+
+      setHistory(prev => [
+        { ok, timestamp, errorMessage },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus(ok ? "activo" : "error")
+      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
+    } catch {
+      setHistory(prev => [
+        { ok: false, timestamp, errorMessage: "motivo desconocido" },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus("error")
+      setPingMessage("Ping fallido ❌")
+    }
+
+    setTimeout(() => setPingMessage(''), 3000)
+  }
+
+  /** ───────────────────────────────
+   *  ERROR 403
+   *────────────────────────────────*/
+  async function trigger403Error() {
+    const timestamp = new Date().toLocaleTimeString('es-ES')
+    setTime(timestamp)
+
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/forzar-403")
+      const ok = res.ok
+      const code = res.status
+      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+
+      setHistory(prev => [
+        { ok, timestamp, errorMessage },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus(ok ? "activo" : "error")
+      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
+    } catch {
+      setHistory(prev => [
+        { ok: false, timestamp, errorMessage: "motivo desconocido" },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus("error")
+      setPingMessage("Ping fallido ❌")
+    }
+
+    setTimeout(() => setPingMessage(''), 3000)
+  }
+
+  /** ───────────────────────────────
+   *  ERROR 500
+   *────────────────────────────────*/
+  async function trigger500Error() {
+    const timestamp = new Date().toLocaleTimeString('es-ES')
+    setTime(timestamp)
+
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/forzar-500")
+      const ok = res.ok
+      const code = res.status
+      const errorMessage = !ok ? (errorMessages[code] || "motivo desconocido") : ""
+
+      setHistory(prev => [
+        { ok, timestamp, errorMessage },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus(ok ? "activo" : "error")
+      setPingMessage(ok ? "API funcionando ✅" : "Ping fallido ❌")
+    } catch {
+      setHistory(prev => [
+        { ok: false, timestamp, errorMessage: "motivo desconocido" },
+        ...prev.slice(0, 9)
+      ])
+      setApiStatus("error")
+      setPingMessage("Ping fallido ❌")
+    }
+
+    setTimeout(() => setPingMessage(''), 3000)
+  }
+
+  /** ───────────────────────────────
+   *  AUTO-PING
+   *────────────────────────────────*/
   useEffect(() => {
-    const interval = setInterval(() => {
-      sendPing()
-    }, 5 * 60000)
+    const interval = setInterval(sendPing, 5 * 60000)
     return () => clearInterval(interval)
   }, [])
 
@@ -77,10 +177,23 @@ export default function Status() {
         <Typography className="status-time">Actualizado: {time}</Typography>
       </Box>
 
-      <Box sx={{ my: 2, pl: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
+      <Box sx={{ my: 2, pl: 2, display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
         <Button variant="contained" color="success" onClick={sendPing}>
           Comprobar Ping
         </Button>
+
+        <Button variant="contained" color="warning" onClick={trigger404Error}>
+          Error 404 (prueba)
+        </Button>
+
+        <Button variant="contained" color="secondary" onClick={trigger403Error}>
+          Error 403 (prueba)
+        </Button>
+
+        <Button variant="contained" color="error" onClick={trigger500Error}>
+          Error 500 (prueba)
+        </Button>
+
         {pingMessage && (
           <Chip
             label={pingMessage}
@@ -93,15 +206,15 @@ export default function Status() {
       <Box sx={{ pl: 2, mb: 2 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>Historial de Pings</Typography>
         <Box className="ping-history">
-        {history.map((h, i) => (
-          <Box
-            key={i}
-            className="ping-item"
-            style={{ background: h.ok === null ? '#e0e0e0' : h.ok ? '#4caf50' : '#f44336' }}
-            title={
-              h.ok === null
-                ? "Sin ping"
-                : `${h.timestamp}: ${h.ok ? "API funcionando correctamente" : "Ping fallido ❌"}`
+          {history.map((h, i) => (
+            <Box
+              key={i}
+              className="ping-item"
+              style={{ background: h.ok === null ? '#e0e0e0' : h.ok ? '#4caf50' : '#f44336' }}
+              title={
+                h.ok === null
+                  ? "Sin ping"
+                  : `${h.timestamp}: ${h.ok ? "API funcionando correctamente" : h.errorMessage}`
               }
             />
           ))}
