@@ -30,7 +30,7 @@ export default function Status() {
     setTime(timestamp) // actualizar reloj
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/v1/status/ping")
+      const res = await fetch(import.meta.env.VITE_API_URL + "/status/ping")
       const ok = res.ok
       let errorMessage = ""
       if (!ok) errorMessage = errorMessages[res.status] || "motivo desconocido"
