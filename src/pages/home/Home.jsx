@@ -1,4 +1,5 @@
 //IMPORTS
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -19,37 +20,90 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ChatIcon from "@mui/icons-material/Chat";
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
+import { MODULES } from "../../components/Modulos";
 import "./Home.css";
 
 export default function Home() {
+  const [statsData, setStatsData] = useState({
+    modules: MODULES.length,
+    users: 0,
+    posts: 0,
+    bugs: 0,
+    conversations: 0,
+  });
+
+  // Cargar estadísticas desde la API
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        // Obtener usuarios
+        const usersRes = await fetch("http://localhost:3000/api/v1/users");
+        const usersData = await usersRes.json();
+        const users = usersData.data || [];
+
+        // Obtener posts
+        const postsRes = await fetch("http://localhost:3000/api/v1/posts");
+        const postsData = await postsRes.json();
+        const posts = postsData.data || [];
+
+        // Obtener bugs
+        const bugsRes = await fetch("http://localhost:3000/api/v1/bugs");
+        const bugsData = await bugsRes.json();
+        const bugs = bugsData.data || [];
+
+        // Obtener conversaciones (mensajes de chat)
+        const chatsRes = await fetch("http://localhost:3000/api/v1/chat");
+        const chatsData = await chatsRes.json();
+        const chatMessages = chatsData.data || [];
+
+        // Contar conversaciones únicas basándose en messageId
+        const uniqueConversations = Array.isArray(chatMessages)
+          ? new Set(chatMessages.map(msg => msg.messageId)).size
+          : 0;
+
+        setStatsData({
+          modules: MODULES.length, // Número dinámico de módulos
+          users: Array.isArray(users) ? users.length : 0,
+          posts: Array.isArray(posts) ? posts.length : 0,
+          bugs: Array.isArray(bugs) ? bugs.length : 0,
+          conversations: uniqueConversations,
+        });
+      } catch (error) {
+        console.error("Error al cargar estadísticas:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   const stats = [
     {
       label: "Módulos",
-      value: "5",
+      value: statsData.modules,
       icon: <DashboardIcon sx={{ fontSize: { xs: 32, md: 40 } }} />,
       color: "#3b82f6",
     },
     {
       label: "Usuarios",
-      value: "24",
+      value: statsData.users,
       icon: <PeopleIcon sx={{ fontSize: { xs: 32, md: 40 } }} />,
       color: "#8b5cf6",
     },
     {
       label: "Posts",
-      value: "156",
+      value: statsData.posts,
       icon: <ArticleIcon sx={{ fontSize: { xs: 32, md: 40 } }} />,
       color: "#06b6d4",
     },
     {
       label: "Bugs",
-      value: "8",
+      value: statsData.bugs,
       icon: <BugReportIcon sx={{ fontSize: { xs: 32, md: 40 } }} />,
       color: "#f59e0b",
     },
     {
       label: "Conversaciones",
-      value: "42",
+      value: statsData.conversations,
       icon: <ChatIcon sx={{ fontSize: { xs: 32, md: 40 } }} />,
       color: "#10b981",
     },

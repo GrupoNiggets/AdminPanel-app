@@ -14,34 +14,34 @@ import './Modulos.css'
 // Versión muy simple de Modulos: lista fija de módulos (chat, bugs, posts, status, usuarios).
 // Guardamos sólo los módulos instalados (ids) en localStorage.
 
-const MODULES = [
-	{ 
-		id: 'chat', 
-		name: 'Chat', 
+export const MODULES = [
+	{
+		id: 'chat',
+		name: 'Chat',
 		description: 'Mensajería y conversaciones en tiempo real',
 		image: 'https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=500&q=80'
 	},
-	{ 
-		id: 'bugs', 
-		name: 'Bugs', 
+	{
+		id: 'bugs',
+		name: 'Bugs',
 		description: 'Reportes y seguimiento de errores',
 		image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=500&q=80'
 	},
-	{ 
-		id: 'posts', 
-		name: 'Posts', 
+	{
+		id: 'posts',
+		name: 'Posts',
 		description: 'Gestión de publicaciones y contenido',
 		image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&q=80'
 	},
-	{ 
-		id: 'status', 
-		name: 'Status', 
+	{
+		id: 'status',
+		name: 'Status',
 		description: 'Estados del sistema y monitoreo',
 		image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80'
 	},
-	{ 
-		id: 'users', 
-		name: 'Usuarios', 
+	{
+		id: 'users',
+		name: 'Usuarios',
 		description: 'Administración de usuarios y permisos',
 		image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80'
 	}
@@ -72,7 +72,7 @@ function ModulosList({ installed, onToggle, onOpen }) {
 					<h2 className="modulos-title">Módulos del Sistema</h2>
 					<p className="modulos-subtitle">Gestiona los módulos instalados en tu plataforma</p>
 				</div>
-				<button 
+				<button
 					className="restore-button"
 					onClick={() => { localStorage.removeItem(KEY); window.location.reload() }}
 				>
@@ -83,7 +83,7 @@ function ModulosList({ installed, onToggle, onOpen }) {
 			<div className="modulos-grid">
 				{MODULES.map(m => (
 					<div className="modulo-card" key={m.id}>
-						<div 
+						<div
 							className="modulo-card-image"
 							style={{ backgroundImage: `url(${m.image})` }}
 						/>
@@ -96,7 +96,7 @@ function ModulosList({ installed, onToggle, onOpen }) {
 							</div>
 							<p className="modulo-description">{m.description}</p>
 							<div className="modulo-actions">
-								<button 
+								<button
 									className={`modulo-button ${installed.includes(m.id) ? 'modulo-button-uninstall' : 'modulo-button-install'}`}
 									onClick={() => onToggle(m.id)}
 								>
@@ -106,7 +106,7 @@ function ModulosList({ installed, onToggle, onOpen }) {
 										<><CheckCircleIcon fontSize="small" /> Instalar</>
 									)}
 								</button>
-								<button 
+								<button
 									className="modulo-button modulo-button-open"
 									onClick={() => onOpen(m.id)}
 								>
@@ -124,7 +124,7 @@ function ModulosList({ installed, onToggle, onOpen }) {
 // Componente para ver detalle del módulo
 function ModuloDetail({ modId, installed, onToggle, onBack }) {
 	const mod = MODULES.find(m => m.id === modId)
-	
+
 	if (!mod) {
 		return (
 			<div className="modulo-error">
@@ -151,7 +151,7 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 
 	return (
 		<Box sx={{ width: '100%', m: 0, p: 0 }}>
-			<div 
+			<div
 				className="modulo-detail-banner"
 				style={{ backgroundImage: `url(${mod.image})` }}
 			>
@@ -164,7 +164,7 @@ function ModuloDetail({ modId, installed, onToggle, onBack }) {
 						<span className={`modulo-chip ${installed.includes(mod.id) ? '' : 'not-installed'}`}>
 							{installed.includes(mod.id) ? 'Instalado' : 'No instalado'}
 						</span>
-						<button 
+						<button
 							className={`modulo-button ${installed.includes(mod.id) ? 'modulo-button-uninstall' : 'modulo-button-install'}`}
 							onClick={() => onToggle(mod.id)}
 						>
