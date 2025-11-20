@@ -103,3 +103,18 @@
   font-weight: 600;
   font-size: 14px;
 }
+
+.ping-history {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.ping-item {
+  flex: 1;
+  height: 16px;
+  border-radius: 4px;
+  background: #e0e0e0;
+  cursor: pointer;
+  transition: background 0.3s;
+}

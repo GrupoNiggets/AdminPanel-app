@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Bugs.css';
 import AddBugsModal from './AddBugsModal';
 
@@ -18,22 +18,30 @@ export default function BugsDashboard() {
   const [filter, setFilter] = useState("todos");
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bugs, setBugs] = useState([]);
 
-  const [bugs, setBugs] = useState([
-    { id: 1, title: 'Error en login con email', status: 'abierto', priority: 'alta', reporter: 'Andoni' },
-    { id: 2, title: 'Botón de guardar no responde', status: 'en progreso', priority: 'media', reporter: 'Iñigo' },
-    { id: 3, title: 'Carga lenta en dashboard', status: 'resuelto', priority: 'baja', reporter: 'Igor' },
-    { id: 4, title: 'Error 404 en módulo usuarios', status: 'abierto', priority: 'alta', reporter: 'Alejandro' },
-  ]);
+  // 🔵 CARGAR BUGS desde la API (nuevo)
+  const loadBugs = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/v1/bugs');
+      const data = await res.json();
+      if (res.ok) setBugs(data.data ?? []);
+    } catch (err) {
+      console.error('Error al cargar bugs:', err);
+    }
+  };
+
+  useEffect(() => { loadBugs(); }, []);
+
+  // 🟢 GUARDAR BUG desde el modal (ya conectado en tu modal)
+  const handleAddBug = (newBug) => {
+    setBugs(prev => [...prev, newBug]); // ya NO generamos id falso
+  };
 
   const filteredBugs = bugs.filter(bug =>
     (filter === "todos" || bug.status === filter) &&
     bug.title.toLowerCase().includes(search.toLowerCase())
   );
-
-  const handleAddBug = (newBug) => {
-    setBugs(prev => [...prev, { id: prev.length + 1, ...newBug }]);
-  };
 
   const statusCounts = {
     abierto: bugs.filter(b => b.status === 'abierto').length,
@@ -55,6 +63,10 @@ export default function BugsDashboard() {
         <div className="bugs-header">
           <h3>Dashboard de Bugs</h3>
           <div className="bugs-controls">
+            {/* 🔵 BOTÓN PARA ABRIR EL MODAL (faltaba) */}
+            <button className="btn-add" onClick={() => setIsModalOpen(true)}>
+              + Nuevo Bug
+            </button>
           </div>
         </div>
 

@@ -62,6 +62,10 @@ export default function Users() {
     loadUsers();
   }, [loadUsers]);
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [query]);
+
   //useState DE CONSTANTES DE EDICIÓN
   const [ventanaEditar, setVentanaEditar] = useState(false);
   const [editarUser, setEditarUser] = useState(null);
