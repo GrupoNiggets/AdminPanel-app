@@ -5,7 +5,7 @@ export function getPosts() {
       .then(response => response.json())
       .then(json => json.data)
       .catch(error => {
-        console.error('Error fetching posts:', error)
+        console.error('Error fetcheando:', error)
         return []
       })
 }
@@ -16,7 +16,7 @@ export function getPost(postId) {
       .then(response => response.json())
       .then(json => json.data)
       .catch(error => {
-        console.error('Error fetching post:', error)
+        console.error('Error fetcheando:', error)
         return null
       })
 }
@@ -33,7 +33,7 @@ export function createPost(post) {
       .then(response => response.json())
       .then(json => json.data)
       .catch(error => {
-        console.error('Error creating post:', error)
+        console.error('Error creando:', error)
         return null
       })
 }
@@ -50,7 +50,7 @@ export function updatePost(postId, post) {
       .then(response => response.json())
       .then(json => json.data)
       .catch(error => {
-        console.error('Error updating post:', error)
+        console.error('Error actualizando:', error)
         return null
       })
 }
@@ -60,10 +60,18 @@ export function deletePost(postId) {
     return fetch(apiUrl, {
       method: 'DELETE'
     })
-      .then(response => response.json())
-      .then(json => json.data)
+      .then(async response => {
+        if (response.status === 204) {
+          return true
+        }
+        const json = await response.json().catch(() => null)
+        if (!response.ok) {
+          throw new Error('Error')
+        }
+        return json?.data ?? true
+      })
       .catch(error => {
-        console.error('Error deleting post:', error)
+        console.error('Error eliminando:', error)
         return null
       })
 }
