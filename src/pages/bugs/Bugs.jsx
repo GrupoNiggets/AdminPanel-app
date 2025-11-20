@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Bugs.css";
 import AddBugsModal from "./AddBugsModal";
+import EditBugModal from "./EditBugModal";
 
 const STATUS_COLORS = {
   ABIERTO: "#f87171", // rojo
@@ -18,6 +19,8 @@ export default function BugsDashboard() {
   const [filter, setFilter] = useState("todos");
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingBug, setEditingBug] = useState(null);
   const [bugs, setBugs] = useState([]);
 
   // 🔵 CARGAR BUGS desde la API (nuevo)
@@ -37,6 +40,17 @@ export default function BugsDashboard() {
 
   // 🟢 GUARDAR BUG desde el modal (ya conectado en tu modal)
   const handleAddBug = async (newBug) => {
+    // Reload bugs from API to ensure we have the latest data
+    await loadBugs();
+  };
+
+  // 🟡 EDITAR BUG
+  const handleEditBug = (bug) => {
+    setEditingBug(bug);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateBug = async (updatedBug) => {
     // Reload bugs from API to ensure we have the latest data
     await loadBugs();
   };
@@ -96,12 +110,18 @@ export default function BugsDashboard() {
           {filteredBugs.map((bug) => (
             <div
               key={bug.id}
-              className={`bug-card prioridad-${bug.priority.toLowerCase()} ${
-                bug.status === "RESUELTO" ? "estado-resuelto" : ""
-              }`}
+              className={`bug-card prioridad-${bug.priority.toLowerCase()} ${bug.status === "RESUELTO" ? "estado-resuelto" : ""
+                }`}
             >
               <div className="bug-header">
                 <span className="bug-status">{bug.status}</span>
+                <button
+                  className="btn-edit"
+                  onClick={() => handleEditBug(bug)}
+                  title="Editar bug"
+                >
+                  ✏️
+                </button>
               </div>
               <span className="bug-priority">Prioridad {bug.priority}</span>
               <div className="bug-title">{bug.title}</div>
@@ -141,6 +161,17 @@ export default function BugsDashboard() {
         <AddBugsModal
           onClose={() => setIsModalOpen(false)}
           onSave={handleAddBug}
+        />
+      )}
+
+      {isEditModalOpen && editingBug && (
+        <EditBugModal
+          bug={editingBug}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditingBug(null);
+          }}
+          onSave={handleUpdateBug}
         />
       )}
     </div>
