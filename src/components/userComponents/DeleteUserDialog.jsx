@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -33,7 +32,11 @@ function DeleteUserDialog({ open, onClose, onConfirm, userName }) {
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
             ¿Seguro que quiere eliminar este usuario?
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.875rem" }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontSize: "0.875rem" }}
+          >
             Esto no se podrá revertir
           </Typography>
         </Box>
@@ -52,4 +55,3 @@ function DeleteUserDialog({ open, onClose, onConfirm, userName }) {
 }
 
 export default DeleteUserDialog;
-

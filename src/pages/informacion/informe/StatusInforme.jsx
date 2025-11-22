@@ -1,5 +1,3 @@
-import React from "react";
-
 const StatusInforme = () => {
   return (
     <div className="subsection">

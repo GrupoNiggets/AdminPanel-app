@@ -1,4 +1,3 @@
-import React from "react";
 import "./informe.css";
 import codigoImg from "/CapturasPantalla/codigo.png";
 import coleccionesImg from "/CapturasPantalla/colecciones.png";

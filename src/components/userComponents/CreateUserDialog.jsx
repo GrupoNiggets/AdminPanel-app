@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -103,5 +102,3 @@ function CreateUserDialog({ open, onClose, onConfirm, formData, setFormData }) {
 }
 
 export default CreateUserDialog;
-
-

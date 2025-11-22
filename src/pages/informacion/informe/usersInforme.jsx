@@ -1,5 +1,3 @@
-import React from "react";
-
 const UsersInforme = () => {
   return (
     <div className="subsection">

@@ -1,5 +1,3 @@
-import React from "react";
-
 const BugsInforme = () => {
   return (
     <div className="subsection">

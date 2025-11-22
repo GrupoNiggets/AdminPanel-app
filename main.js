@@ -83,7 +83,7 @@ function createWindow() {
               label: "References",
               click: async () => {
                 mainWindow.loadURL(`http://localhost:3000/api/docs/#/`);
-                console.log("Has hecho clic en API");
+                console.log("Has hecho clic en References");
               },
             },
             {
