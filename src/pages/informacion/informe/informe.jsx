@@ -160,12 +160,10 @@ const Informe = () => {
           <h3>Uso de la IA y dónde</h3>
           <ul>
             <li>
-              Estructura básica de la API y estructura básica del frontend
-            </li>
-            <li>
+              Estructura básica de la API y estructura básica del frontend.
               Después de esto, cada uno hizo sus respectivos módulos con sus
               respectivos métodos HTTP (GET, POST, PUT, PATCH y DELETE)
-              correspondientes
+              correspondientes.
             </li>
             <li>Ha sido utilizado para el CSS</li>
             <li>

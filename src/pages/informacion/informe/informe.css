@@ -159,6 +159,46 @@
   font-weight: 500;
 }
 
+/* Screenshot item 2 - Larger, left-aligned for module screenshots */
+.screenshot-item2 {
+  text-align: left;
+  margin: 20px 0;
+}
+
+.screenshot-item2 img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border: 1px solid #e0e0e0;
+}
+
+.screenshot-item2 .screenshot-caption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Screenshot item 3 - Even larger, centered for main menu */
+.screenshot-item3 {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.screenshot-item3 img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  border: 1px solid #e0e0e0;
+}
+
+.screenshot-item3 .screenshot-caption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
 .conclusion {
   background: #f5f5f5;
   padding: 30px;
