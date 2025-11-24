@@ -3,11 +3,11 @@ import codigoImg from "/CapturasPantalla/codigo.png";
 import coleccionesImg from "/CapturasPantalla/colecciones.png";
 import componenteImg from "/CapturasPantalla/componente.png";
 import restapiImg from "/CapturasPantalla/restapi.png";
-import UsersInforme from "./usersInforme";
-import PostsInforme from "./postsInforme";
-import ChatInforme from "./chatInforme";
-import BugsInforme from "./bugsInforme";
-import StatusInforme from "./statusInforme";
+import UsersInforme from "./UsersInforme";
+import PostsInforme from "./PostsInforme";
+import ChatInforme from "./ChatInforme";
+import BugsInforme from "./BugsInforme";
+import StatusInforme from "./StatusInforme";
 
 const Informe = () => {
   return (

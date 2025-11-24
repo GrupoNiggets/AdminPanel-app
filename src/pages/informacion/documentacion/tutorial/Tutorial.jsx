@@ -1,4 +1,4 @@
-import "./tutorial.css";
+import "./Tutorial.css";
 import menuPrincipalImg from "/CapturasPantalla/menuPrincipal.png";
 
 const Tutorial = () => {

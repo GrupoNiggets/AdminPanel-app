@@ -1,4 +1,4 @@
-import "./howToGuide.css";
+import "./HowToGuide.css";
 
 const HowToGuide = () => {
   return (
