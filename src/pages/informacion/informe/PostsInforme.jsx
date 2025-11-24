@@ -36,21 +36,6 @@ const PostsInforme = () => {
         </li>
       </ul>
 
-      <h4>Operaciones disponibles</h4>
-      <p>
-        <strong>Crear post:</strong> Botón "+ Nueva Publicación". Rellenas ID de
-        usuario, contenido y coordenadas (longitud, latitud en formato GeoJSON).
-        Se añade a la cuadrícula inmediatamente.
-      </p>
-      <p>
-        <strong>Editar post:</strong> Icono de editar en la tarjeta. Modificas
-        contenido o coordenadas y guardas.
-      </p>
-      <p>
-        <strong>Eliminar post:</strong> Icono de eliminar. Pide confirmación
-        antes de borrar.
-      </p>
-
       <h4>Sistema de notificaciones</h4>
       <ul>
         <li>
@@ -72,22 +57,6 @@ const PostsInforme = () => {
         <strong> coordinates: [longitud, latitud]</strong>. Esto permite
         almacenar la ubicación exacta donde se creó el post.
       </p>
-
-      <h4>Comunicación con la API</h4>
-      <ul>
-        <li>
-          <strong>POST:</strong> Crear post
-        </li>
-        <li>
-          <strong>PATCH:</strong> Editar post
-        </li>
-        <li>
-          <strong>DELETE:</strong> Eliminar post
-        </li>
-        <li>
-          <strong>GET:</strong> Cargar todos los posts
-        </li>
-      </ul>
     </div>
   );
 };

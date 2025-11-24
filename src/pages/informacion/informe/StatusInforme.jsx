@@ -18,52 +18,6 @@ const StatusInforme = () => {
         <img src={statusCapturaImg} alt="Módulo de Status - Vista completa" />
         <p className="screenshot-caption">Interfaz del módulo de status</p>
       </div>
-      <ul>
-        <li>
-          <strong>Cabecera:</strong> "Monitoreo del Sistema" + hora de última
-          comprobación
-        </li>
-        <li>
-          <strong>Botones de acción:</strong> Verde (ping normal),
-          Amarillo/Morado/Rojo (simular errores)
-        </li>
-        <li>
-          <strong>Historial visual:</strong> 10 cuadrados de colores en la parte
-          inferior
-        </li>
-      </ul>
-
-      <h4>Comprobación de ping</h4>
-      <p>
-        <strong>Botón "Comprobar Ping":</strong> Envía petición al servidor.
-        Resultado inmediato:
-      </p>
-      <ul>
-        <li>
-          <strong>Verde:</strong> "API funcionando" (todo correcto)
-        </li>
-        <li>
-          <strong>Rojo:</strong> "Ping fallido" + tipo de error
-        </li>
-      </ul>
-
-      <h4>Historial de pings</h4>
-      <p>10 cuadrados que representan los últimos pings:</p>
-      <ul>
-        <li>
-          <strong>Verde:</strong> Ping exitoso
-        </li>
-        <li>
-          <strong>Rojo:</strong> Ping fallido
-        </li>
-        <li>
-          <strong>Gris:</strong> Sin datos todavía
-        </li>
-      </ul>
-      <p>
-        <strong>Tooltip:</strong> Pasa el ratón sobre cada cuadrado para ver
-        hora exacta y resultado detallado.
-      </p>
 
       <h4>Códigos de error HTTP</h4>
       <ul>
@@ -103,17 +57,6 @@ const StatusInforme = () => {
         <li>
           <strong>Registro:</strong> Cada ping automático se añade al historial
           visual
-        </li>
-      </ul>
-
-      <h4>Comunicación con la API</h4>
-      <ul>
-        <li>
-          <strong>GET /status/ping:</strong> Único endpoint usado
-        </li>
-        <li>
-          <strong>Nota:</strong> No guarda nada en base de datos, solo comprueba
-          disponibilidad
         </li>
       </ul>
     </div>

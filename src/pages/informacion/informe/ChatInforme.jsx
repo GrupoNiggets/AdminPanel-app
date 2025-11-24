@@ -18,19 +18,6 @@ const ChatInforme = () => {
         <img src={chatCapturaImg} alt="Módulo de Chat - Interfaz completa" />
         <p className="screenshot-caption">Interfaz del chat empresarial</p>
       </div>
-      <ul>
-        <li>
-          <strong>Cabecera negra:</strong> Título "Chat Empresarial" + selector
-          de usuario activo
-        </li>
-        <li>
-          <strong>Área central:</strong> Mensajes en orden cronológico con
-          scroll automático
-        </li>
-        <li>
-          <strong>Campo inferior:</strong> Input de texto + botón "Enviar"
-        </li>
-      </ul>
 
       <h4>Información de cada mensaje</h4>
       <ul>
@@ -49,26 +36,6 @@ const ChatInforme = () => {
         </li>
       </ul>
 
-      <h4>Operaciones disponibles</h4>
-      <p>
-        <strong>Cambiar usuario:</strong> Selector en cabecera permite cambiar
-        de identidad. Útil para probar el chat desde diferentes usuarios.
-      </p>
-      <p>
-        <strong>Enviar mensaje:</strong> Escribes en el campo de abajo y
-        presionas Enter o haces clic en "Enviar". Si falta algo (mensaje vacío o
-        sin usuario), aparece error en rojo arriba.
-      </p>
-      <p>
-        <strong>Editar mensaje:</strong> Solo tus propios mensajes. Icono de
-        lápiz convierte el mensaje en campo editable. Modificas y guardas con
-        icono verde.
-      </p>
-      <p>
-        <strong>Eliminar mensaje:</strong> Solo tus propios mensajes. Icono de
-        papelera borra inmediatamente.
-      </p>
-
       <h4>Sistema de permisos</h4>
       <ul>
         <li>
@@ -77,23 +44,6 @@ const ChatInforme = () => {
         <li>
           <strong>Editar/Eliminar:</strong> Solo los mensajes del usuario
           actualmente seleccionado
-        </li>
-      </ul>
-
-      <h4>Comunicación con la API</h4>
-      <ul>
-        <li>
-          <strong>POST:</strong> Crear mensaje
-        </li>
-        <li>
-          <strong>PATCH:</strong> Editar mensaje
-        </li>
-        <li>
-          <strong>DELETE:</strong> Eliminar mensaje
-        </li>
-        <li>
-          <strong>GET:</strong> Cargar mensajes (ordenados por fecha de
-          creación)
         </li>
       </ul>
     </div>
