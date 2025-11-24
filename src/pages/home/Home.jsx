@@ -37,7 +37,7 @@ export default function Home() {
     const fetchStats = async () => {
       try {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
-
+        // Hay que poner || Sino no quiere funcionar
         // Obtener usuarios
         const usersRes = await fetch(`${API_URL}/users`);
         const usersData = await usersRes.json();
