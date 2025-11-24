@@ -308,13 +308,34 @@ const Informe = () => {
         <div className="subsection">
           <h3>Conclusión grupal</h3>
           <p>
-            Hemos hecho un buen trabajo del que hemos acabado satisfechos, pero
-            no orgullosos. Creemos que ha habido muy poco tiempo para un
-            proyecto tan entretenido y, de algún modo, divertido.
+            En este reto hemos podido ver cómo se unían en un solo proyecto las
+            diferentes asignaturas y herramientas en las que hemos trabajado a
+            lo largo del reto. A pesar de disponer de relativamente poco tiempo,
+            hemos conseguido sacar el proyecto adelante y aunque el resultado no
+            sea el ideal, ha sido una experiencia enriquecedora.
           </p>
           <p>
-            De todas formas, hemos aprendido mucho más de lo que pensamos en un
-            principio.
+            Por otra parte y mirando el lado positivo, el tener tiempo limitado
+            nos ha enseñado a trabajar bajo presión y aprender a priorizar los
+            objetivos del proyecto. Esto nos ha dado una perspectiva un poco más
+            realista, ya que en un trabajo real no siempre habrá tiempo de sobra
+            para dedicar al proyecto.
+          </p>
+          <p>
+            El reto nos ha dado un simulacro de una experiencia más real o
+            cercana al mundo laboral de la programación, y a través de aprender
+            a gestionar las tareas y el tiempo, hemos llegado a un resultado no
+            ideal pero sí satisfactorio. No ideal ya que hay algunos apartados a
+            mejorar, como que los avatares de los usuarios no se guardan o que
+            los pings del status no se guardan en un historial. Pero sí
+            satisfactorio porque la aplicación dispone de las herramientas
+            necesarias para gestionar y monitorear la aplicación.
+          </p>
+          <p>
+            <strong>
+              En esencia, el objetivo de crear nuestra propia ERP desde cero ha
+              sido completado, por lo que por esta parte estamos satisfechos.
+            </strong>
           </p>
         </div>
       </section>
