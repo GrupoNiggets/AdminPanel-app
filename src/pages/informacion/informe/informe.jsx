@@ -198,12 +198,13 @@ const Informe = () => {
               respectivos métodos HTTP (GET, POST, PUT, PATCH y DELETE)
               correspondientes.
             </li>
-            <li>Ha sido utilizado para el CSS</li>
+            <li>Ha sido utilizado para el CSS.</li>
             <li>
               Para buscar complementos MUI que fueran útiles para nuestro
               proyecto y luego los implementamos nosotros mismos a partir de las
-              explicaciones
+              explicaciones.
             </li>
+            <li>Para pasar la documentación escrita en Docs a este informe.</li>
           </ul>
         </div>
 
@@ -329,7 +330,9 @@ const Informe = () => {
             mejorar, como que los avatares de los usuarios no se guardan o que
             los pings del status no se guardan en un historial. Pero sí
             satisfactorio porque la aplicación dispone de las herramientas
-            necesarias para gestionar y monitorear la aplicación.
+            necesarias para gestionar y monitorear la aplicación. Entre las
+            mejoras también queremos que los fetch se hagan todos a la vez, en
+            vez de uno a uno, haciendo más ágil nuestra aplicación.
           </p>
           <p>
             <strong>

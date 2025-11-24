@@ -20,37 +20,6 @@ const BugsInforme = () => {
           Interfaz del módulo de bugs con resumen estadístico
         </p>
       </div>
-      <ul>
-        <li>
-          <strong>Columna izquierda:</strong> Tarjetas de bugs con filtros y
-          búsqueda
-        </li>
-        <li>
-          <strong>Columna derecha:</strong> Resumen estadístico (por estado y
-          prioridad)
-        </li>
-      </ul>
-
-      <h4>Visualización de bugs</h4>
-      <p>Cada bug se muestra en una tarjeta con:</p>
-      <ul>
-        <li>
-          <strong>Borde de color:</strong> Rojo (ALTA), Naranja (MEDIA), Verde
-          (BAJA)
-        </li>
-        <li>
-          <strong>Badge de estado:</strong> ABIERTO, EN PROGRESO, RESUELTO
-        </li>
-        <li>
-          <strong>Título del bug</strong>
-        </li>
-        <li>
-          <strong>Nombre del reportador</strong>
-        </li>
-        <li>
-          <strong>Estilo especial:</strong> Los bugs resueltos se ven diferentes
-        </li>
-      </ul>
 
       <h4>Estados disponibles</h4>
       <ul>
@@ -79,43 +48,11 @@ const BugsInforme = () => {
         </li>
       </ul>
 
-      <h4>Operaciones disponibles</h4>
-      <p>
-        <strong>Reportar bug:</strong> Botón "+ Nuevo Bug". Rellenas título,
-        descripción, estado, prioridad y tu nombre. Aparece inmediatamente en la
-        lista.
-      </p>
-      <p>
-        <strong>Editar bug:</strong> Icono de lápiz. Útil para cambiar estado
-        (ABIERTO → EN PROGRESO → RESUELTO) o actualizar prioridad/descripción.
-      </p>
-      <p>
-        <strong>Filtrar:</strong> Selector desplegable (Todos, Abiertos, En
-        progreso, Resueltos) + barra de búsqueda por título. Se pueden usar
-        ambos a la vez.
-      </p>
-
       <h4>Flujo de trabajo típico</h4>
       <p>
         1. Reportar como ABIERTO → 2. Asignar prioridad → 3. Cambiar a EN
         PROGRESO al empezar → 4. Marcar como RESUELTO al terminar
       </p>
-
-      <h4>Comunicación con la API</h4>
-      <ul>
-        <li>
-          <strong>POST:</strong> Crear bug
-        </li>
-        <li>
-          <strong>PATCH:</strong> Editar bug
-        </li>
-        <li>
-          <strong>GET:</strong> Cargar bugs
-        </li>
-        <li>
-          <strong>Nota:</strong> No hay DELETE (se mantiene registro histórico)
-        </li>
-      </ul>
     </div>
   );
 };
