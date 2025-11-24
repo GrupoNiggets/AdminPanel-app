@@ -36,8 +36,8 @@ export default function Home() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL;
-        
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+
         // Obtener usuarios
         const usersRes = await fetch(`${API_URL}/users`);
         const usersData = await usersRes.json();

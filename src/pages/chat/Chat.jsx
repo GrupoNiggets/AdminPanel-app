@@ -6,6 +6,17 @@ import SaveIcon from '@mui/icons-material/Save'
 import DeleteIcon from '@mui/icons-material/Delete'
 import './Chat.css'
 
+const generateUUID = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID()
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
 export default function Chat() {
   const [messages, setMessages] = useState([])
   const [users, setUsers] = useState([])
@@ -16,7 +27,7 @@ export default function Chat() {
   const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
-  const API_URL = import.meta.env.VITE_API_URL
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'
 
   const scrollToBottom = () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
 
@@ -30,7 +41,7 @@ export default function Chat() {
       console.log('Mensajes recibidos:', data.data)
       if (res.ok) {
         // Ordenar por createdAt para mantener orden cronológico
-        const sorted = (data.data ?? []).sort((a, b) => 
+        const sorted = (data.data ?? []).sort((a, b) =>
           new Date(a.createdAt) - new Date(b.createdAt)
         )
         setMessages(sorted)
@@ -49,8 +60,8 @@ export default function Chat() {
         setUsers(usersList)
         setCurrentUser(usersList[0] || null) // por defecto primer usuario
       }
-    } catch (err) { 
-      console.error('Error al cargar usuarios:', err) 
+    } catch (err) {
+      console.error('Error al cargar usuarios:', err)
     }
   }
 
@@ -65,20 +76,21 @@ export default function Chat() {
       setError('Escribe un mensaje')
       return
     }
-    
+
     if (!currentUser) {
       setError('Selecciona un usuario')
       return
     }
-    
+
     setError(null)
 
     const payload = {
       content: newMsg,
       userId: String(currentUser.id),  // Convertir a string
-      messageId: crypto.randomUUID(),
+      messageId: generateUUID(),
       meta: {}
     }
+
 
     console.log('========== PAYLOAD ENVIADO ==========')
     console.log(JSON.stringify(payload, null, 2))
@@ -91,7 +103,7 @@ export default function Chat() {
         body: JSON.stringify(payload)
       })
       const data = await res.json()
-      
+
       console.log('========== RESPUESTA DEL SERVIDOR ==========')
       console.log('Status:', res.status)
       console.log('Success:', data.success)
@@ -100,7 +112,7 @@ export default function Chat() {
       console.log('Details:', data.details)
       console.log('Data completo:', JSON.stringify(data, null, 2))
       console.log('============================================')
-      
+
       if (!res.ok) {
         const errorMsg = data.details ? `${data.message}: ${data.details.join(', ')}` : data.message
         setError(errorMsg || 'Error al enviar el mensaje')
@@ -110,7 +122,7 @@ export default function Chat() {
       setMessages(prev => [...prev, data.data])
       setNewMsg('')
       setTimeout(scrollToBottom, 50)
-    } catch (err) { 
+    } catch (err) {
       console.error('Error al enviar mensaje:', err)
       setError('Error de conexión al servidor')
     }
@@ -159,7 +171,7 @@ export default function Chat() {
           <Button size="small" onClick={() => setError(null)} sx={{ color: '#991b1b', minWidth: 'auto' }}>✕</Button>
         </Box>
       )}
-      
+
       {/* HEADER */}
       <Box sx={{ bgcolor: '#000', color: 'white', p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Typography variant="h6">Chat Empresarial</Typography>
@@ -170,8 +182,8 @@ export default function Chat() {
           <Select
             value={currentUser?.id || ''}
             onChange={e => setCurrentUser(users.find(u => u.id === e.target.value))}
-            sx={{ 
-              color: 'white', 
+            sx={{
+              color: 'white',
               minWidth: 180,
               '.MuiOutlinedInput-notchedOutline': { border: 'none' },
               '.MuiSvgIcon-root': { color: 'white' }
@@ -188,13 +200,13 @@ export default function Chat() {
       <Box sx={{ flex: 1, overflowY: 'auto', p: 3 }}>
         {messages.map(msg => {
           // Buscar el usuario correspondiente de múltiples formas
-          const msgUser = msg.user || 
+          const msgUser = msg.user ||
             users.find(u => String(u.id) === String(msg.userId)) ||
             users.find(u => u._id === msg.userId) ||
             users.find(u => u.id === msg.userId)
-          
+
           console.log('Mensaje userId:', msg.userId, 'Usuario encontrado:', msgUser)
-          
+
           return (
             <Paper key={msg.id} sx={{ p: 1.5, mb: 1.5 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -230,49 +242,50 @@ export default function Chat() {
                 </Typography>
               </Box>
 
-            {/* EDICIÓN */}
-            {editingId === msg.id ? (
-              <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  value={editingContent}
-                  onChange={e => setEditingContent(e.target.value)}
-                  className="edit-input"
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    }
-                  }}
-                />
-                <IconButton 
-                  className="save-button" 
-                  onClick={() => saveEdit(msg.id)}
-                  sx={{ 
-                    bgcolor: '#10b981',
-                    '&:hover': { bgcolor: '#059669' }
-                  }}
-                >
-                  <SaveIcon fontSize="small" sx={{ color: 'white' }} />
-                </IconButton>
-              </Box>
-            ) : (
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
-                <Typography>{msg.content}</Typography>
-                {String(msg.userId) === String(currentUser?.id) && (
-                  <Box>
-                    <IconButton size="small" onClick={() => { setEditingId(msg.id); setEditingContent(msg.content) }}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton size="small" onClick={() => deleteMessage(msg.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Paper>
-        )})}
+              {/* EDICIÓN */}
+              {editingId === msg.id ? (
+                <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    value={editingContent}
+                    onChange={e => setEditingContent(e.target.value)}
+                    className="edit-input"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                      }
+                    }}
+                  />
+                  <IconButton
+                    className="save-button"
+                    onClick={() => saveEdit(msg.id)}
+                    sx={{
+                      bgcolor: '#10b981',
+                      '&:hover': { bgcolor: '#059669' }
+                    }}
+                  >
+                    <SaveIcon fontSize="small" sx={{ color: 'white' }} />
+                  </IconButton>
+                </Box>
+              ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
+                  <Typography>{msg.content}</Typography>
+                  {String(msg.userId) === String(currentUser?.id) && (
+                    <Box>
+                      <IconButton size="small" onClick={() => { setEditingId(msg.id); setEditingContent(msg.content) }}>
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton size="small" onClick={() => deleteMessage(msg.id)}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  )}
+                </Box>
+              )}
+            </Paper>
+          )
+        })}
         <div ref={bottomRef} />
       </Box>
 
