@@ -3,11 +3,11 @@ import codigoImg from "/CapturasPantalla/codigo.png";
 import coleccionesImg from "/CapturasPantalla/colecciones.png";
 import componenteImg from "/CapturasPantalla/componente.png";
 import restapiImg from "/CapturasPantalla/restapi.png";
-import UsersInforme from "./usersInforme";
-import PostsInforme from "./postsInforme";
-import ChatInforme from "./chatInforme";
-import BugsInforme from "./bugsInforme";
-import StatusInforme from "./statusInforme";
+import UsersInforme from "./UsersInforme";
+import PostsInforme from "./PostsInforme";
+import ChatInforme from "./ChatInforme";
+import BugsInforme from "./BugsInforme";
+import StatusInforme from "./StatusInforme";
 
 const Informe = () => {
   return (
@@ -131,6 +131,39 @@ const Informe = () => {
           <p>
             La base de datos la hemos tenido que hacer en{" "}
             <strong>MongoDB Atlas</strong>.
+          </p>
+        </div>
+
+        <div className="subsection">
+          <h3>Estructura de la aplicación</h3>
+          <p>
+            La aplicación de escritorio también sigue una organización clara
+            dentro de <strong>src</strong> para facilitar el mantenimiento:
+          </p>
+          <ul className="estructura-lista">
+            <li>
+              <strong>Assets:</strong> Directorio donde almacenamos el logo para
+              reutilizarlo en los componentes.
+            </li>
+            <li>
+              <strong>Components:</strong> Componentes reutilizables que se
+              consumen desde las páginas.
+            </li>
+            <li>
+              <strong>Pages:</strong> Las pantallas individuales de la
+              aplicación.
+            </li>
+            <li>
+              <strong>Routes:</strong> Manejo de rutas con HashRouter y los
+              títulos de cada pestaña.
+            </li>
+          </ul>
+          <p>
+            En el <strong>index</strong> del módulo se encuentran el repositorio
+            de datos y el service con toda la lógica de respuesta para las
+            peticiones del frontend. En <strong>mongoose</strong> definimos las
+            schemas de las colecciones y en <strong>validator</strong> validamos
+            los datos antes de guardarlos o responder.
           </p>
         </div>
 
