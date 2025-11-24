@@ -36,23 +36,25 @@ export default function Home() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        const API_URL = import.meta.env.VITE_API_URL;
+        
         // Obtener usuarios
-        const usersRes = await fetch("http://localhost:3000/api/v1/users");
+        const usersRes = await fetch(`${API_URL}/users`);
         const usersData = await usersRes.json();
         const users = usersData.data || [];
 
         // Obtener posts
-        const postsRes = await fetch("http://localhost:3000/api/v1/posts");
+        const postsRes = await fetch(`${API_URL}/posts`);
         const postsData = await postsRes.json();
         const posts = postsData.data || [];
 
         // Obtener bugs
-        const bugsRes = await fetch("http://localhost:3000/api/v1/bugs");
+        const bugsRes = await fetch(`${API_URL}/bugs`);
         const bugsData = await bugsRes.json();
         const bugs = bugsData.data || [];
 
         // Obtener conversaciones (mensajes de chat)
-        const chatsRes = await fetch("http://localhost:3000/api/v1/chat");
+        const chatsRes = await fetch(`${API_URL}/chat`);
         const chatsData = await chatsRes.json();
         const chatMessages = chatsData.data || [];
 

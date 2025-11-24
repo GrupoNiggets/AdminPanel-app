@@ -23,10 +23,12 @@ export default function BugsDashboard() {
   const [editingBug, setEditingBug] = useState(null);
   const [bugs, setBugs] = useState([]);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // 🔵 CARGAR BUGS desde la API (nuevo)
   const loadBugs = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/v1/bugs");
+      const res = await fetch(`${API_URL}/bugs`);
       const data = await res.json();
       if (res.ok) setBugs(data.data ?? []);
     } catch (err) {

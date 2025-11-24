@@ -10,6 +10,8 @@ export default function EditBugModal({ bug, onClose, onSave }) {
         reporter: bug.reporter || "",
     });
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -34,7 +36,7 @@ export default function EditBugModal({ bug, onClose, onSave }) {
         console.log("Actualizando bug en la API:", payload);
 
         try {
-            const res = await fetch(`http://localhost:3000/api/v1/bugs/${bug.id}`, {
+            const res = await fetch(`${API_URL}/bugs/${bug.id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

@@ -16,12 +16,14 @@ export default function Chat() {
   const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
+  const API_URL = import.meta.env.VITE_API_URL
+
   const scrollToBottom = () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
 
   // Cargar mensajes y usuarios
   const loadMessages = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/v1/chat?_=${Date.now()}`, {
+      const res = await fetch(`${API_URL}/chat?_=${Date.now()}`, {
         headers: { 'Cache-Control': 'no-cache' }
       })
       const data = await res.json()
@@ -39,7 +41,7 @@ export default function Chat() {
 
   const loadUsers = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/v1/users')
+      const res = await fetch(`${API_URL}/users`)
       const data = await res.json()
       if (res.ok) {
         const usersList = data.data ?? []
@@ -83,7 +85,7 @@ export default function Chat() {
     console.log('====================================')
 
     try {
-      const res = await fetch('http://localhost:3000/api/v1/chat', {
+      const res = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -119,7 +121,7 @@ export default function Chat() {
     if (!editingContent.trim()) return
 
     try {
-      const res = await fetch(`http://localhost:3000/api/v1/chat/${msgId}`, {
+      const res = await fetch(`${API_URL}/chat/${msgId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: editingContent })
@@ -137,7 +139,7 @@ export default function Chat() {
   // Borrar mensaje
   const deleteMessage = async (msgId) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/v1/chat/${msgId}`, {
+      const res = await fetch(`${API_URL}/chat/${msgId}`, {
         method: 'DELETE'
       })
       if (!res.ok) {

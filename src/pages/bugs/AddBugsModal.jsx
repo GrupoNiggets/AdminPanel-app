@@ -10,6 +10,8 @@ export default function AddBugModal({ onClose, onSave }) {
     reporter: "",
   });
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -34,7 +36,7 @@ export default function AddBugModal({ onClose, onSave }) {
     console.log("Enviando bug a la API:", payload);
 
     try {
-      const res = await fetch("http://localhost:3000/api/v1/bugs", {
+      const res = await fetch(`${API_URL}/bugs`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
