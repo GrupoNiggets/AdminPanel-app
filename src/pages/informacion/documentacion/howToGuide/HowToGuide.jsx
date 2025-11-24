@@ -8,189 +8,202 @@ const HowToGuide = () => {
       </header>
 
       <section className="informe-section">
-        <h2>INTRODUCCIÓN AL PROYECTO</h2>
+        <h2>CÓMO USAR ESTA GUÍA</h2>
 
         <div className="subsection">
-          <h3>¿Qué es este proyecto?</h3>
+          <h3>Objetivo</h3>
           <p>
-            Este proyecto es una{" "}
-            <strong>ERP (Enterprise Resource Planning)</strong> de escritorio
-            diseñada específicamente para gestionar los recursos de Radius,
-            nuestra red social. A diferencia de las ERPs tradicionales que
-            gestionan productos y ventas, esta aplicación está adaptada para
-            administrar usuarios, publicaciones, chats, bugs y el estado de los
-            servidores.
+            Esta guía está diseñada para resolver dudas específicas y ayudarte a
+            completar tareas concretas en el proyecto ERP Radius. No es un curso
+            de aprendizaje, sino una referencia rápida para cuando necesites
+            saber "cómo se hace algo".
+          </p>
+        </div>
+      </section>
+
+      <section className="informe-section">
+        <h2>CÓMO ENTENDER EL PROYECTO</h2>
+
+        <div className="subsection">
+          <h3>¿Qué es este sistema?</h3>
+          <p>
+            Es una <strong>ERP (Enterprise Resource Planning)</strong> para
+            gestionar la red social Radius. Permite administrar usuarios, posts,
+            chats, bugs y monitorear servidores.
           </p>
         </div>
 
         <div className="subsection">
-          <h3>Tecnologías utilizadas</h3>
+          <h3>¿Qué tecnologías utiliza?</h3>
           <ul className="estructura-lista">
             <li>
-              <strong>Frontend:</strong> Electron + React + Vite para crear una
-              aplicación de escritorio nativa
+              <strong>Frontend:</strong> Electron + React + Vite (Escritorio)
             </li>
             <li>
-              <strong>Backend:</strong> Node.js con Express para la API REST
+              <strong>Backend:</strong> Node.js + Express (API REST)
             </li>
             <li>
-              <strong>Base de datos:</strong> MongoDB Atlas (base de datos en la
-              nube)
+              <strong>Base de datos:</strong> MongoDB Atlas (Nube)
             </li>
             <li>
-              <strong>UI/UX:</strong> Material-UI (MUI) para componentes
-              visuales y librerías de Charts para gráficos
+              <strong>UI:</strong> Material-UI (MUI)
             </li>
           </ul>
         </div>
       </section>
 
       <section className="informe-section">
-        <h2>ESTRUCTURA DEL PROYECTO</h2>
+        <h2>CÓMO ESTÁ ESTRUCTURADO EL CÓDIGO</h2>
 
         <div className="subsection">
-          <h3>Arquitectura general</h3>
-          <p>El proyecto está dividido en dos repositorios principales:</p>
+          <h3>¿Dónde está cada parte?</h3>
           <ul>
             <li>
-              <strong>AdminPanel-app:</strong> La aplicación de escritorio
-              (frontend) construida con Electron y React
+              <strong>AdminPanel-app:</strong> Contiene todo el código de la
+              interfaz gráfica (React).
             </li>
             <li>
-              <strong>AdminPanel-api:</strong> El servidor backend que gestiona
-              las peticiones HTTP y se comunica con MongoDB
+              <strong>AdminPanel-api:</strong> Contiene la lógica del servidor y
+              la conexión a base de datos.
             </li>
           </ul>
         </div>
 
         <div className="subsection">
-          <h3>¿Cómo funciona el sistema?</h3>
+          <h3>¿Cómo fluyen los datos?</h3>
           <p>
-            El proyecto funciona con una arquitectura cliente-servidor. La
-            aplicación de escritorio (<strong>AdminPanel-app </strong>) es lo
-            que el usuario ve y utiliza. Cuando realizas una acción, como crear
-            un usuario o enviar un mensaje, la aplicación envía una petición
-            HTTP al servidor backend (<strong>AdminPanel-api</strong>). El
-            servidor procesa esta petición, valida los datos y se comunica con{" "}
-            <strong>MongoDB Atlas</strong>
-            (nuestra base de datos en la nube) para guardar o recuperar
-            información. Finalmente, el servidor responde a la aplicación con
-            los datos solicitados, y la interfaz se actualiza para mostrar los
-            cambios.
-          </p>
-          <p>
-            Este flujo se repite para cada operación: cuando lees datos (GET),
-            cuando creas algo nuevo (POST), cuando actualizas información
-            (PUT/PATCH) o cuando eliminas elementos (DELETE). Todo está
-            conectado a través de la API REST que corre en
-            http://localhost:3000.
+            1. <strong>Usuario</strong> realiza acción en la App.
+            <br />
+            2. <strong>App</strong> envía petición HTTP (GET, POST, etc.) a la
+            API.
+            <br />
+            3. <strong>API</strong> procesa y consulta <strong>MongoDB</strong>.
+            <br />
+            4. <strong>API</strong> devuelve respuesta JSON.
+            <br />
+            5. <strong>App</strong> actualiza la pantalla.
           </p>
         </div>
       </section>
 
       <section className="informe-section">
-        <h2>NAVEGACIÓN Y USO</h2>
+        <h2>CÓMO NAVEGAR POR LA APP</h2>
 
         <div className="subsection">
-          <h3>Menú principal</h3>
+          <h3>¿Qué opciones tengo en el menú?</h3>
+          <ul>
+            <li>
+              <strong>Inicio:</strong> Dashboard principal.
+            </li>
+            <li>
+              <strong>Módulos:</strong> Acceso a las herramientas de gestión
+              (Bugs, Chat, Posts, Status, Usuarios).
+            </li>
+            <li>
+              <strong>Información:</strong> Documentación (este archivo,
+              Tutorial, Swagger).
+            </li>
+            <li>
+              <strong>Repositorios:</strong> Enlaces a GitHub.
+            </li>
+            <li>
+              <strong>Salir:</strong> Cerrar programa.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="informe-section">
+        <h2>CÓMO REALIZAR TAREAS COMUNES</h2>
+
+        <div className="subsection">
+          <h3>¿Cómo crear un nuevo elemento?</h3>
           <p>
-            La aplicación utiliza un menú de Electron en la parte superior con
-            las siguientes opciones:
+            En casi todos los módulos (Usuarios, Posts, Bugs), busca el botón
+            con el símbolo <strong>"+"</strong> (ej. "+ Añadir Usuario"). Se
+            abrirá un modal para ingresar los datos.
+          </p>
+        </div>
+
+        <div className="subsection">
+          <h3>¿Cómo editar información existente?</h3>
+          <p>
+            Busca el icono de <strong>lápiz</strong> en la fila o tarjeta del
+            elemento que quieres modificar. Haz tus cambios y guarda.
+          </p>
+        </div>
+
+        <div className="subsection">
+          <h3>¿Cómo eliminar un elemento?</h3>
+          <p>
+            Busca el icono de <strong>papelera</strong>. Siempre te pedirá
+            confirmación antes de borrar algo permanentemente.
+          </p>
+        </div>
+
+        <div className="subsection">
+          <h3>¿Cómo comprobar si el servidor funciona?</h3>
+          <p>
+            Ve a <strong>Módulos → Status</strong> y pulsa "Comprobar Ping".
+            Verde = OK, Rojo = Error.
+          </p>
+        </div>
+      </section>
+
+      <section className="informe-section">
+        <h2>CÓMO SOLUCIONAR PROBLEMAS Y DUDAS</h2>
+
+        <div className="subsection">
+          <h3>¿Cómo filtrar y buscar datos?</h3>
+          <p>
+            En módulos como <strong>Usuarios</strong> y <strong>Bugs</strong>,
+            encontrarás barras de búsqueda y selectores en la parte superior.
+            Úsalos para encontrar rápidamente lo que necesitas sin tener que
+            hacer scroll por toda la lista.
+          </p>
+        </div>
+
+        <div className="subsection">
+          <h3>¿Cómo interpretar los roles de usuario?</h3>
+          <p>
+            En la tabla de usuarios y en el chat, verás etiquetas de colores:
           </p>
           <ul>
             <li>
-              <strong>Inicio:</strong> Página principal con información general
-              del proyecto
+              <strong>Admin (Rojo):</strong> Usuarios con permisos totales de
+              gestión.
             </li>
             <li>
-              <strong>Módulos:</strong> Acceso a los cinco módulos principales
-              (Bugs, Chat, Posts, Status, Usuarios)
-            </li>
-            <li>
-              <strong>Información:</strong> Contiene el informe del proyecto y
-              la documentación (References, How-to-guide, Tutorial, Máquina
-              Virtual)
-            </li>
-            <li>
-              <strong>Repositorios:</strong> Enlaces directos a los repositorios
-              de GitHub del proyecto
-            </li>
-            <li>
-              <strong>Salir:</strong> Cierra la aplicación
+              <strong>User (Verde):</strong> Usuarios estándar de la red social.
             </li>
           </ul>
         </div>
 
         <div className="subsection">
-          <h3>Operaciones CRUD</h3>
+          <h3>¿Qué hacer si la API no responde?</h3>
           <p>
-            Todos los módulos principales (excepto Status) implementan
-            operaciones CRUD completas:
-          </p>
-          <ul className="estructura-lista">
-            <li>
-              <strong>Create (Crear):</strong> Botones para añadir nuevos
-              elementos que abren diálogos modales
-            </li>
-            <li>
-              <strong>Read (Leer):</strong> Visualización de datos en tablas,
-              tarjetas o listas
-            </li>
-            <li>
-              <strong>Update (Actualizar):</strong> Botones de edición que
-              permiten modificar información existente
-            </li>
-            <li>
-              <strong>Delete (Eliminar):</strong> Botones de eliminación con
-              confirmación para evitar borrados accidentales
-            </li>
-          </ul>
-        </div>
-
-        <div className="subsection">
-          <h3>Comunicación con la API</h3>
-          <p>
-            La aplicación se comunica con el backend a través de peticiones
-            HTTP:
-          </p>
-          <ul>
-            <li>
-              <strong>GET:</strong> Para obtener datos (listar usuarios, posts,
-              mensajes, etc.)
-            </li>
-            <li>
-              <strong>POST:</strong> Para crear nuevos elementos
-            </li>
-            <li>
-              <strong>PATCH:</strong> Para actualizar elementos existentes
-            </li>
-            <li>
-              <strong>DELETE:</strong> Para eliminar elementos
-            </li>
-          </ul>
-          <p>
-            La API está configurada para ejecutarse en{" "}
-            <strong>http://localhost:3000</strong>y todas las rutas siguen el
-            patrón <strong>/api/v1/[módulo]</strong>.
+            Si ves mensajes de error o los datos no cargan:
+            <br />
+            1. Ve al módulo <strong>Status</strong>.
+            <br />
+            2. Haz clic en "Comprobar Ping".
+            <br />
+            3. Si falla, verifica que el servidor (AdminPanel-api) esté
+            ejecutándose en tu terminal.
+            <br />
+            4. Revisa tu conexión a internet (necesaria para MongoDB).
           </p>
         </div>
       </section>
 
       <section className="informe-section conclusion">
-        <h2>RESUMEN</h2>
+        <h2>RESUMEN TÉCNICO</h2>
         <div className="subsection">
-          <h3>Flujo de trabajo general</h3>
+          <h3>Endpoints de la API</h3>
           <p>
-            El usuario interactúa con la aplicación de escritorio (Electron +
-            React), que envía peticiones HTTP a la API (Express + Node.js). La
-            API procesa estas peticiones, valida los datos y se comunica con
-            MongoDB Atlas para almacenar o recuperar información. Finalmente, la
-            respuesta regresa a la aplicación y se actualiza la interfaz visual.
-          </p>
-          <p>
-            Este sistema modular permite que cada parte del proyecto funcione de
-            manera independiente pero coordinada, facilitando el mantenimiento y
-            la escalabilidad futura de la aplicación.
+            Todas las peticiones van a <strong>http://localhost:3000</strong>.
+            <br />
+            Prefijo: <strong>/api/v1/[módulo]</strong>
           </p>
         </div>
       </section>
