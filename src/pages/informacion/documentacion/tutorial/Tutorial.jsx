@@ -170,12 +170,12 @@ const Tutorial = () => {
           </p>
           <p>
             <strong>Para editar un usuario:</strong> Haz clic en el icono de
-            lápiz (✏️) en la fila del usuario. Modifica los campos que necesites
+            lápiz en la fila del usuario. Modifica los campos que necesites
             y haz clic en "Guardar".
           </p>
           <p>
             <strong>Para eliminar un usuario:</strong> Haz clic en el icono de
-            papelera (🗑️). Confirma la eliminación en el diálogo que aparece.
+            papelera. Confirma la eliminación en el diálogo que aparece.
           </p>
           <p>
             <strong>Navegación por páginas:</strong> Usa los botones "Anterior"
@@ -236,12 +236,12 @@ const Tutorial = () => {
           </p>
           <p>
             <strong>Para editar tu mensaje:</strong> Solo puedes editar tus
-            propios mensajes. Haz clic en el icono de lápiz (✏️) junto al
-            mensaje, modifica el texto y haz clic en el icono de guardar (💾).
+            propios mensajes. Haz clic en el icono de lápiz junto al
+            mensaje, modifica el texto y haz clic en el icono de guardar.
           </p>
           <p>
             <strong>Para eliminar tu mensaje:</strong> Haz clic en el icono de
-            papelera (🗑️) junto a tu mensaje. La eliminación es inmediata.
+            papelera junto a tu mensaje. La eliminación es inmediata.
           </p>
           <p>
             <strong>Identificación de mensajes:</strong> Cada mensaje muestra el
@@ -278,7 +278,7 @@ const Tutorial = () => {
           </p>
           <p>
             <strong>Para editar un bug:</strong> Haz clic en el icono de lápiz
-            (✏️) en la tarjeta del bug. Modifica los campos necesarios y guarda
+            en la tarjeta del bug. Modifica los campos necesarios y guarda
             los cambios.
           </p>
           <p>
@@ -306,8 +306,8 @@ const Tutorial = () => {
           <p>
             <strong>Para comprobar el estado de la API:</strong> Haz clic en el
             botón "Comprobar Ping". Si la API está funcionando correctamente,
-            verás un mensaje "API funcionando ✅" en verde. Si hay un error,
-            verás "Ping fallido ❌" en rojo.
+            verás un mensaje "API funcionando" en verde. Si hay un error,
+            verás "Ping fallido" en rojo.
           </p>
           <p>
             <strong>Para simular errores:</strong> Puedes hacer clic en los
